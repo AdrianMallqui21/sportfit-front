@@ -1,0 +1,260 @@
+:host {
+  display: block;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #252525;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.pagina-inicio-sesion {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 6vw, 7rem);
+  padding: 3rem 1.5rem;
+  background: linear-gradient(110deg, #00a58c, #80cb32);
+}
+
+.tarjeta-inicio-sesion {
+  width: 100%;
+  max-width: 380px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 12px 35px rgb(0 0 0 / 10%);
+}
+
+/* Selección de usuario o administrador */
+.tipos-acceso {
+  display: flex;
+  background: #ededed;
+}
+
+.tipo-acceso {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  position: relative;
+  flex: 1;
+  padding: 22px 12px;
+  border: 0;
+  background: transparent;
+  color: #333;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tipo-acceso--activo {
+  background: #fff;
+}
+
+.tipo-acceso--activo::after {
+  content: "";
+  position: absolute;
+  right: 22px;
+  bottom: 0;
+  left: 22px;
+  height: 3px;
+  background: #39b985;
+}
+
+/* Título y descripción */
+.encabezado-inicio-sesion {
+  padding: 28px 24px 0;
+  text-align: center;
+}
+
+.titulo-inicio-sesion {
+  margin: 0;
+  color: #39b985;
+  font-size: 29px;
+}
+
+.subtitulo-inicio-sesion {
+  margin: 5px 0 0;
+  color: #777;
+  font-size: 12px;
+}
+
+/* Formulario */
+.formulario-inicio-sesion {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 36px 30px 20px;
+}
+
+.campo-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.etiqueta-campo {
+  font-size: 12px;
+}
+
+.contenedor-entrada {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #e9edf2;
+  border-radius: 7px;
+  background: #f6f8fb;
+}
+
+.contenedor-entrada:focus-within {
+  border-color: #39b985;
+  outline: 2px solid rgb(57 185 133 / 20%);
+}
+
+.entrada-formulario {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #252525;
+  font: inherit;
+  font-size: 12px;
+}
+
+.entrada-formulario::placeholder {
+  color: #929292;
+}
+
+.boton-mostrar-contrasena {
+  align-self: stretch;
+  padding: 0 10px;
+  border: 0;
+  background: transparent;
+  color: #666;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* Recordarme y recuperación */
+.opciones-inicio-sesion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 11px;
+}
+
+.opcion-recordarme {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #777;
+}
+
+.casilla-recordarme {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: #39b985;
+  cursor: pointer;
+}
+
+.enlace-recuperar-contrasena,
+.enlace-registro {
+  color: #23875f;
+  text-decoration: none;
+}
+
+.enlace-recuperar-contrasena {
+  font-weight: 700;
+}
+
+.enlace-recuperar-contrasena:hover,
+.enlace-registro:hover {
+  text-decoration: underline;
+}
+
+/* Logotipo y acceso */
+.contenedor-logotipo {
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 0;
+}
+
+.logotipo {
+  display: block;
+  width: 125px;
+  max-width: 100%;
+  height: auto;
+}
+
+.boton-acceder {
+  width: 190px;
+  max-width: 100%;
+  align-self: center;
+  margin-top: 4px;
+  padding: 13px 20px;
+  border: 0;
+  border-radius: 6px;
+  background: #39b985;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.boton-acceder:hover {
+  background: #2c9d6f;
+}
+
+.texto-registro {
+  margin: 0;
+  color: #777;
+  font-size: 11px;
+  text-align: center;
+}
+
+button:focus-visible,
+a:focus-visible,
+.casilla-recordarme:focus-visible {
+  outline: 3px solid #176c50;
+  outline-offset: 3px;
+}
+
+/* Ilustración lateral */
+.contenedor-ilustracion {
+  width: 48%;
+  max-width: 560px;
+}
+
+.ilustracion-deportistas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 760px) {
+  .pagina-inicio-sesion {
+    padding: 24px 16px;
+  }
+
+  .contenedor-ilustracion {
+    display: none;
+  }
+
+  .formulario-inicio-sesion {
+    padding: 28px 24px 20px;
+  }
+}

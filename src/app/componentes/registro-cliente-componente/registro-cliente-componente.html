@@ -1,0 +1,189 @@
+<div class="pagina-registro">
+  <main class="tarjeta-registro">
+    <header class="encabezado-registro">
+      <h1 id="titulo-registro" class="titulo-registro">
+        Registro
+      </h1>
+    </header>
+
+    <form
+      id="formulario-registro"
+      class="formulario-registro"
+      aria-labelledby="titulo-registro"
+    >
+      <div class="campo-formulario">
+        <label class="etiqueta-campo" for="nombres">
+          Nombres
+        </label>
+
+        <div class="contenedor-entrada">
+          <input
+            class="entrada-formulario"
+            type="text"
+            id="nombres"
+            name="nombres"
+            placeholder="Ingresa tus nombres"
+            autocomplete="given-name"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="campo-formulario">
+        <label class="etiqueta-campo" for="apellidos">
+          Apellidos
+        </label>
+
+        <div class="contenedor-entrada">
+          <input
+            class="entrada-formulario"
+            type="text"
+            id="apellidos"
+            name="apellidos"
+            placeholder="Ingresa tus apellidos"
+            autocomplete="family-name"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="fila-campos">
+        <div class="campo-formulario">
+          <label class="etiqueta-campo" for="dni">
+            DNI
+          </label>
+
+          <div class="contenedor-entrada">
+            <input
+              class="entrada-formulario"
+              type="text"
+              id="dni"
+              name="dni"
+              placeholder="Ingresa tu DNI"
+              inputmode="numeric"
+              pattern="[0-9]{8}"
+              minlength="8"
+              maxlength="8"
+              title="Ingresa los 8 dígitos de tu DNI"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="campo-formulario">
+          <label class="etiqueta-campo" for="telefono">
+            Teléfono
+          </label>
+
+          <div class="contenedor-entrada">
+            <input
+              class="entrada-formulario"
+              type="tel"
+              id="telefono"
+              name="telefono"
+              placeholder="Ingresa tu teléfono"
+              autocomplete="tel"
+              required
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="campo-formulario">
+        <label class="etiqueta-campo" for="correo-registro">
+          Correo electrónico
+        </label>
+
+        <div class="contenedor-entrada">
+          <input
+            class="entrada-formulario"
+            type="email"
+            id="correo-registro"
+            name="correo"
+            placeholder="Ingresa tu correo electrónico"
+            autocomplete="email"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="campo-formulario">
+        <label class="etiqueta-campo" for="contrasena-registro">
+          Contraseña
+        </label>
+
+        <div class="contenedor-entrada">
+          <input
+            class="entrada-formulario"
+            type="password"
+            id="contrasena-registro"
+            name="contrasena"
+            placeholder="Ingresa tu contraseña"
+            autocomplete="new-password"
+            required
+          >
+
+          <!-- Pendiente: agregar la lógica para mostrar la contraseña. -->
+          <button
+            class="boton-mostrar-contrasena"
+            type="button"
+            aria-controls="contrasena-registro"
+            aria-label="Mostrar contraseña"
+          >
+            Mostrar
+          </button>
+        </div>
+      </div>
+
+      <div class="campo-formulario">
+        <label class="etiqueta-campo" for="confirmar-contrasena">
+          Confirmar contraseña
+        </label>
+
+        <div class="contenedor-entrada">
+          <input
+            class="entrada-formulario"
+            type="password"
+            id="confirmar-contrasena"
+            name="confirmar-contrasena"
+            placeholder="Repite tu contraseña"
+            autocomplete="new-password"
+            required
+          >
+
+          <!-- Pendiente: agregar la lógica para mostrar la confirmación. -->
+          <button
+            class="boton-mostrar-contrasena"
+            type="button"
+            aria-controls="confirmar-contrasena"
+            aria-label="Mostrar confirmación de contraseña"
+          >
+            Mostrar
+          </button>
+        </div>
+      </div>
+
+      <button class="boton-registrarse" type="submit">
+        Registrarme
+      </button>
+
+      <p class="texto-inicio-sesion">
+        ¿Ya tienes una cuenta?
+
+        <!-- Reemplazar "." por la ruta de inicio de sesión. -->
+        <a class="enlace-inicio-sesion" routerLink="/">
+          Inicia sesión
+        </a>
+      </p>
+    </form>
+  </main>
+
+  <div class="contenedor-ilustracion" aria-hidden="true">
+    <!-- Reemplazar "." por la ruta de la ilustración de deportistas. -->
+    <img
+      class="ilustracion-deportistas"
+      src="."
+      alt=""
+    >
+  </div>
+</div>

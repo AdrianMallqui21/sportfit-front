@@ -1,0 +1,128 @@
+<div class="pagina-inicio-sesion">
+  <main class="tarjeta-inicio-sesion">
+    <nav class="tipos-acceso" aria-label="Tipo de acceso">
+      <a class="tipo-acceso" routerLink="/">
+        Usuario
+      </a>
+
+      <a
+        class="tipo-acceso tipo-acceso--activo"
+        routerLink="/administrador"
+        aria-current="page"
+      >
+        Administrador
+      </a>
+    </nav>
+
+    <header class="encabezado-inicio-sesion">
+      <h1 id="titulo-acceso-administrador" class="titulo-inicio-sesion">
+        Iniciar sesión
+      </h1>
+
+      <p class="subtitulo-inicio-sesion">
+        Gestiona el deporte al máximo
+      </p>
+    </header>
+
+    <form
+      id="formulario-acceso-administrador"
+      class="formulario-inicio-sesion"
+      aria-labelledby="titulo-acceso-administrador"
+    >
+      <div class="campo-formulario">
+        <label class="etiqueta-campo" for="correo-administrador">
+          Correo electrónico
+        </label>
+
+        <div class="contenedor-entrada">
+          <input
+            class="entrada-formulario"
+            type="email"
+            id="correo-administrador"
+            name="correo"
+            placeholder="Ingresa tu correo electrónico"
+            autocomplete="username"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="campo-formulario">
+        <label class="etiqueta-campo" for="contrasena-administrador">
+          Contraseña
+        </label>
+
+        <div class="contenedor-entrada">
+          <input
+            class="entrada-formulario"
+            type="password"
+            id="contrasena-administrador"
+            name="contrasena"
+            placeholder="Ingresa tu contraseña"
+            autocomplete="current-password"
+            required
+          >
+
+          <!-- Pendiente: agregar el comportamiento para mostrar la contraseña. -->
+          <button
+            class="boton-mostrar-contrasena"
+            type="button"
+            aria-controls="contrasena-administrador"
+            aria-label="Mostrar contraseña"
+          >
+            Mostrar
+          </button>
+        </div>
+      </div>
+
+      <div class="opciones-inicio-sesion">
+        <div class="opcion-recordarme">
+          <input
+            class="casilla-recordarme"
+            type="checkbox"
+            id="recordar-administrador"
+            name="recordarme"
+          >
+
+          <label for="recordar-administrador">
+            Recordarme
+          </label>
+        </div>
+
+        <!-- Reemplazar "." por la ruta de recuperación de contraseña. -->
+        <a class="enlace-recuperar-contrasena" href=".">
+          ¿Olvidaste tu contraseña?
+        </a>
+      </div>
+
+      <div class="contenedor-logotipo">
+        <!-- Reemplazar "." por la ruta real del logotipo. -->
+        <img class="logotipo" src="." alt="SportFit">
+      </div>
+
+      <button class="boton-acceder" type="submit">
+        Acceder
+        <span aria-hidden="true">→</span>
+      </button>
+
+      <div class="separador">
+        <span>o</span>
+      </div>
+
+      <!-- Pendiente: conectar el acceso con Google. -->
+      <button class="boton-google" type="button">
+        <span class="simbolo-google" aria-hidden="true">G</span>
+        Continuar con Google
+      </button>
+    </form>
+  </main>
+
+  <div class="contenedor-ilustracion" aria-hidden="true">
+    <!-- Reemplazar "." por la ruta real de la ilustración. -->
+    <img
+      class="ilustracion-deportistas"
+      src="."
+      alt=""
+    >
+  </div>
+</div>

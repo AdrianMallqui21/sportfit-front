@@ -1,0 +1,294 @@
+:host {
+  display: block;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #252525;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.pagina-inicio-sesion {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 6vw, 7rem);
+  padding: 32px 24px;
+  background: linear-gradient(110deg, #00a58c, #80cb32);
+}
+
+.tarjeta-inicio-sesion {
+  width: 100%;
+  max-width: 380px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 35px rgb(0 0 0 / 10%);
+}
+
+/* Navegación entre tipos de acceso */
+.tipos-acceso {
+  display: flex;
+  background: #ededed;
+}
+
+.tipo-acceso {
+  position: relative;
+  flex: 1;
+  padding: 22px 12px;
+  color: #333;
+  text-align: center;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tipo-acceso--activo {
+  background: #fff;
+}
+
+.tipo-acceso--activo::after {
+  content: "";
+  position: absolute;
+  right: 22px;
+  bottom: 0;
+  left: 22px;
+  height: 3px;
+  background: #39b985;
+}
+
+.tipo-acceso:hover {
+  color: #23875f;
+}
+
+/* Encabezado */
+.encabezado-inicio-sesion {
+  padding: 28px 24px 0;
+  text-align: center;
+}
+
+.titulo-inicio-sesion {
+  margin: 0;
+  color: #39b985;
+  font-size: 29px;
+}
+
+.subtitulo-inicio-sesion {
+  margin: 5px 0 0;
+  color: #777;
+  font-size: 12px;
+}
+
+/* Campos */
+.formulario-inicio-sesion {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 30px;
+}
+
+.campo-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.etiqueta-campo {
+  font-size: 12px;
+}
+
+.contenedor-entrada {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #e9edf2;
+  border-radius: 7px;
+  background: #f6f8fb;
+}
+
+.contenedor-entrada:focus-within {
+  border-color: #39b985;
+  outline: 2px solid rgb(57 185 133 / 20%);
+}
+
+.entrada-formulario {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #252525;
+  font: inherit;
+  font-size: 12px;
+}
+
+.entrada-formulario::placeholder {
+  color: #929292;
+}
+
+.boton-mostrar-contrasena {
+  align-self: stretch;
+  padding: 0 10px;
+  border: 0;
+  background: transparent;
+  color: #666;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* Opciones del formulario */
+.opciones-inicio-sesion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 11px;
+}
+
+.opcion-recordarme {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #777;
+}
+
+.casilla-recordarme {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: #39b985;
+}
+
+.enlace-recuperar-contrasena {
+  color: #23875f;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.enlace-recuperar-contrasena:hover {
+  text-decoration: underline;
+}
+
+/* Logotipo y botones */
+.contenedor-logotipo {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.logotipo {
+  display: block;
+  width: 125px;
+  max-width: 100%;
+  height: auto;
+}
+
+.boton-acceder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 190px;
+  max-width: 100%;
+  align-self: center;
+  padding: 13px 20px;
+  border: 0;
+  border-radius: 6px;
+  background: #39b985;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.boton-acceder:hover {
+  background: #2c9d6f;
+}
+
+.separador {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #999;
+  font-size: 11px;
+}
+
+.separador::before,
+.separador::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e8e8e8;
+}
+
+.boton-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  align-self: center;
+  max-width: 100%;
+  padding: 10px 16px;
+  border: 1px solid #dedede;
+  border-radius: 6px;
+  background: #fff;
+  color: #444;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.boton-google:hover {
+  background: #f6f8fb;
+}
+
+/* Letra provisional; después puede reemplazarse por el icono. */
+.simbolo-google {
+  color: #4285f4;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+button:focus-visible,
+a:focus-visible,
+.casilla-recordarme:focus-visible {
+  outline: 3px solid #176c50;
+  outline-offset: 3px;
+}
+
+/* Ilustración */
+.contenedor-ilustracion {
+  width: 48%;
+  max-width: 560px;
+}
+
+.ilustracion-deportistas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 760px) {
+  .pagina-inicio-sesion {
+    padding: 24px 16px;
+  }
+
+  .contenedor-ilustracion {
+    display: none;
+  }
+
+  .formulario-inicio-sesion {
+    padding: 28px 24px;
+  }
+
+  .entrada-formulario {
+    font-size: 16px;
+  }
+}

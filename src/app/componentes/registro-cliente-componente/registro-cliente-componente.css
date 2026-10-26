@@ -1,0 +1,187 @@
+:host {
+  display: block;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #252525;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.pagina-registro {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 6vw, 7rem);
+  padding: 32px 24px;
+  background: linear-gradient(110deg, #00a58c, #80cb32);
+}
+
+.tarjeta-registro {
+  width: 100%;
+  max-width: 380px;
+  flex-shrink: 0;
+  padding: 26px 30px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 35px rgb(0 0 0 / 10%);
+}
+
+.encabezado-registro {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.titulo-registro {
+  margin: 0;
+  color: #39b985;
+  font-size: 29px;
+}
+
+/* Campos del formulario */
+.formulario-registro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.campo-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.etiqueta-campo {
+  font-size: 12px;
+}
+
+.contenedor-entrada {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #e9edf2;
+  border-radius: 7px;
+  background: #f6f8fb;
+}
+
+.contenedor-entrada:focus-within {
+  border-color: #39b985;
+  outline: 2px solid rgb(57 185 133 / 20%);
+}
+
+.entrada-formulario {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #252525;
+  font: inherit;
+  font-size: 12px;
+}
+
+.entrada-formulario::placeholder {
+  color: #929292;
+}
+
+/* DNI y teléfono en una misma fila */
+.fila-campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.boton-mostrar-contrasena {
+  align-self: stretch;
+  padding: 0 10px;
+  border: 0;
+  background: transparent;
+  color: #666;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* Registro y enlace de acceso */
+.boton-registrarse {
+  width: 190px;
+  max-width: 100%;
+  align-self: center;
+  margin-top: 6px;
+  padding: 13px 20px;
+  border: 0;
+  border-radius: 6px;
+  background: #39b985;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.boton-registrarse:hover {
+  background: #2c9d6f;
+}
+
+.texto-inicio-sesion {
+  margin: 0;
+  color: #777;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.enlace-inicio-sesion {
+  color: #23875f;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.enlace-inicio-sesion:hover {
+  text-decoration: underline;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #176c50;
+  outline-offset: 3px;
+}
+
+/* Ilustración lateral */
+.contenedor-ilustracion {
+  width: 48%;
+  max-width: 560px;
+}
+
+.ilustracion-deportistas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Celulares */
+@media (max-width: 760px) {
+  .pagina-registro {
+    padding: 24px 16px;
+  }
+
+  .contenedor-ilustracion {
+    display: none;
+  }
+
+  .tarjeta-registro {
+    padding: 26px 24px;
+  }
+
+  .fila-campos {
+    grid-template-columns: 1fr;
+  }
+
+  .entrada-formulario {
+    font-size: 16px;
+  }
+}

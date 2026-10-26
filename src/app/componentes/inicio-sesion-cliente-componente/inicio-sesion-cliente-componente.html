@@ -1,0 +1,125 @@
+<div class="pagina-inicio-sesion">
+  <main class="tarjeta-inicio-sesion">
+    <nav class="tipos-acceso" aria-label="Tipo de acceso">
+      <button
+        class="tipo-acceso tipo-acceso--activo"
+        type="button"
+        aria-pressed="true"
+      >
+        Usuario
+      </button>
+
+      <a class="tipo-acceso" routerLink="/administrador">Administrador</a>
+    </nav>
+
+    <header class="encabezado-inicio-sesion">
+      <h1 id="titulo-inicio-sesion" class="titulo-inicio-sesion">
+        Iniciar sesión
+      </h1>
+
+      <p class="subtitulo-inicio-sesion">
+        Disfruta del deporte al máximo
+      </p>
+    </header>
+
+    <form
+      id="formulario-inicio-sesion"
+      class="formulario-inicio-sesion"
+      aria-labelledby="titulo-inicio-sesion"
+    >
+      <div class="campo-formulario">
+        <label class="etiqueta-campo" for="correo">
+          Correo electrónico
+        </label>
+
+        <div class="contenedor-entrada">
+          <input
+            class="entrada-formulario"
+            type="email"
+            id="correo"
+            name="correo"
+            placeholder="Ingresa tu correo electrónico"
+            autocomplete="username"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="campo-formulario">
+        <label class="etiqueta-campo" for="contrasena">
+          Contraseña
+        </label>
+
+        <div class="contenedor-entrada">
+          <input
+            class="entrada-formulario"
+            type="password"
+            id="contrasena"
+            name="contrasena"
+            placeholder="Ingresa tu contraseña"
+            autocomplete="current-password"
+            required
+          >
+
+          <button
+            class="boton-mostrar-contrasena"
+            type="button"
+            aria-controls="contrasena"
+            aria-label="Mostrar contraseña"
+          >
+            Mostrar
+          </button>
+        </div>
+      </div>
+
+      <div class="opciones-inicio-sesion">
+        <div class="opcion-recordarme">
+          <input
+            class="casilla-recordarme"
+            type="checkbox"
+            id="recordarme"
+            name="recordarme"
+          >
+
+          <label for="recordarme">Recordarme</label>
+        </div>
+
+        <!-- Reemplazar "." por la ruta de recuperación de contraseña. -->
+        <a class="enlace-recuperar-contrasena" href=".">
+          ¿Olvidaste tu contraseña?
+        </a>
+      </div>
+
+      <div class="contenedor-logotipo">
+        <!-- Reemplazar "." por la ruta de la imagen del logotipo. -->
+        <img
+          class="logotipo"
+          src="."
+          alt="SportFit"
+        >
+      </div>
+
+      <button class="boton-acceder" type="submit">
+        Acceder
+      </button>
+
+      <p class="texto-registro">
+        ¿No tienes una cuenta?
+
+        <!-- Reemplazar "." por la ruta de registro de usuario. -->
+        <a class="enlace-registro" routerLink="/registro">
+          Regístrate
+        </a>
+      </p>
+    </form>
+  </main>
+
+  <div class="contenedor-ilustracion" aria-hidden="true">
+    <!-- Reemplazar "." por la ruta de la ilustración de deportistas. -->
+    <img
+      class="ilustracion-deportistas"
+      src="."
+      alt=""
+    >
+  </div>
+</div>
