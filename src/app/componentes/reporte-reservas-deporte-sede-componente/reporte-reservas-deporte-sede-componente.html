@@ -1,0 +1,318 @@
+<!-- Vista de diseño sin métricas, series, sedes ni registros de ejemplo. -->
+<div class="pagina-reportes">
+<aside class="barra-lateral" aria-label="Panel de administrador">
+<button class="boton-notificaciones" type="button" aria-label="Notificaciones">
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-12 12a2 2 0 0 0 4 0"/>
+</svg>
+</button>
+<div class="perfil-administrador">
+<span class="avatar avatar--grande" aria-hidden="true">
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<circle cx="12" cy="7" r="4"/>
+<path d="M4 21v-3a8 8 0 0 1 16 0v3"/>
+</svg>
+</span>
+<p>Administrador</p>
+</div>
+<nav aria-label="Menú principal">
+<ul class="lista-menu">
+<li>
+<button type="button" class="opcion-menu " >
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<circle cx="12" cy="7" r="4"/>
+<path d="M4 21v-3a8 8 0 0 1 16 0v3"/>
+</svg>
+<span>Perfil</span>
+</button>
+</li>
+<li>
+<button type="button" class="opcion-menu " >
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="m3 10 9-8 9 8v11H3Zm6 11V11h6v10"/>
+</svg>
+<span>Solicitudes</span>
+</button>
+</li>
+<li>
+<button type="button" class="opcion-menu">
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.87M15 3.13a4 4 0 0 1 0 7.75"/>
+<circle cx="9" cy="7" r="4"/>
+</svg>
+<span>Clientes</span>
+</button>
+</li>
+<li>
+<button type="button" class="opcion-menu" >
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="m12 2 10 5-10 5L2 7Zm-10 10 10 5 10-5M2 17l10 5 10-5"/>
+</svg>
+<span>Reservas</span>
+</button>
+</li>
+<li>
+<button type="button" class="opcion-menu " >
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<rect x="4" y="2" width="16" height="20" rx="1"/>
+<path d="M4 12h16M8 2v4h8V2M8 22v-4h8v4"/>
+<circle cx="12" cy="12" r="3"/>
+</svg>
+<span>Espacios</span>
+</button>
+</li>
+<li>
+<button type="button" class="opcion-menu opcion-menu--activa" >
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M5 21v-7m7 7V8m7 13V2"/>
+</svg>
+<span>Reportes</span>
+</button>
+<ul class="submenu-reportes">
+<li>
+<button class="enlace-reporte enlace-reporte--activo" type="button" aria-current="page">Reservas por deporte y sede</button>
+</li>
+<li>
+<button class="enlace-reporte" type="button">Reservas canceladas</button>
+</li>
+<li>
+<button class="enlace-reporte" type="button">Financiero por período</button>
+</li>
+<li>
+<button class="enlace-reporte" type="button">Cantidad de reservas</button>
+</li>
+<li>
+<button class="enlace-reporte" type="button">Incidencias enviadas y atendidas</button>
+</li>
+</ul>
+</li>
+<li>
+<button type="button" class="opcion-menu " >
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="m9 2-1 3-3 1-3 4 2 2-1 4 4 3 3-1 3 4 4-2v-3l4-2v-5l-3-1-1-4-4-1Z"/>
+<circle cx="12" cy="12" r="3"/>
+</svg>
+<span>Incidencias</span>
+</button>
+</li>
+</ul>
+</nav>
+<button class="cerrar-sesion" type="button">
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M9 3H3v18h6m6-14 5 5-5 5m-8-5h13"/>
+</svg>Cerrar sesión</button>
+</aside>
+<main class="contenido-reportes">
+<header class="cabecera-pagina">
+<span class="seccion-actual">Reportes</span>
+<!-- Marca de texto provisional. -->
+<span class="marca">SportFit<span aria-hidden="true">↗</span>
+</span>
+</header>
+<section class="presentacion" aria-labelledby="titulo-reporte">
+<span class="icono-presentacion">
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M5 3h10l4 4v14H5Zm10 0v5h4M8 17v-3m4 3v-6m4 6v-4"/>
+</svg>
+</span>
+<div>
+<h1 id="titulo-reporte">Dashboard <span>Reservas por deporte y sede</span>
+</h1>
+<p>Análisis general de reservas por ubicación y tipo de cancha</p>
+</div>
+</section>
+<section class="indicadores" aria-label="Indicadores de reservas">
+<article class="indicador indicador--verde">
+<span class="icono-indicador">
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<rect x="3" y="5" width="18" height="16" rx="2"/>
+<path d="M16 3v4M8 3v4M3 11h18"/>
+</svg>
+</span>
+<div>
+<h2>Total de reservas</h2>
+<p class="valor-indicador">
+<!-- Valor calculado a partir del backend. -->—</p>
+</div>
+</article>
+<article class="indicador indicador--azul">
+<span class="icono-indicador">
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<rect x="3" y="5" width="18" height="16" rx="2"/>
+<path d="M16 3v4M8 3v4M3 11h18"/>
+</svg>
+</span>
+<div>
+<h2>Reservas del mes</h2>
+<p class="valor-indicador">
+<!-- Valor calculado a partir del backend. -->—</p>
+</div>
+</article>
+<article class="indicador indicador--amarilla">
+<span class="icono-indicador">
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<circle cx="12" cy="12" r="10"/>
+<path d="m12 7 5 4-2 6H9l-2-6Zm0-5v5m10 1-5 3m3 6 3 3M9 17l-3 3M2 8l5 3"/>
+</svg>
+</span>
+<div>
+<h2>Deporte más reservado</h2>
+<p class="valor-indicador">
+<!-- Valor calculado a partir del backend. -->—</p>
+</div>
+</article>
+<article class="indicador indicador--morada">
+<span class="icono-indicador">
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M3 22V10h7m4 12V10h7v12M8 22V6h8v16M1 22h22M11 9h2m-2 4h2m-2 4h2M5 13v1m0 3v1m14-5v1m0 3v1"/>
+<path d="M12 1a3 3 0 0 1 3 3c0 2-3 4-3 4S9 6 9 4a3 3 0 0 1 3-3Z"/>
+</svg>
+</span>
+<div>
+<h2>Sede con más demanda</h2>
+<p class="valor-indicador">
+<!-- Valor calculado a partir del backend. -->—</p>
+</div>
+</article>
+</section>
+<div class="graficos-superiores">
+<section class="panel panel-comparativa" aria-labelledby="titulo-comparativa">
+<header class="cabecera-panel">
+<h2 id="titulo-comparativa">Reservas por deporte y sede</h2>
+<div class="filtros-panel">
+<label class="filtro">
+<span class="solo-lectores">Número de reservas</span>
+<select id="comparativa-metrica" name="comparativa-metrica">
+<option value="">Número de reservas</option>
+<!-- Opciones pendientes de conexión. -->
+</select>
+</label>
+<label class="filtro">
+<span class="solo-lectores">Sedes</span>
+<select id="comparativa-sede" name="comparativa-sede">
+<option value="">Sedes</option>
+<!-- Opciones pendientes de conexión. -->
+</select>
+</label>
+</div>
+</header>
+<div class="grafico-cartesiano" role="img" aria-label="Área del gráfico de reservas por deporte y sede sin datos cargados">
+<span class="etiqueta-eje">Número de reservas</span>
+<div class="cuadricula">
+<!-- Aquí se dibujarán las series reales por deporte y sede. -->
+</div>
+<span class="titulo-eje">Sedes</span>
+</div>
+</section>
+<section class="panel panel-participacion" aria-labelledby="titulo-participacion">
+<h2 id="titulo-participacion">Participación de reservas por deporte</h2>
+<div class="grafico-circular" role="img" aria-label="Área del gráfico circular sin datos cargados">
+<div class="anillo-vacio">
+<span>—<small>reservas</small>
+</span>
+</div>
+</div>
+<!-- Leyenda y porcentajes pendientes de datos reales. -->
+</section>
+<section class="panel panel-sedes" aria-labelledby="titulo-sedes">
+<h2 id="titulo-sedes">Reservas por sede</h2>
+<div class="grafico-horizontal" role="img" aria-label="Área del gráfico de reservas por sede sin datos cargados">
+<div class="cuadricula">
+<!-- Barras y etiquetas de las sedes recibidas del backend. -->
+</div>
+<span class="titulo-eje">Número de reservas</span>
+</div>
+</section>
+</div>
+<div class="paneles-inferiores">
+<section class="panel panel-tendencia" aria-labelledby="titulo-tendencia">
+<header class="cabecera-panel">
+<h2 id="titulo-tendencia">Tendencia mensual de reservas</h2>
+<div class="filtros-panel">
+<label class="filtro">
+<span class="solo-lectores">Año</span>
+<select id="tendencia-anio" name="tendencia-anio">
+<option value="">Año</option>
+<!-- Opciones pendientes de conexión. -->
+</select>
+</label>
+<label class="filtro">
+<span class="solo-lectores">Período</span>
+<select id="tendencia-periodo" name="tendencia-periodo">
+<option value="">Período</option>
+<!-- Opciones pendientes de conexión. -->
+</select>
+</label>
+</div>
+</header>
+<div class="grafico-cartesiano grafico-tendencia" role="img" aria-label="Área de tendencia mensual sin series cargadas">
+<span class="etiqueta-eje">Número de reservas</span>
+<div class="cuadricula">
+<!-- Líneas y valores recibidos del backend. -->
+</div>
+<div class="meses" aria-hidden="true">
+<span>Ene</span>
+<span>Feb</span>
+<span>Mar</span>
+<span>Abr</span>
+<span>May</span>
+<span>Jun</span>
+<span>Jul</span>
+<span>Ago</span>
+<span>Sep</span>
+<span>Oct</span>
+<span>Nov</span>
+<span>Dic</span>
+</div>
+</div>
+</section>
+<section class="panel panel-detalle" aria-labelledby="titulo-detalle">
+<header class="cabecera-panel">
+<h2 id="titulo-detalle">Detalle por sede</h2>
+<div class="filtros-panel">
+<label class="filtro">
+<span class="solo-lectores">Año</span>
+<select id="detalle-anio" name="detalle-anio">
+<option value="">Año</option>
+<!-- Opciones pendientes de conexión. -->
+</select>
+</label>
+<label class="filtro">
+<span class="solo-lectores">Sedes</span>
+<select id="detalle-sede" name="detalle-sede">
+<option value="">Sedes</option>
+<!-- Opciones pendientes de conexión. -->
+</select>
+</label>
+<label class="filtro">
+<span class="solo-lectores">Período</span>
+<select id="detalle-periodo" name="detalle-periodo">
+<option value="">Período</option>
+<!-- Opciones pendientes de conexión. -->
+</select>
+</label>
+<button class="boton-exportar" type="button">
+<svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M12 3v12m-5-5 5 5 5-5M3 15v6h18v-6"/>
+</svg>Exportar</button>
+</div>
+</header>
+<div class="contenedor-tabla" role="region" aria-label="Detalle de reservas por sede con desplazamiento" tabindex="0">
+<table>
+<thead>
+<tr>
+<th scope="col">Sedes</th>
+<th scope="col">Deporte</th>
+<th scope="col">Reservas</th>
+<th scope="col">Ingresos</th>
+</tr>
+</thead>
+<tbody>
+<!-- Filas recibidas del backend. -->
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+</div>
