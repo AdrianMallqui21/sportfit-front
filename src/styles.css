@@ -1,3 +1,6 @@
+/* Fuente compartida; cada componente conserva su propia tipografía. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 /* You can add global styles to this file, and also import other style files */
 
 /* Eliminar el margen predeterminado del navegador en todas las pantallas. */
