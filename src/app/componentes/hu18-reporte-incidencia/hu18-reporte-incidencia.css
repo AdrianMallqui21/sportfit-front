@@ -1,0 +1,1313 @@
+
+/* ===================================================== */
+/* SPORTFIT - ADMINISTRADOR - VISTA a37                    */
+/* REPORTE DE INCIDENCIAS                                 */
+/* ===================================================== */
+
+/* Fuente Inter e iconos Bootstrap */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
+
+/* ============================================= */
+/* 1. ESTILOS GENERALES                         */
+/* ============================================= */
+
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100dvh;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button,
+select {
+  font-family: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Contenedor principal */
+.admin-dashboard {
+  display: flex;
+  width: 100%;
+  height: 100dvh;
+  min-height: 600px;
+  overflow: hidden;
+  background-color: #eaf4e6;
+}
+
+/* ============================================= */
+/* 2. MENÚ LATERAL DEL ADMINISTRADOR             */
+/* ============================================= */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+
+  width: 165px;
+  min-width: 165px;
+  height: 100%;
+
+  background-color: #2d7379;
+  color: #ffffff;
+}
+
+/* ============================================= */
+/* 3. PERFIL DEL ADMINISTRADOR                   */
+/* ============================================= */
+
+.sidebar-profile {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+
+  min-height: 198px;
+  padding: 32px 10px 16px;
+}
+
+/* Botón de notificaciones */
+.notification-button {
+  position: absolute;
+  top: 9px;
+  right: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 29px;
+  height: 29px;
+
+  border: 1px solid #f5cb1c;
+  border-radius: 50%;
+
+  background-color: #f8e59d;
+  color: #d4a900;
+
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Avatar circular */
+.profile-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 95px;
+  height: 95px;
+  margin-bottom: 13px;
+
+  overflow: hidden;
+  border-radius: 50%;
+
+  background-color: #e9eeee;
+  color: #a6afac;
+
+  font-size: 65px;
+}
+
+/* Nombre del administrador */
+.profile-name {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ============================================= */
+/* 4. NAVEGACIÓN PRINCIPAL                       */
+/* ============================================= */
+
+.sidebar-nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-height: 0;
+  padding-top: 17px;
+
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #a2b6b6 transparent;
+}
+
+/* Opciones del menú */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  flex-shrink: 0;
+
+  width: 100%;
+  min-height: 39px;
+  padding: 0 18px 0 35px;
+
+  border: none;
+  background: transparent;
+
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+/* Iconos del menú */
+.nav-item i {
+  width: 17px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ============================================= */
+/* 5. REPORTES DESPLEGABLE                       */
+/* ============================================= */
+
+.reports-menu {
+  position: relative;
+  width: 100%;
+}
+
+/* Botón principal Reportes */
+.reports-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  width: 100%;
+  min-height: 40px;
+  padding: 0 18px 0 35px;
+
+  border: none;
+  border-radius: 0;
+
+  background-color: #f5cc24;
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.reports-heading > i:first-child {
+  width: 17px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.reports-heading:hover {
+  background-color: #eec21a;
+}
+
+/* Flecha del desplegable */
+.reports-arrow {
+  margin-left: auto;
+  font-size: 11px;
+}
+
+/* Contenedor del submenú */
+.reports-submenu {
+  display: flex;
+  flex-direction: column;
+
+  margin-left: 34px;
+  background-color: #f5cc24;
+}
+
+/* Cada reporte */
+.submenu-item {
+  flex-shrink: 0;
+
+  width: 100%;
+  min-height: 38px;
+  padding: 6px 8px 6px 18px;
+
+  border: none;
+  background: transparent;
+
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.submenu-item:hover {
+  background-color: #e3b91a;
+}
+
+/* Reporte seleccionado */
+.submenu-active,
+.submenu-active:hover {
+  min-height: 48px;
+  background-color: #74600b;
+  font-weight: 700;
+}
+
+/* ============================================= */
+/* 6. CERRAR SESIÓN                              */
+/* ============================================= */
+
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  min-height: 43px;
+  padding: 0 12px 8px 30px;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.logout-button i {
+  font-size: 15px;
+}
+
+/* ============================================= */
+/* 7. CONTENIDO PRINCIPAL                        */
+/* ============================================= */
+
+.main-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 0;
+  padding: 12px 18px 22px;
+
+  overflow-y: auto;
+  background-color: #eaf4e6;
+}
+
+/* Logo SportFit */
+.top-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+
+  height: 55px;
+  margin-bottom: 10px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #1bb5a5;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.brand i {
+  color: #27bc88;
+  font-size: 32px;
+}
+
+/* ============================================= */
+/* 8. ENCABEZADO DEL DASHBOARD                   */
+/* ============================================= */
+
+.dashboard-heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+
+  min-height: 85px;
+  margin-bottom: 12px;
+  padding: 14px 28px;
+
+  border: 1px solid #dfe5df;
+  border-radius: 11px;
+  background-color: #ffffff;
+}
+
+.dashboard-heading h1 {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  margin: 0 0 4px;
+
+  font-size: clamp(17px, 2vw, 27px);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.heading-dark {
+  color: #111111;
+}
+
+.heading-green {
+  color: #38b98a;
+}
+
+.dashboard-heading p {
+  margin: 0 0 0 3px;
+
+  color: #898d8a;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ============================================= */
+/* 9. DISTRIBUCIÓN GENERAL                       */
+/* ============================================= */
+
+.report-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  min-height: 0;
+  gap: 14px;
+}
+
+/* Panel blanco reutilizable */
+.panel {
+  min-width: 0;
+
+  border: 1px solid #e0e6e0;
+  border-radius: 11px;
+  background-color: #ffffff;
+}
+
+/* Primera fila */
+.report-top-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(205px, 1.05fr);
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.report-left-top {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  gap: 12px;
+}
+
+/* ============================================= */
+/* 10. PANEL DE FILTROS                          */
+/* ============================================= */
+
+.filter-panel {
+  min-height: 69px;
+  padding: 9px 16px 10px;
+}
+
+.filter-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-title i {
+  color: #101817;
+  font-size: 17px;
+}
+
+.filter-title h2 {
+  margin: 0;
+
+  color: #111111;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.filters-form {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  margin-top: 7px;
+}
+
+.filter-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  min-width: 0;
+}
+
+.filter-field label {
+  color: #303330;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.filter-field select {
+  width: 118px;
+  height: 23px;
+  padding: 0 6px;
+
+  border: 1px solid #d8ded9;
+  border-radius: 5px;
+  outline: none;
+
+  background-color: #f2f3f2;
+  color: #818783;
+
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.filter-field select:focus {
+  border-color: #3aba8d;
+}
+
+/* Botones Buscar y Limpiar */
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.btn-clear,
+.btn-search {
+  min-width: 75px;
+  height: 26px;
+  padding: 0 12px;
+
+  border: none;
+  border-radius: 5px;
+
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.btn-clear {
+  background-color: #f3ca25;
+}
+
+.btn-search {
+  background-color: #3eb98a;
+}
+
+.btn-clear:hover {
+  background-color: #dfb617;
+}
+
+.btn-search:hover {
+  background-color: #2da87b;
+}
+
+/* ============================================= */
+/* 11. TARJETAS DE MÉTRICAS - ED31               */
+/* ============================================= */
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+/* Tarjeta individual */
+.metric-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  min-width: 0;
+  min-height: 90px;
+  padding: 10px;
+
+  border: 1px solid #dce3dd;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+/* Icono de cada tarjeta */
+.metric-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 55px;
+  height: 55px;
+
+  border-radius: 12px;
+  font-size: 31px;
+}
+
+.icon-total {
+  background-color: #d4e5ff;
+  color: #4270ff;
+}
+
+.icon-pending {
+  background-color: #fff2c5;
+  color: #e98b00;
+}
+
+.icon-attended {
+  background-color: #dff5eb;
+  color: #38bf8e;
+}
+
+/* Información de las tarjetas */
+.metric-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-width: 0;
+  text-align: center;
+}
+
+.metric-label {
+  color: #929793;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.metric-value {
+  margin: 2px 0;
+
+  font-size: 29px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.total-value {
+  color: #111111;
+}
+
+.pending-value {
+  color: #c6530c;
+}
+
+.attended-value {
+  color: #37bb88;
+}
+
+.metric-period {
+  color: #999f9b;
+  font-size: 9px;
+  line-height: 1.3;
+}
+
+/* ============================================= */
+/* 12. GRÁFICO DE DONA - ED32                    */
+/* ============================================= */
+
+.resolution-panel {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 171px;
+  padding: 13px 15px 10px;
+}
+
+.small-panel-title {
+  margin: 0;
+  padding-bottom: 9px;
+
+  border-bottom: 1px solid #edf0ed;
+
+  color: #303330;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.resolution-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 0;
+}
+
+/* Dona */
+.donut-chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 86px;
+  height: 86px;
+  margin: 5px 0 8px;
+
+  border-radius: 50%;
+  background: conic-gradient(#e5ebe6 0% 100%);
+}
+
+/* Centro de la dona */
+.donut-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  height: 64px;
+
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+.donut-center strong {
+  color: #303030;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.donut-center span {
+  margin-top: 2px;
+
+  color: #929792;
+  font-size: 7px;
+  font-weight: 700;
+}
+
+/* Leyenda */
+.donut-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  width: 100%;
+  padding-top: 8px;
+
+  border-top: 1px solid #edf0ed;
+}
+
+.legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.legend-item > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.legend-item strong {
+  color: #333333;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.legend-item small {
+  margin-top: 2px;
+
+  color: #9aa09b;
+  font-size: 8px;
+}
+
+.legend-dot {
+  display: inline-block;
+  flex-shrink: 0;
+
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.green-dot {
+  background-color: #15b980;
+}
+
+.yellow-dot {
+  background-color: #ffc827;
+}
+
+.blue-dot {
+  background-color: #66b6ef;
+}
+
+/* ============================================= */
+/* 13. GRÁFICOS INFERIORES                       */
+/* ============================================= */
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: stretch;
+  gap: 14px;
+
+  flex: 1;
+  min-height: 270px;
+}
+
+/* Panel individual de gráfico */
+.chart-panel {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 0;
+  padding: 17px 20px;
+
+  overflow: hidden;
+}
+
+/* Encabezado de cada gráfico */
+.chart-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+
+  min-height: 52px;
+  padding-bottom: 12px;
+
+  border-bottom: 1px solid #edf0ed;
+}
+
+.chart-header h2 {
+  margin: 0;
+
+  color: #00a977;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.chart-header h2 span {
+  display: block;
+}
+
+/* Leyenda del gráfico mensual */
+.chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+
+  padding-top: 3px;
+}
+
+.chart-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #5d6862;
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.chart-legend .legend-dot {
+  width: 6px;
+  height: 6px;
+}
+
+/* ============================================= */
+/* 14. TENDENCIA MENSUAL - ED63                  */
+/* ============================================= */
+
+.line-chart {
+  display: grid;
+  grid-template-columns: 35px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) 28px;
+
+  flex: 1;
+  min-height: 150px;
+
+  padding: 20px 8px 0 0;
+}
+
+/* Eje vertical */
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  padding-right: 10px;
+
+  color: #91a2b9;
+  font-size: 10px;
+}
+
+/* Área principal */
+.line-plot {
+  position: relative;
+
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Líneas horizontales */
+.horizontal-grid {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.horizontal-grid div {
+  width: 100%;
+  border-top: 1px solid #edf0f2;
+}
+
+/* Mensaje sin datos */
+.chart-empty {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  color: #9bafa8;
+  text-align: center;
+}
+
+.chart-empty i {
+  font-size: 31px;
+}
+
+.chart-empty span {
+  font-size: 11px;
+}
+
+/* Eje horizontal: meses */
+.x-axis {
+  grid-column: 2;
+  grid-row: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3px;
+
+  padding-top: 8px;
+
+  color: #8d9bb0;
+  font-size: 9px;
+}
+
+/* Descripción inferior */
+.axis-caption {
+  flex-shrink: 0;
+
+  margin: 0;
+  padding-top: 8px;
+
+  color: #9eacba;
+  font-size: 9px;
+  text-align: center;
+}
+
+/* ============================================= */
+/* 15. DISTRIBUCIÓN POR CATEGORÍA - ED64         */
+/* ============================================= */
+
+.bar-chart {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  min-height: 0;
+  gap: 0;
+  padding: 14px 12px 3px;
+}
+
+/* Contenedor de las tres categorías */
+.bar-rows {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+/* Fila de una categoría */
+.bar-row {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr) 35px;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+
+  min-height: 51px;
+}
+
+/* Nombre de categoría */
+.bar-label {
+  color: #33435c;
+  font-size: 10px;
+}
+
+/* Área de la barra */
+.bar-track {
+  position: relative;
+
+  width: 100%;
+  height: 20px;
+
+  border-left: 1px solid #3d6870;
+
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent,
+    transparent calc(20% - 1px),
+    #eaf0f2 calc(20% - 1px),
+    #eaf0f2 20%
+  );
+}
+
+/* Barra de porcentaje */
+.bar-fill {
+  width: 0%;
+  height: 100%;
+  border: 1px solid #3d6870;
+}
+
+/* Colores de categorías */
+.technical-bar {
+  background-color: #7db8be;
+}
+
+.facilities-bar {
+  background-color: #95d2d7;
+}
+
+.questions-bar {
+  background-color: #b8e2e4;
+}
+
+/* Porcentaje */
+.bar-percentage {
+  color: #273341;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Mensaje sin registros */
+.bar-empty {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 25px;
+
+  color: #a3aca9;
+  font-size: 10px;
+  text-align: center;
+}
+
+/* Escala horizontal */
+.bar-scale {
+  display: flex;
+  justify-content: space-between;
+  flex-shrink: 0;
+
+  margin-top: 10px;
+  margin-left: 112px;
+  padding-top: 10px;
+
+  border-top: 1px solid #8797a8;
+
+  color: #7f90a5;
+  font-size: 9px;
+}
+
+/* ============================================= */
+/* 16. PANTALLAS MEDIANAS                        */
+/* ============================================= */
+
+@media (max-width: 1200px) {
+
+  .sidebar {
+    width: 150px;
+    min-width: 150px;
+  }
+
+  .nav-item,
+  .reports-heading {
+    padding-left: 24px;
+  }
+
+  .reports-submenu {
+    margin-left: 24px;
+  }
+
+  .main-content {
+    padding: 10px 14px 18px;
+  }
+
+  .metric-card {
+    gap: 7px;
+  }
+
+  .metric-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 25px;
+  }
+
+  .metric-value {
+    font-size: 25px;
+  }
+
+  .filter-field select {
+    width: 105px;
+  }
+
+}
+
+/* ============================================= */
+/* 17. TABLETS                                   */
+/* ============================================= */
+
+@media (max-width: 950px) {
+
+  .admin-dashboard {
+    min-height: 100dvh;
+    height: auto;
+    overflow: visible;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+
+    width: 140px;
+    min-width: 140px;
+    height: 100dvh;
+  }
+
+  .main-content {
+    overflow: visible;
+  }
+
+  .dashboard-heading h1 {
+    font-size: 19px;
+  }
+
+  .report-top-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .resolution-panel {
+    min-height: 180px;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-panel {
+    min-height: 290px;
+  }
+
+}
+
+/* ============================================= */
+/* 18. CELULARES                                 */
+/* ============================================= */
+
+@media (max-width: 600px) {
+
+  .sidebar {
+    width: 65px;
+    min-width: 65px;
+  }
+
+  .sidebar-profile {
+    min-height: 125px;
+    padding: 38px 4px 10px;
+  }
+
+  .profile-avatar {
+    width: 46px;
+    height: 46px;
+    font-size: 33px;
+  }
+
+  .profile-name {
+    font-size: 8px;
+  }
+
+  .notification-button {
+    top: 6px;
+    right: 4px;
+
+    width: 23px;
+    height: 23px;
+    font-size: 12px;
+  }
+
+  /* Menú lateral compacto */
+  .nav-item {
+    justify-content: center;
+    min-height: 43px;
+    padding: 0;
+  }
+
+  .nav-item span {
+    display: none;
+  }
+
+  .reports-heading {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .reports-heading span,
+  .reports-arrow {
+    display: none;
+  }
+
+  /* Submenú flotante en celulares */
+  .reports-submenu {
+    position: absolute;
+    top: 0;
+    left: 65px;
+    z-index: 20;
+
+    width: 180px;
+    margin-left: 0;
+
+    box-shadow: 0 4px 14px #0002;
+  }
+
+  .sidebar-nav {
+    overflow: visible;
+  }
+
+  .sidebar-footer {
+    justify-content: center;
+    padding: 10px 0;
+  }
+
+  .logout-button span {
+    display: none;
+  }
+
+  /* Contenido principal */
+  .main-content {
+    padding: 8px;
+  }
+
+  .top-header {
+    height: 45px;
+  }
+
+  .brand {
+    font-size: 20px;
+  }
+
+  .brand i {
+    font-size: 25px;
+  }
+
+  .dashboard-heading {
+    padding: 13px;
+  }
+
+  .dashboard-heading h1 {
+    font-size: 16px;
+  }
+
+  .dashboard-heading p {
+    font-size: 9px;
+  }
+
+  /* Filtros */
+  .filters-form {
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .filter-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  /* Tarjetas */
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .metric-card {
+    min-height: 75px;
+  }
+
+  /* Gráficos */
+  .chart-panel {
+    padding: 12px 10px;
+  }
+
+  .chart-header {
+    flex-wrap: wrap;
+  }
+
+  .chart-header h2 {
+    font-size: 9px;
+  }
+
+  .bar-row {
+    grid-template-columns: 65px minmax(0, 1fr) 28px;
+    gap: 6px;
+  }
+
+  .bar-scale {
+    margin-left: 71px;
+  }
+
+  .x-axis {
+    font-size: 7px;
+  }
+
+}
