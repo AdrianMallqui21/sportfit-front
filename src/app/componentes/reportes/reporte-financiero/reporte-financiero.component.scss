@@ -234,7 +234,7 @@
   }
 }
 
-// Encabezado principal (Dashboard Financiero por periodo)
+// Encabezado principal
 .tarjeta-encabezado {
   background-color: #ffffff !important;
   border: 1px solid #e2e8f0;
@@ -291,7 +291,7 @@
 }
 
 /* ==========================================================================
-   BARRA DE FILTROS SUPERIOR (Horizontal)
+   BARRA DE FILTROS SUPERIOR
    ========================================================================== */
 .tarjeta-filtros {
   background-color: #ffffff !important;
@@ -336,7 +336,7 @@
     .grupo-controles-filtros {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 16px;
       flex-wrap: wrap;
     }
 
@@ -397,6 +397,22 @@
         }
       }
     }
+
+    .btn-buscar-filtro {
+      background-color: #00a651 !important;
+      color: #ffffff !important;
+      font-weight: 700;
+      font-size: 13.5px;
+      border-radius: 8px !important;
+      height: 36px;
+      padding: 0 20px;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #008f45 !important;
+      }
+    }
   }
 
   .seccion-filtros-derecha {
@@ -429,7 +445,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   COLUMNA IZQUIERDA: GRÁFICO LINEAL DE INGRESOS
+   COLUMNA IZQUIERDA: GRÁFICO DE INGRESOS (LINEAL O BARRAS)
    -------------------------------------------------------------------------- */
 .tarjeta-grafico-lineal {
   background-color: #ffffff !important;
@@ -495,6 +511,7 @@
     }
   }
 
+  // MODO 1: GRÁFICO LINEAL
   .area-grafico-lineal {
     display: grid;
     grid-template-columns: 36px minmax(0, 1fr);
@@ -553,14 +570,14 @@
         }
 
         &:hover circle {
-          r: 6;
-          stroke-width: 3;
+          r: 6px;
+          stroke-width: 3px;
         }
 
         .texto-monto-nodo {
-          font-size: 9px;
+          font-size: 9.5px;
           font-weight: 700;
-          fill: #64748b;
+          fill: #475569;
           letter-spacing: -0.2px;
         }
       }
@@ -581,6 +598,82 @@
         color: #94a3b8;
         text-align: center;
         flex: 1;
+      }
+    }
+  }
+
+  // MODO 2: GRÁFICO DE BARRAS DE INGRESOS
+  .area-grafico-barras-ingresos {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 10px;
+
+    .cuadricula-barras-ingresos {
+      position: relative;
+      border-left: 1.5px solid #cbd5e1;
+      border-bottom: 1.5px solid #cbd5e1;
+      height: 240px;
+
+      .lineas-horizontales-guia {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        pointer-events: none;
+
+        span {
+          width: 100%;
+          height: 1px;
+          background-color: #f1f5f9;
+        }
+      }
+
+      .lista-columnas-ingresos {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        padding: 0 6px;
+
+        .columna-mes-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 32px;
+          height: 100%;
+          justify-content: flex-end;
+          position: relative;
+
+          .monto-valor-barra {
+            font-size: 10px;
+            font-weight: 800;
+            color: #475569;
+            margin-bottom: 4px;
+            white-space: nowrap;
+          }
+
+          .barra-llenado-mes {
+            width: 22px;
+            background-color: #7b61ff;
+            border-radius: 4px 4px 0 0;
+            border: 1.5px solid #5b41df;
+            transition: height 0.35s ease;
+
+            &:hover {
+              background-color: #6a4fe8;
+            }
+          }
+
+          .mes-etiqueta-barra {
+            position: absolute;
+            bottom: -22px;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: #94a3b8;
+          }
+        }
       }
     }
   }
@@ -634,13 +727,14 @@
   gap: 18px;
 }
 
-// Card Distribución por método de pago
+// Card Distribución por método de pago (Mejora de nitidez en valores)
 .tarjeta-distribucion-pago {
   background-color: #ffffff !important;
   border: 1px solid #e2e8f0;
   border-radius: 14px !important;
   padding: 18px 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow: visible;
 
   .titulo-distribucion {
     margin: 0 0 16px;
@@ -656,51 +750,75 @@
     gap: 16px;
   }
 
-  .contenedor-dona {
+  .contenedor-dona-vectorial {
     position: relative;
-    width: 175px;
-    height: 175px;
+    width: 180px;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: visible;
 
-    .grafico-dona-circular {
+    .circulo-pastel {
       width: 135px;
       height: 135px;
       border-radius: 50%;
-      // Donut con conic-gradient: Plin (19.48% -> ~70deg), Transferencia (29.95% -> ~178deg), Yape (50.57% -> 360deg)
       background: conic-gradient(
         #818cf8 0deg 70.1deg,
         #fb7185 70.1deg 177.9deg,
         #22d3ee 177.9deg 360deg
       );
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
       position: relative;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
 
-      .etiqueta-porcentaje {
-        position: absolute;
-        font-size: 9px;
-        font-weight: 700;
-        white-space: nowrap;
+    .etiqueta-valor-flotante {
+      position: absolute;
+      white-space: nowrap;
+      z-index: 2;
+
+      .etiqueta-badge {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        display: inline-block;
       }
 
-      .etiqueta-plin {
-        top: -10px;
-        right: -38px;
-        color: #818cf8;
+      .badge-plin {
+        background: #ffffff;
+        color: #4f46e5;
+        border: 1.5px solid #818cf8;
       }
 
-      .etiqueta-transferencia {
-        bottom: 24px;
-        right: -42px;
-        color: #fb7185;
+      .badge-transferencia {
+        background: #ffffff;
+        color: #e11d48;
+        border: 1.5px solid #fb7185;
       }
 
-      .etiqueta-yape {
-        top: 45%;
-        left: -48px;
-        color: #06b6d4;
+      .badge-yape {
+        background: #ffffff;
+        color: #0891b2;
+        border: 1.5px solid #22d3ee;
       }
+    }
+
+    .valor-plin {
+      top: -6px;
+      right: -24px;
+    }
+
+    .valor-transferencia {
+      bottom: 14px;
+      right: -28px;
+    }
+
+    .valor-yape {
+      top: 42%;
+      left: -32px;
     }
   }
 
@@ -734,7 +852,7 @@
       }
 
       .nombre-metodo {
-        font-size: 12px;
+        font-size: 12.5px;
         font-weight: 600;
         color: #64748b;
       }

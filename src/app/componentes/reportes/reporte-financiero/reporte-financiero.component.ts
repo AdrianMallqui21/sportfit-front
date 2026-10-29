@@ -67,11 +67,12 @@ export class ReporteFinancieroComponent implements OnInit {
   ];
 
   aniosDisponibles = [
-    { valor: '2024', etiqueta: '2024' },
-    { valor: '2025', etiqueta: '2025' },
-    { valor: '2026', etiqueta: '2026' }
+    { valor: '2024', etiqueta: '2024 (Sin registros - Modal a34)' },
+    { valor: '2025', etiqueta: '2025 (Con datos)' },
+    { valor: '2026', etiqueta: '2026 (Con datos)' }
   ];
 
+  // Selector para cambiar tipo de gráfico: 'lineal' | 'barras'
   tipoGraficaSeleccionada: string = 'lineal';
   tiposGrafica = [
     { valor: 'lineal', etiqueta: 'Gráfico lineal' },
@@ -95,23 +96,23 @@ export class ReporteFinancieroComponent implements OnInit {
   ];
 
   // Puntos del gráfico lineal de ingresos mensuales
-  // Eje Y va de 0 a 2000. Ancho SVG: 680, Alto: 240
   puntosIngresos: PuntoGraficoIngreso[] = [
-    { mes: 'Enero', monto: 1400, x: 20, y: 88 },
-    { mes: 'Febrero', monto: 750, x: 78, y: 160 },
-    { mes: 'Marzo', monto: 520, x: 136, y: 185 },
-    { mes: 'Abril', monto: 490, x: 194, y: 188 },
-    { mes: 'Mayo', monto: 400, x: 252, y: 198 },
-    { mes: 'Junio', monto: 670, x: 310, y: 168 },
-    { mes: 'Julio', monto: 1200, x: 368, y: 110 },
-    { mes: 'Agosto', monto: 940, x: 426, y: 139 },
-    { mes: 'Setiembre', monto: 450, x: 484, y: 192 },
-    { mes: 'Octubre', monto: 620, x: 542, y: 174 },
-    { mes: 'Noviembre', monto: 700, x: 600, y: 165 },
-    { mes: 'Diciembre', monto: 1500, x: 658, y: 78 }
+    { mes: 'Enero', monto: 1400, x: 25, y: 88 },
+    { mes: 'Febrero', monto: 750, x: 82, y: 155 },
+    { mes: 'Marzo', monto: 520, x: 139, y: 180 },
+    { mes: 'Abril', monto: 490, x: 196, y: 183 },
+    { mes: 'Mayo', monto: 400, x: 253, y: 192 },
+    { mes: 'Junio', monto: 670, x: 310, y: 165 },
+    { mes: 'Julio', monto: 1200, x: 367, y: 110 },
+    { mes: 'Agosto', monto: 940, x: 424, y: 136 },
+    { mes: 'Setiembre', monto: 450, x: 481, y: 187 },
+    { mes: 'Octubre', monto: 620, x: 538, y: 170 },
+    { mes: 'Noviembre', monto: 700, x: 595, y: 162 },
+    { mes: 'Diciembre', monto: 1500, x: 652, y: 78 }
   ];
 
   escalasEjeY: number[] = [2000, 1600, 1200, 800, 400, 0];
+  maxMontoGrafico: number = 2000;
 
   trazadoLinea: string = '';
   trazadoArea: string = '';
@@ -129,10 +130,17 @@ export class ReporteFinancieroComponent implements OnInit {
     const puntos = this.puntosIngresos.map(p => `${p.x},${p.y}`).join(' ');
     this.trazadoLinea = puntos;
 
-    // Área cerrada para el sombreado inferior
     const primerPunto = this.puntosIngresos[0];
     const ultimoPunto = this.puntosIngresos[this.puntosIngresos.length - 1];
     this.trazadoArea = `${primerPunto.x},240 ${puntos} ${ultimoPunto.x},240`;
+  }
+
+  /**
+   * Calcula la altura porcentual de cada barra en el modo de barras verticales.
+   */
+  calcularAlturaBarraMes(monto: number): string {
+    const porcentaje = Math.min((monto / this.maxMontoGrafico) * 82, 82);
+    return `${porcentaje}%`;
   }
 
   /**
@@ -140,26 +148,44 @@ export class ReporteFinancieroComponent implements OnInit {
    */
   onTotal(): void {
     this.esFiltroTotal = !this.esFiltroTotal;
+    if (!this.esFiltroTotal) {
+      this.abrirModalSinDatos();
+    }
   }
 
   /**
-   * Ejecuta la búsqueda. Si se selecciona un período sin datos, dispara la modal Vista a34.
+   * Se ejecuta al cambiar Mes o Año en los filtros.
+   * Si se selecciona el año 2024, dispara la modal Vista a34 para probarla fácilmente.
+   */
+  onFiltroChange(): void {
+    if (this.anioSeleccionado === '2024') {
+      this.abrirModalSinDatos();
+    }
+  }
+
+  /**
+   * Botón buscar explícito
    */
   onBuscar(): void {
-    if (this.anioSeleccionado === '2024') {
-      // Simulación de período vacío para verificar la modal Vista a34
-      this.dialog.open(SinIngresosModalComponent, {
-        panelClass: 'dialogo-sin-datos',
-        width: '540px'
-      });
+    if (this.anioSeleccionado === '2024' || !this.esFiltroTotal && this.mesSeleccionado === '01') {
+      this.abrirModalSinDatos();
     }
+  }
+
+  /**
+   * Abre la ventana modal de alerta (Vista a34).
+   */
+  abrirModalSinDatos(): void {
+    this.dialog.open(SinIngresosModalComponent, {
+      panelClass: 'dialogo-sin-datos',
+      width: '540px'
+    });
   }
 
   /**
    * Acción para exportar reporte
    */
   onExportar(): void {
-    // Listo para conectar con servicio de exportación a Excel/PDF
     console.log('Exportando reporte financiero...');
   }
 }

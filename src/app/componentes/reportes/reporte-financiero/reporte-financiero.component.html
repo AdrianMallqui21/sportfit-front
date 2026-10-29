@@ -176,7 +176,7 @@
             <div class="control-filtro">
               <label class="etiqueta-filtro">Mes</label>
               <mat-form-field appearance="outline" class="select-filtro" subscriptSizing="dynamic">
-                <mat-select [(ngModel)]="mesSeleccionado" placeholder="Seleccionar tipo">
+                <mat-select [(ngModel)]="mesSeleccionado" (selectionChange)="onFiltroChange()" placeholder="Seleccionar tipo">
                   @for (mes of mesesDisponibles; track mes.valor) {
                     <mat-option [value]="mes.valor">{{ mes.etiqueta }}</mat-option>
                   }
@@ -188,13 +188,18 @@
             <div class="control-filtro">
               <label class="etiqueta-filtro">Año</label>
               <mat-form-field appearance="outline" class="select-filtro" subscriptSizing="dynamic">
-                <mat-select [(ngModel)]="anioSeleccionado" placeholder="Seleccionar fecha">
+                <mat-select [(ngModel)]="anioSeleccionado" (selectionChange)="onFiltroChange()" placeholder="Seleccionar fecha">
                   @for (anio of aniosDisponibles; track anio.valor) {
                     <mat-option [value]="anio.valor">{{ anio.etiqueta }}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
             </div>
+
+            <!-- Botón Buscar para probar explícitamente -->
+            <button mat-flat-button class="btn-buscar-filtro" type="button" (click)="onBuscar()">
+              Buscar
+            </button>
           </div>
         </div>
 
@@ -209,10 +214,16 @@
 
     <!-- Layout Principal en 2 Columnas -->
     <div class="contenedor-dos-columnas">
-      <!-- Columna Izquierda (~60%): Gráfico Lineal de Ingresos por Mes -->
+      <!-- Columna Izquierda (~60%): Gráfico de Ingresos -->
       <mat-card class="tarjeta-grafico-lineal" appearance="outlined">
         <header class="cabecera-grafico">
-          <h2 class="titulo-grafico">Gráfico lineal de ingresos por mes</h2>
+          <h2 class="titulo-grafico">
+            @if (tipoGraficaSeleccionada === 'barras') {
+              Gráfico de barras de ingresos por mes
+            } @else {
+              Gráfico lineal de ingresos por mes
+            }
+          </h2>
           <div class="selector-tipo-grafica">
             <label class="etiqueta-selector">Tipo de grafica</label>
             <mat-form-field appearance="outline" class="select-grafica" subscriptSizing="dynamic">
@@ -225,78 +236,108 @@
           </div>
         </header>
 
-        <!-- Área Gráfica Cartesiana SVG -->
-        <div class="area-grafico-lineal">
-          <div class="eje-y-lineal">
-            @for (escala of escalasEjeY; track escala) {
-              <span class="escala-y-valor">{{ escala }}</span>
-            }
-          </div>
-
-          <div class="cuadricula-lineal">
-            <!-- Líneas Guía Horizontales -->
-            <div class="lineas-horizontales-guia">
-              <span></span><span></span><span></span><span></span><span></span><span></span>
-            </div>
-
-            <!-- Gráfico SVG -->
-            <svg class="svg-grafico-ingresos" viewBox="0 0 680 240" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="degradadoAreaIngresos" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#7b61ff" stop-opacity="0.25" />
-                  <stop offset="100%" stop-color="#7b61ff" stop-opacity="0.02" />
-                </linearGradient>
-              </defs>
-
-              <!-- Área sombreada semitransparente -->
-              <polygon
-                [attr.points]="trazadoArea"
-                fill="url(#degradadoAreaIngresos)"
-              />
-
-              <!-- Línea principal púrpura/violeta -->
-              <polyline
-                [attr.points]="trazadoLinea"
-                fill="none"
-                stroke="#7b61ff"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-
-              <!-- Puntos y Etiquetas Numéricas sobre la línea -->
-              @for (punto of puntosIngresos; track punto.mes) {
-                <g class="nodo-punto">
-                  <!-- Círculo del punto -->
-                  <circle
-                    [attr.cx]="punto.x"
-                    [attr.cy]="punto.y"
-                    r="4.5"
-                    fill="#ffffff"
-                    stroke="#7b61ff"
-                    stroke-width="2"
-                  />
-                  <!-- Etiqueta del monto sobre el punto -->
-                  <text
-                    [attr.x]="punto.x"
-                    [attr.y]="punto.y - 10"
-                    text-anchor="middle"
-                    class="texto-monto-nodo"
-                  >
-                    {{ punto.monto }}
-                  </text>
-                </g>
-              }
-            </svg>
-
-            <!-- Eje X: Meses en la base -->
-            <div class="eje-x-meses">
-              @for (punto of puntosIngresos; track punto.mes) {
-                <span class="mes-etiqueta">{{ punto.mes }}</span>
+        <!-- OPCIÓN 1: GRÁFICO LINEAL (Con sombreado vectorial) -->
+        @if (tipoGraficaSeleccionada === 'lineal') {
+          <div class="area-grafico-lineal">
+            <div class="eje-y-lineal">
+              @for (escala of escalasEjeY; track escala) {
+                <span class="escala-y-valor">{{ escala }}</span>
               }
             </div>
+
+            <div class="cuadricula-lineal">
+              <!-- Líneas Guía Horizontales -->
+              <div class="lineas-horizontales-guia">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+
+              <!-- Gráfico SVG -->
+              <svg class="svg-grafico-ingresos" viewBox="0 0 680 240" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="degradadoAreaIngresos" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#7b61ff" stop-opacity="0.28" />
+                    <stop offset="100%" stop-color="#7b61ff" stop-opacity="0.03" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Área sombreada semitransparente -->
+                <polygon
+                  [attr.points]="trazadoArea"
+                  fill="url(#degradadoAreaIngresos)"
+                />
+
+                <!-- Línea principal púrpura/violeta -->
+                <polyline
+                  [attr.points]="trazadoLinea"
+                  fill="none"
+                  stroke="#7b61ff"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+
+                <!-- Puntos y Etiquetas Numéricas sobre la línea -->
+                @for (punto of puntosIngresos; track punto.mes) {
+                  <g class="nodo-punto">
+                    <circle
+                      [attr.cx]="punto.x"
+                      [attr.cy]="punto.y"
+                      r="4.5"
+                      fill="#ffffff"
+                      stroke="#7b61ff"
+                      stroke-width="2"
+                    />
+                    <text
+                      [attr.x]="punto.x"
+                      [attr.y]="punto.y - 10"
+                      text-anchor="middle"
+                      class="texto-monto-nodo"
+                    >
+                      {{ punto.monto }}
+                    </text>
+                  </g>
+                }
+              </svg>
+
+              <!-- Eje X: Meses en la base -->
+              <div class="eje-x-meses">
+                @for (punto of puntosIngresos; track punto.mes) {
+                  <span class="mes-etiqueta">{{ punto.mes }}</span>
+                }
+              </div>
+            </div>
           </div>
-        </div>
+        }
+
+        <!-- OPCIÓN 2: GRÁFICO DE BARRAS DE INGRESOS -->
+        @if (tipoGraficaSeleccionada === 'barras') {
+          <div class="area-grafico-barras-ingresos">
+            <div class="eje-y-lineal">
+              @for (escala of escalasEjeY; track escala) {
+                <span class="escala-y-valor">{{ escala }}</span>
+              }
+            </div>
+
+            <div class="cuadricula-barras-ingresos">
+              <div class="lineas-horizontales-guia">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+
+              <div class="lista-columnas-ingresos">
+                @for (punto of puntosIngresos; track punto.mes) {
+                  <div class="columna-mes-item">
+                    <span class="monto-valor-barra">{{ punto.monto }}</span>
+                    <div
+                      class="barra-llenado-mes"
+                      [style.height]="calcularAlturaBarraMes(punto.monto)"
+                    ></div>
+                    <span class="mes-etiqueta-barra">{{ punto.mes | slice:0:3 }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
 
         <!-- Leyenda Inferior -->
         <footer class="pie-grafico-lineal">
@@ -314,12 +355,22 @@
           <h2 class="titulo-distribucion">Distribución por método de pago</h2>
 
           <div class="cuerpo-distribucion">
-            <!-- Gráfico circular / Donut simulado -->
-            <div class="contenedor-dona">
-              <div class="grafico-dona-circular" role="img" aria-label="Distribución porcentual por método de pago">
-                <span class="etiqueta-porcentaje etiqueta-plin">30.9 &nbsp; 19.48%</span>
-                <span class="etiqueta-porcentaje etiqueta-transferencia">47.5 &nbsp; 29.95%</span>
-                <span class="etiqueta-porcentaje etiqueta-yape">80.2 &nbsp; 50.57%</span>
+            <!-- Gráfico circular vectorial nítido con llamadas numéricas legibles -->
+            <div class="contenedor-dona-vectorial">
+              <!-- Gráfico de pastel / dona nítido -->
+              <div class="circulo-pastel" role="img" aria-label="Distribución por método de pago"></div>
+
+              <!-- Etiquetas destacadas de alta nitidez -->
+              <div class="etiqueta-valor-flotante valor-plin">
+                <span class="etiqueta-badge badge-plin">30.9 &nbsp; 19.48%</span>
+              </div>
+
+              <div class="etiqueta-valor-flotante valor-transferencia">
+                <span class="etiqueta-badge badge-transferencia">47.5 &nbsp; 29.95%</span>
+              </div>
+
+              <div class="etiqueta-valor-flotante valor-yape">
+                <span class="etiqueta-badge badge-yape">80.2 &nbsp; 50.57%</span>
               </div>
             </div>
 
