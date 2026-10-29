@@ -1,0 +1,433 @@
+<div class="pagina-dashboard">
+  <!-- BARRA LATERAL (Sidebar corporativo de SportFit) -->
+  <aside class="barra-lateral" aria-label="Menú del Administrador">
+    <!-- Botón de notificaciones -->
+    <button class="boton-notificaciones" type="button" aria-label="Notificaciones">
+      <svg class="icono-campana" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-12 12a2 2 0 0 0 4 0"></path>
+      </svg>
+      <span class="punto-alerta" aria-hidden="true"></span>
+    </button>
+
+    <!-- Perfil del Administrador -->
+    <div class="perfil-admin">
+      <div class="avatar-marco">
+        <svg class="avatar-svg" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="50" fill="#c3ded3"></circle>
+          <circle cx="50" cy="40" r="20" fill="#527d86"></circle>
+          <path d="M18 88C18 70 32 64 50 64C68 64 82 70 82 88" fill="#527d86"></path>
+        </svg>
+      </div>
+      <p class="rol-admin">Administrador</p>
+    </div>
+
+    <!-- Menú de Navegación -->
+    <nav class="navegacion-principal" aria-label="Navegación del sistema">
+      <ul class="lista-menu">
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Perfil</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Solicitudes</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Clientes</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            <span>Reservas</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="2" y="3" width="20" height="18" rx="2"></rect>
+              <line x1="12" y1="3" x2="12" y2="21"></line>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span>Espacios</span>
+          </a>
+        </li>
+        <!-- Reportes (Desplegado con submenú corporativo) -->
+        <li class="menu-item-activo">
+          <div class="opcion-menu opcion-reportes-activa">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span>Reportes</span>
+          </div>
+          <ul class="submenu-reportes">
+            <li>
+              <button class="sub-enlace" type="button">Reservas por deporte y Sede</button>
+            </li>
+            <li>
+              <button class="sub-enlace" type="button" routerLink="/reportes/reservas-canceladas">Reservas Canceladas</button>
+            </li>
+            <li>
+              <button class="sub-enlace sub-enlace--activo" type="button" routerLink="/reportes/financiero-periodo" aria-current="page">Financiero por periodo</button>
+            </li>
+            <li>
+              <button class="sub-enlace" type="button" routerLink="/reportes/cantidad-reservas">Cantidad de Reservas</button>
+            </li>
+            <li>
+              <button class="sub-enlace" type="button">Incidencias enviadas y atendidas</button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Cerrar sesión -->
+    <button class="boton-cerrar-sesion" type="button">
+      <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+      <span>Cerrar sesión</span>
+    </button>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL DE LA VISTA -->
+  <main class="contenido-principal">
+    <!-- Navbar superior con Logo SportFit -->
+    <header class="navbar-superior">
+      <div class="logo-sportfit">
+        <span class="logo-texto">SportFit</span>
+        <svg class="logo-icono" viewBox="0 0 28 28" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="19" cy="6" r="3"></circle>
+          <path d="M12 12l4-2 3 4-4 4 1 5"></path>
+          <path d="M7 16l4-2"></path>
+          <path d="M11 22l-2-4"></path>
+        </svg>
+      </div>
+    </header>
+
+    <!-- Encabezado de presentación (Header Card) -->
+    <mat-card class="tarjeta-encabezado" appearance="outlined">
+      <div class="badge-analitico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00c988" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+      </div>
+      <div class="titulos-encabezado">
+        <h1 class="titulo-principal">
+          <span class="texto-dash">DashBoard</span>
+          <span class="texto-verde">Financiero por periodo</span>
+        </h1>
+        <p class="subtitulo-descriptivo">
+          Análisis general financiero por periodo
+        </p>
+      </div>
+    </mat-card>
+
+    <!-- Barra de Filtros Superior -->
+    <mat-card class="tarjeta-filtros" appearance="outlined">
+      <div class="barra-filtros-contenedor">
+        <div class="seccion-filtros-izquierda">
+          <div class="cabecera-filtros">
+            <svg class="icono-lupa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span class="titulo-filtros">Filtro de búsqueda</span>
+          </div>
+
+          <div class="grupo-controles-filtros">
+            <!-- Botón Total -->
+            <button
+              type="button"
+              class="btn-total"
+              [class.btn-total--activo]="esFiltroTotal"
+              (click)="onTotal()"
+            >
+              Total
+            </button>
+
+            <!-- Selector de Mes -->
+            <div class="control-filtro">
+              <label class="etiqueta-filtro">Mes</label>
+              <mat-form-field appearance="outline" class="select-filtro" subscriptSizing="dynamic">
+                <mat-select [(ngModel)]="mesSeleccionado" (selectionChange)="onFiltroChange()" placeholder="Seleccionar tipo">
+                  @for (mes of mesesDisponibles; track mes.valor) {
+                    <mat-option [value]="mes.valor">{{ mes.etiqueta }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Selector de Año -->
+            <div class="control-filtro">
+              <label class="etiqueta-filtro">Año</label>
+              <mat-form-field appearance="outline" class="select-filtro" subscriptSizing="dynamic">
+                <mat-select [(ngModel)]="anioSeleccionado" (selectionChange)="onFiltroChange()" placeholder="Seleccionar fecha">
+                  @for (anio of aniosDisponibles; track anio.valor) {
+                    <mat-option [value]="anio.valor">{{ anio.etiqueta }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Botón Buscar para probar explícitamente -->
+            <button mat-flat-button class="btn-buscar-filtro" type="button" (click)="onBuscar()">
+              Buscar
+            </button>
+          </div>
+        </div>
+
+        <!-- Botón Exportar a la derecha -->
+        <div class="seccion-filtros-derecha">
+          <button mat-flat-button class="btn-exportar" type="button" (click)="onExportar()">
+            Exportar
+          </button>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Layout Principal en 2 Columnas -->
+    <div class="contenedor-dos-columnas">
+      <!-- Columna Izquierda (~60%): Gráfico de Ingresos s -->
+      <mat-card class="tarjeta-grafico-lineal" appearance="outlined">
+        <header class="cabecera-grafico">
+          <h2 class="titulo-grafico">
+            @if (tipoGraficaSeleccionada === 'barras') {
+              Gráfico de barras de ingresos por mes
+            } @else {
+              Gráfico lineal de ingresos por mes
+            }
+          </h2>
+          <div class="selector-tipo-grafica">
+            <label class="etiqueta-selector">Tipo de grafica</label>
+            <mat-form-field appearance="outline" class="select-grafica" subscriptSizing="dynamic">
+              <mat-select [(ngModel)]="tipoGraficaSeleccionada">
+                @for (tipo of tiposGrafica; track tipo.valor) {
+                  <mat-option [value]="tipo.valor">{{ tipo.etiqueta }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </header>
+
+        <!-- OPCIÓN 1: GRÁFICO LINEAL (Con sombreado vectorial) -->
+        @if (tipoGraficaSeleccionada === 'lineal') {
+          <div class="area-grafico-lineal">
+            <div class="eje-y-lineal">
+              @for (escala of escalasEjeY; track escala) {
+                <span class="escala-y-valor">{{ escala }}</span>
+              }
+            </div>
+
+            <div class="cuadricula-lineal">
+              <!-- Líneas Guía Horizontales -->
+              <div class="lineas-horizontales-guia">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+
+              <!-- Gráfico SVG -->
+              <svg class="svg-grafico-ingresos" viewBox="0 0 680 240" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="degradadoAreaIngresos" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#7b61ff" stop-opacity="0.28" />
+                    <stop offset="100%" stop-color="#7b61ff" stop-opacity="0.03" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Área sombreada semitransparente -->
+                <polygon
+                  [attr.points]="trazadoArea"
+                  fill="url(#degradadoAreaIngresos)"
+                />
+
+                <!-- Línea principal púrpura/violeta -->
+                <polyline
+                  [attr.points]="trazadoLinea"
+                  fill="none"
+                  stroke="#7b61ff"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+
+                <!-- Puntos y Etiquetas Numéricas sobre la línea -->
+                @for (punto of puntosIngresos; track punto.mes) {
+                  <g class="nodo-punto">
+                    <circle
+                      [attr.cx]="punto.x"
+                      [attr.cy]="punto.y"
+                      r="4.5"
+                      fill="#ffffff"
+                      stroke="#7b61ff"
+                      stroke-width="2"
+                    />
+                    <text
+                      [attr.x]="punto.x"
+                      [attr.y]="punto.y - 10"
+                      text-anchor="middle"
+                      class="texto-monto-nodo"
+                    >
+                      {{ punto.monto }}
+                    </text>
+                  </g>
+                }
+              </svg>
+
+              <!-- Eje X: Meses en la base -->
+              <div class="eje-x-meses">
+                @for (punto of puntosIngresos; track punto.mes) {
+                  <span class="mes-etiqueta">{{ punto.mes }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- OPCIÓN 2: GRÁFICO DE BARRAS DE INGRESOS -->
+        @if (tipoGraficaSeleccionada === 'barras') {
+          <div class="area-grafico-barras-ingresos">
+            <div class="eje-y-lineal">
+              @for (escala of escalasEjeY; track escala) {
+                <span class="escala-y-valor">{{ escala }}</span>
+              }
+            </div>
+
+            <div class="cuadricula-barras-ingresos">
+              <div class="lineas-horizontales-guia">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+
+              <div class="lista-columnas-ingresos">
+                @for (punto of puntosIngresos; track punto.mes) {
+                  <div class="columna-mes-item">
+                    <span class="monto-valor-barra">{{ punto.monto }}</span>
+                    <div
+                      class="barra-llenado-mes"
+                      [style.height]="calcularAlturaBarraMes(punto.monto)"
+                    ></div>
+                    <span class="mes-etiqueta-barra">{{ punto.mes | slice:0:3 }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Leyenda Inferior -->
+        <footer class="pie-grafico-lineal">
+          <div class="item-leyenda-lineal">
+            <span class="muestra-linea-adobe"></span>
+            <span class="texto-leyenda-adobe">Ingresos</span>
+          </div>
+        </footer>
+      </mat-card>
+
+      <!-- Columna Derecha (~40%): Distribución de Pago y Grid 2x2 de Métricas -->
+      <div class="columna-derecha-financiera">
+        <!-- 1. Card Distribución por Método de Pago -->
+        <mat-card class="tarjeta-distribucion-pago" appearance="outlined">
+          <h2 class="titulo-distribucion">Distribución por método de pago</h2>
+
+          <div class="cuerpo-distribucion">
+            <!-- Gráfico circular vectorial nítido con llamadas numéricas legibles -->
+            <div class="contenedor-dona-vectorial">
+              <!-- Gráfico de pastel / dona nítido -->
+              <div class="circulo-pastel" role="img" aria-label="Distribución por método de pago"></div>
+
+              <!-- Etiquetas destacadas de alta nitidez -->
+              <div class="etiqueta-valor-flotante valor-plin">
+                <span class="etiqueta-badge badge-plin">30.9 &nbsp; 19.48%</span>
+              </div>
+
+              <div class="etiqueta-valor-flotante valor-transferencia">
+                <span class="etiqueta-badge badge-transferencia">47.5 &nbsp; 29.95%</span>
+              </div>
+
+              <div class="etiqueta-valor-flotante valor-yape">
+                <span class="etiqueta-badge badge-yape">80.2 &nbsp; 50.57%</span>
+              </div>
+            </div>
+
+            <!-- Leyenda por método de pago -->
+            <div class="leyenda-metodos-pago">
+              <div class="item-metodo">
+                <span class="punto-color punto-plin"></span>
+                <span class="nombre-metodo">Plin</span>
+              </div>
+              <div class="item-metodo">
+                <span class="punto-color punto-transferencia"></span>
+                <span class="nombre-metodo">Transferencia</span>
+              </div>
+              <div class="item-metodo">
+                <span class="punto-color punto-yape"></span>
+                <span class="nombre-metodo">Yape</span>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+
+        <!-- 2. Grid 2x2 de Métricas Financieras -->
+        <div class="grid-metricas-financieras">
+          <!-- Card 1: Recaudación total -->
+          <mat-card class="tarjeta-metrica" appearance="outlined">
+            <p class="titulo-metrica">Recaudación total</p>
+            <p class="valor-metrica valor-verde">
+              S/ {{ bannerPago.recaudacionTotal | number:'1.2-2' }}
+            </p>
+          </mat-card>
+
+          <!-- Card 2: Promedio diario -->
+          <mat-card class="tarjeta-metrica" appearance="outlined">
+            <p class="titulo-metrica">Promedio diario</p>
+            <p class="valor-metrica valor-verde">
+              S/ {{ bannerPago.promedioDiario | number:'1.2-2' }}
+            </p>
+          </mat-card>
+
+          <!-- Card 3: Día pico -->
+          <mat-card class="tarjeta-metrica" appearance="outlined">
+            <p class="titulo-metrica">Día pico</p>
+            <p class="valor-metrica valor-amarillo">
+              S/ {{ bannerPago.diaPicoMonto | number:'1.2-2' }}
+            </p>
+            <span class="subtexto-fecha">{{ bannerPago.diaPicoFecha }}</span>
+          </mat-card>
+
+          <!-- Card 4: Pagos realizados -->
+          <mat-card class="tarjeta-metrica" appearance="outlined">
+            <p class="titulo-metrica">Pagos realizados</p>
+            <p class="valor-metrica valor-verde">
+              {{ bannerPago.pagosRealizados }}
+            </p>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

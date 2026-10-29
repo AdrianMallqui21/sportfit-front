@@ -1,19 +1,19 @@
 import { Routes } from '@angular/router';
-import {InicioSesionClienteComponente} from './componentes/inicio-sesion-cliente-componente/inicio-sesion-cliente-componente';
-import {RegistroClienteComponente} from './componentes/registro-cliente-componente/registro-cliente-componente';
+import { InicioSesionClienteComponente } from './componentes/inicio-sesion-cliente-componente/inicio-sesion-cliente-componente';
+import { RegistroClienteComponente } from './componentes/registro-cliente-componente/registro-cliente-componente';
 import { InicioSesionAdministradorComponente } from './componentes/inicio-sesion-administrador-componente/inicio-sesion-administrador-componente';
-import { Hu11NotificacionesCliente } from './componentes/hu11-notificaciones-cliente/hu11-notificaciones-cliente';
-import { Hu10HomeCliente } from './componentes/h10-home-cliente/hu10-home-cliente';
-import { LandingPage } from './componentes/landing-page/landing-page';
-import { Hu18ReporteIncidencia } from './componentes/hu18-reporte-incidencia/hu18-reporte-incidencia';
+import { CancelacionesDashboardComponent } from './componentes/reportes/cancelaciones-dashboard/cancelaciones-dashboard.component';
+import { ReservasClienteComponent } from './componentes/reportes/reservas-cliente/reservas-cliente.component';
+import { ReporteFinancieroComponent } from './componentes/reportes/reporte-financiero/reporte-financiero.component';
 
 export const routes: Routes = [
-  //4 historias de usuario
-  { path: '', component: Hu18ReporteIncidencia },
-  { path: '', component: LandingPage },
-  { path: '', component: Hu11NotificacionesCliente },
-  { path: '', component: Hu10HomeCliente },
   { path: '', component: InicioSesionClienteComponente },
   { path: 'registro', component: RegistroClienteComponente },
   { path: 'administrador', component: InicioSesionAdministradorComponente },
+  { path: 'reportes/reservas-canceladas', component: CancelacionesDashboardComponent },
+  { path: 'reportes/cantidad-reservas', component: ReservasClienteComponent },
+  { path: 'reportes/financiero-periodo', component: ReporteFinancieroComponent },
+  { path: 'reportes-reservas-canceladas', redirectTo: 'reportes/reservas-canceladas', pathMatch: 'full' },
+  { path: 'reportes-cantidad-reservas', redirectTo: 'reportes/cantidad-reservas', pathMatch: 'full' },
+  { path: 'reportes-financiero-periodo', redirectTo: 'reportes/financiero-periodo', pathMatch: 'full' }
 ];
