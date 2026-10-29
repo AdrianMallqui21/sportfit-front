@@ -1,0 +1,32 @@
+
+:host { display:block; font-family:Arial,Helvetica,sans-serif; color:#202625; }
+*, *::before, *::after { box-sizing:border-box; }
+button,input,select { font:inherit; }
+button { cursor:pointer; }
+.icono { width:24px; height:24px; flex-shrink:0; vertical-align:middle; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline:3px solid #197658; outline-offset:3px; }
+h1,h2,h3,p { margin:0; }
+.avatar { display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; width:52px; height:52px; border-radius:50%; background:linear-gradient(140deg,#dce9d5,#71a9a3); color:#235651; font-weight:700; letter-spacing:1px; }
+.avatar--grande { width:108px; height:108px; font-size:30px; }
+.estado { display:inline-flex; align-items:center; justify-content:center; padding:6px 15px; border-radius:10px; font-size:13px; white-space:nowrap; }
+.estado--activo,.estado--confirmado { color:#25885f; background:#dff3e9; }
+.estado--pendiente { color:#ad580a; background:#ffead7; }
+.estado--finalizado { color:#666; background:#ededed; }
+.estado--cancelado { color:#bc2525; background:#ffe0e0; }
+input::placeholder { color:#92999a; }
+select { width:100%; min-height:40px; padding:7px 10px; border:1px solid #edf0f3; border-radius:10px; background:#f6f8fb; color:#646e69; font-size:13px; }
+
+/* El componente es solo la capa modal; la pantalla de gestión se integrará después. */
+.capa-modal { position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center; padding:24px; overflow-y:auto; background:rgb(43 61 51 / 18%); }
+.ventana-modal { position:relative; width:100%; max-height:calc(100dvh - 48px); overflow-y:auto; padding:32px 36px; border-radius:12px; background:#fff; box-shadow:0 18px 60px #223c251a; }
+.encabezado-modal { display:flex; align-items:flex-start; gap:14px; padding-right:32px; }.encabezado-modal>.icono { width:28px; height:28px; }.encabezado-modal h1 { margin:3px 0 0; font-size:20px; font-weight:600; line-height:1.3; }.encabezado-modal p { margin-top:6px; color:#909090; font-size:15px; line-height:1.5; }
+.boton-cerrar { position:absolute; top:14px; right:14px; display:grid; place-items:center; width:34px; height:34px; border:0; border-radius:6px; background:transparent; color:#171d1a; }.boton-cerrar:hover { background:#f1f5f2; }
+@media(max-width:600px) { .capa-modal { padding:14px; }.ventana-modal { max-height:calc(100dvh - 28px); padding:26px 20px; }.encabezado-modal h1 { font-size:18px; } }
+
+.ventana-reservas { max-width:1180px; padding:30px 42px; }.resumen-cliente { display:flex; align-items:center; gap:28px; margin:28px 0 18px; padding:22px 26px; border:1px solid #37b783; border-radius:10px; background:#edf8f3; }.informacion-cliente { flex:1; min-width:0; }.nombre-estado { display:flex; align-items:center; flex-wrap:wrap; gap:18px; }.nombre-estado h2 { font-size:18px; font-weight:400; }.datos-resumen { display:grid; grid-template-columns:minmax(180px,.8fr) minmax(0,1.3fr); gap:22px 25px; margin:18px 0 0; color:#818b86; }.datos-resumen>div { display:flex; align-items:center; gap:9px; min-width:0; font-size:14px; }.datos-resumen dd { margin:0; overflow-wrap:anywhere; }.datos-resumen dt { white-space:nowrap; }.datos-resumen .icono { width:21px; height:21px; }.titulo-historial { margin-bottom:16px; font-size:17px; font-weight:400; }.tabla-reservas { max-height:365px; overflow:auto; border:1px solid #d6d6d6; border-radius:10px; scrollbar-width:thin; scrollbar-color:#999 #eee; }table { width:100%; border-collapse:collapse; white-space:nowrap; text-align:left; }th,td { padding:16px 14px; border-bottom:2px solid #dedede; font-size:14px; }thead { position:sticky; top:0; background:#fff; z-index:1; }th { font-size:16px; font-weight:400; }td { color:#858b87; }tbody tr:last-child td { border-bottom:0; }.dato-reserva { display:flex; align-items:center; gap:10px; }.dato-reserva .icono { width:22px; height:22px; }.boton-ver-reserva { display:grid; place-items:center; padding:5px; border:0; border-radius:6px; background:transparent; color:#8b928e; }.boton-ver-reserva:hover { color:#23865e; background:#edf8f3; }
+@media(max-width:800px) { .ventana-reservas { padding:30px 22px; }.resumen-cliente { padding:18px; gap:18px; }.resumen-cliente .avatar { width:76px; height:76px; font-size:24px; }.datos-resumen { grid-template-columns:1fr; gap:12px; } }
+@media(max-width:480px) { .resumen-cliente { align-items:flex-start; flex-direction:column; }.datos-resumen>div { flex-wrap:wrap; }.encabezado-modal p { font-size:13px; } }
+
+.tabla-reservas { min-height:320px; }
+
+.estado--sin-datos { background:#f0f2f1; color:#7b847e; min-width:85px; }
