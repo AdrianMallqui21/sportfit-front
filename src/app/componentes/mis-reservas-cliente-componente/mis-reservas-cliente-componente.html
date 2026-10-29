@@ -1,0 +1,84 @@
+<div class="reservations-page">
+  <aside class="client-sidebar" aria-label="Menú del cliente">
+    <div class="sidebar-top">
+      <span class="notification" aria-label="Notificaciones">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg>
+      </span>
+      <div class="profile-avatar" aria-hidden="true">DC</div>
+      <p class="profile-name">Daniel Castro</p>
+    </div>
+
+    <nav class="side-navigation" aria-label="Navegación del cliente">
+      <span class="nav-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>
+        <span>Home</span>
+      </span>
+      <span class="nav-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+        <span>Nueva reserva</span>
+      </span>
+      <span class="nav-item nav-item--active" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5zM3 12l9 5 9-5M3 16l9 5 9-5"/></svg>
+        <span>Mis reservas</span>
+      </span>
+      <span class="nav-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></svg>
+        <span>Cuenta</span>
+      </span>
+      <span class="nav-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4L15 12l-3-3z"/></svg>
+        <span>Incidentes</span>
+      </span>
+    </nav>
+
+    <button class="logout-button" type="button">Cerrar sesión</button>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <img class="brand-logo" src="/Loge%20SportFit.png" alt="SportFit">
+    </header>
+
+    <section class="page-heading" aria-labelledby="page-title">
+      <h1 id="page-title">Mis reservas</h1>
+    </section>
+
+    <section class="filters-panel" aria-labelledby="filters-title">
+      <h2 id="filters-title"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16.2 16.2 5 5"/></svg>Filtro de búsqueda</h2>
+      <div class="filter-fields">
+        <label class="filter-field"><span>Sede</span><select aria-label="Filtrar por sede"><option selected>Todas las sedes</option><option>Santiago de Surco</option><option>Lince</option><option>San Miguel</option></select></label>
+        <label class="filter-field"><span>Deporte</span><select aria-label="Filtrar por deporte"><option selected>Todos los deportes</option><option>Fútbol</option><option>Vóley</option><option>Tenis</option></select></label>
+        <label class="filter-field"><span>Estado</span><select aria-label="Filtrar por estado"><option selected>Todos los estados</option><option>Solicitada</option><option>Confirmada</option><option>Cancelada</option><option>Completada</option></select></label>
+        <label class="filter-field"><span>Fecha</span><input type="date" aria-label="Filtrar por fecha"></label>
+        <div class="filter-field filter-field--time"><span>Hora</span><div class="time-range"><input type="time" value="09:00" aria-label="Hora desde"><span aria-hidden="true">→</span><input type="time" value="10:00" aria-label="Hora hasta"></div></div>
+      </div>
+    </section>
+
+    <div class="action-row" aria-label="Acciones de búsqueda">
+      <button class="action-button action-button--search" type="button">Buscar</button>
+      <button class="action-button action-button--clear" type="button">Limpiar</button>
+      <button class="action-button action-button--cancel" type="button">Cancelar</button>
+    </div>
+
+    <section class="reservations-table-panel" aria-label="Reservas del cliente">
+      <div class="table-scroll" role="region" aria-label="Tabla de reservas" tabindex="0">
+        <table class="reservations-table">
+          <caption class="visually-hidden">Ejemplos de reservas del cliente</caption>
+          <thead><tr><th scope="col">Deporte</th><th scope="col">Id Cancha</th><th scope="col">Sede</th><th scope="col">Fecha</th><th scope="col">Hora inicio</th><th scope="col">Hora fin</th><th scope="col">Precio total</th><th scope="col">Método de pago</th><th scope="col">Estado</th></tr></thead>
+          <tbody>
+            <tr><td><span class="sport-tag sport-tag--volley">Vóley</span></td><td>C01</td><td>Santiago de Surco</td><td>26/09/2026</td><td>17:00</td><td>19:00</td><td>S/ 60.00</td><td>Yape</td><td><span class="status status--requested">Solicitada</span></td></tr>
+            <tr><td><span class="sport-tag sport-tag--football">Fútbol</span></td><td>C02</td><td>Lince</td><td>10/09/2026</td><td>09:00</td><td>11:00</td><td>S/ 70.00</td><td>Tarjeta</td><td><span class="status status--rejected">Rechazada</span></td></tr>
+            <tr><td><span class="sport-tag sport-tag--football">Fútbol</span></td><td>C03</td><td>Santiago de Surco</td><td>29/08/2026</td><td>19:00</td><td>21:00</td><td>S/ 70.00</td><td>Yape</td><td><span class="status status--requested">Solicitada</span></td></tr>
+            <tr><td><span class="sport-tag sport-tag--football">Fútbol</span></td><td>C04</td><td>Lince</td><td>27/08/2026</td><td>19:00</td><td>21:00</td><td>S/ 70.00</td><td>Tarjeta</td><td><span class="status status--confirmed">Confirmada</span></td></tr>
+            <tr><td><span class="sport-tag sport-tag--football">Fútbol</span></td><td>C05</td><td>Santiago de Surco</td><td>29/08/2026</td><td>19:00</td><td>21:00</td><td>S/ 70.00</td><td>Tarjeta</td><td><span class="status status--confirmed">Confirmada</span></td></tr>
+            <tr><td><span class="sport-tag sport-tag--football">Fútbol</span></td><td>C06</td><td>Santiago de Surco</td><td>20/08/2026</td><td>19:00</td><td>21:00</td><td>S/ 70.00</td><td>Yape</td><td><span class="status status--rejected">Rechazada</span></td></tr>
+            <tr><td><span class="sport-tag sport-tag--volley">Vóley</span></td><td>C07</td><td>San Miguel</td><td>05/08/2026</td><td>20:00</td><td>22:00</td><td>S/ 50.00</td><td>Yape</td><td><span class="status status--completed">Completada</span></td></tr>
+            <tr><td><span class="sport-tag sport-tag--volley">Vóley</span></td><td>C08</td><td>San Miguel</td><td>01/08/2026</td><td>20:00</td><td>22:00</td><td>S/ 50.00</td><td>Transferencia</td><td><span class="status status--cancelled">Cancelada</span></td></tr>
+            <tr><td><span class="sport-tag sport-tag--tennis">Tenis</span></td><td>C09</td><td>San Miguel</td><td>31/07/2026</td><td>15:00</td><td>17:00</td><td>S/ 60.00</td><td>Transferencia</td><td><span class="status status--completed">Completada</span></td></tr>
+            <tr><td><span class="sport-tag sport-tag--tennis">Tenis</span></td><td>C10</td><td>Lince</td><td>25/07/2026</td><td>16:00</td><td>18:00</td><td>S/ 60.00</td><td>Tarjeta</td><td><span class="status status--confirmed">Confirmada</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
