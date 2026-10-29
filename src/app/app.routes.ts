@@ -8,6 +8,7 @@ import { LandingPage } from './componentes/landing-page/landing-page';
 import { Hu18ReporteIncidencia } from './componentes/hu18-reporte-incidencia/hu18-reporte-incidencia';
 
 export const routes: Routes = [
+  //4 historias de usuario
   { path: '', component: Hu18ReporteIncidencia },
   { path: '', component: LandingPage },
   { path: '', component: Hu11NotificacionesCliente },
