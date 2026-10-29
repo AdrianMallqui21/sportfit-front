@@ -1,0 +1,614 @@
+
+<!-- ===================================================== -->
+<!-- SPORTFIT - ADMINISTRADOR - VISTA a37                    -->
+<!-- Reporte de incidencias: versión inicial sin datos       -->
+<!-- ===================================================== -->
+
+<div class="admin-dashboard">
+
+  <!-- =================================================== -->
+  <!-- 1. MENÚ LATERAL DEL ADMINISTRADOR                    -->
+  <!-- =================================================== -->
+  <aside class="sidebar">
+
+    <!-- Perfil del administrador -->
+    <div class="sidebar-profile">
+
+      <!-- Botón de notificaciones -->
+      <button
+        class="notification-button"
+        type="button"
+        aria-label="Notificaciones">
+        <i class="bi bi-bell"></i>
+      </button>
+
+      <!-- Avatar provisional -->
+      <div class="profile-avatar" aria-hidden="true">
+        <i class="bi bi-person-fill"></i>
+      </div>
+
+      <span class="profile-name">Administrador</span>
+
+    </div>
+
+    <!-- ================================================= -->
+    <!-- 2. OPCIONES PRINCIPALES DEL MENÚ                   -->
+    <!-- ================================================= -->
+    <nav class="sidebar-nav" aria-label="Menú del administrador">
+
+      <button class="nav-item" type="button">
+        <i class="bi bi-person"></i>
+        <span>Perfil</span>
+      </button>
+
+      <button class="nav-item" type="button">
+        <i class="bi bi-house-door"></i>
+        <span>Solicitudes</span>
+      </button>
+
+      <button class="nav-item" type="button">
+        <i class="bi bi-people"></i>
+        <span>Clientes</span>
+      </button>
+
+      <button class="nav-item" type="button">
+        <i class="bi bi-layers"></i>
+        <span>Reservas</span>
+      </button>
+
+      <button class="nav-item" type="button">
+        <i class="bi bi-building"></i>
+        <span>Espacios</span>
+      </button>
+
+      <!-- =============================================== -->
+      <!-- 3. REPORTES: MENÚ DESPLEGABLE                    -->
+      <!-- Primer clic: abre / Segundo clic: cierra         -->
+      <!-- =============================================== -->
+
+      <div class="reports-menu">
+
+        <!-- Botón principal de Reportes -->
+        <button
+          class="reports-heading"
+          type="button"
+          (click)="alternarReportes()"
+          [attr.aria-expanded]="reportesAbiertos"
+          aria-controls="reportes-submenu">
+
+          <i class="bi bi-bar-chart-line"></i>
+
+          <span>Reportes</span>
+
+          <!-- Flecha dinámica -->
+          <i
+            class="bi reports-arrow"
+            [class.bi-chevron-down]="!reportesAbiertos"
+            [class.bi-chevron-up]="reportesAbiertos">
+          </i>
+
+        </button>
+
+        <!-- Submenú visible solamente al abrir Reportes -->
+        @if (reportesAbiertos) {
+
+          <div
+            class="reports-submenu"
+            id="reportes-submenu">
+
+            <button class="submenu-item" type="button">
+              Reservas por deporte y sede
+            </button>
+
+            <button class="submenu-item" type="button">
+              Reservas canceladas
+            </button>
+
+            <button class="submenu-item" type="button">
+              Financiero por periodo
+            </button>
+
+            <button class="submenu-item" type="button">
+              Cantidad de reservas
+            </button>
+
+            <!-- Reporte actual -->
+            <button
+              class="submenu-item submenu-active"
+              type="button"
+              aria-current="page">
+              Incidencias enviadas y atendidas
+            </button>
+          </div>
+
+        }
+
+      </div>
+      <button class="nav-item" type="button">
+        <i class="bi bi-wrench"></i>
+        <span>Incidencias</span>
+      </button>
+    </nav>
+
+    <!-- ================================================= -->
+    <!-- 4. CERRAR SESIÓN                                  -->
+    <!-- ================================================= -->
+    <div class="sidebar-footer">
+
+      <button class="logout-button" type="button">
+        <i class="bi bi-box-arrow-left"></i>
+        <span>Cerrar sesión</span>
+      </button>
+
+    </div>
+
+  </aside>
+
+  <!-- =================================================== -->
+  <!-- 5. CONTENIDO PRINCIPAL                              -->
+  <!-- =================================================== -->
+  <main class="main-content">
+
+    <!-- Logo superior derecho -->
+    <header class="top-header">
+
+      <div class="brand">
+        <span>SportFit</span>
+        <i class="bi bi-person-walking"></i>
+      </div>
+
+    </header>
+
+    <!-- ================================================= -->
+    <!-- 6. ENCABEZADO DEL DASHBOARD                       -->
+    <!-- ================================================= -->
+    <section class="dashboard-heading">
+
+      <h1>
+        <span class="heading-dark">DashBoard</span>
+        <span class="heading-green">
+          Tipos de incidencias enviadas y atendidas
+        </span>
+      </h1>
+
+      <p>
+        Análisis de incidencias enviadas vs. atendidas,
+        categorización por motivo y rendimiento de respuesta general
+      </p>
+
+    </section>
+
+    <!-- ================================================= -->
+    <!-- 7. CONTENEDOR GENERAL DEL REPORTE                 -->
+    <!-- ================================================= -->
+    <div class="report-content">
+
+      <!-- =============================================== -->
+      <!-- FILA SUPERIOR: FILTROS, MÉTRICAS Y DONA         -->
+      <!-- =============================================== -->
+      <div class="report-top-grid">
+
+        <!-- COLUMNA IZQUIERDA SUPERIOR -->
+        <div class="report-left-top">
+
+          <!-- =========================================== -->
+          <!-- 8. FILTROS DE BÚSQUEDA                      -->
+          <!-- =========================================== -->
+          <section
+            class="panel filter-panel"
+            aria-label="Filtros de incidencias">
+
+            <div class="filter-title">
+              <i class="bi bi-search"></i>
+              <h2>Filtro de búsqueda de incidencias</h2>
+            </div>
+
+            <div class="filters-form">
+
+              <!-- Seleccionar año -->
+              <div class="filter-field">
+
+                <label for="anio">Año</label>
+
+                <select
+                  id="anio"
+                  name="anio"
+                  [value]="anioSeleccionado"
+                  (change)="cambiarAnio($event)">
+
+                  <option value="">Seleccionar año</option>
+                  <option value="2026">2026</option>
+                  <option value="2025">2025</option>
+                  <option value="2024">2024</option>
+
+                </select>
+
+              </div>
+
+              <!-- Seleccionar mes -->
+              <div class="filter-field">
+
+                <label for="mes">Mes</label>
+
+                <select
+                  id="mes"
+                  name="mes"
+                  [value]="mesSeleccionado"
+                  (change)="cambiarMes($event)">
+
+                  <option value="">Seleccionar mes</option>
+
+                  @for (mes of meses; track mes.valor) {
+                    <option [value]="mes.valor">
+                      {{ mes.nombre }}
+                    </option>
+                  }
+
+                </select>
+
+              </div>
+
+              <!-- Botones de búsqueda -->
+              <div class="filter-actions">
+
+                <button
+                  class="btn-clear"
+                  type="button"
+                  (click)="limpiar()">
+                  Limpiar
+                </button>
+
+                <button
+                  class="btn-search"
+                  type="button"
+                  (click)="buscar()">
+                  Buscar
+                </button>
+
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- =========================================== -->
+          <!-- 9. TARJETAS DE MÉTRICAS - ED31              -->
+          <!-- =========================================== -->
+          <section
+            class="metrics-grid"
+            aria-label="Métricas principales">
+
+            <!-- Total histórico de incidencias -->
+            <article class="metric-card">
+
+              <div class="metric-icon icon-total">
+                <i class="bi bi-calendar3"></i>
+              </div>
+
+              <div class="metric-info">
+
+                <span class="metric-label">
+                  Total de incidencias
+                </span>
+
+                <strong class="metric-value total-value">
+                  {{ totalHistorico }}
+                </strong>
+
+                <span class="metric-period">
+                  Acumulado histórico
+                </span>
+
+              </div>
+
+            </article>
+
+            <!-- Incidencias pendientes -->
+            <article class="metric-card">
+
+              <div class="metric-icon icon-pending">
+                <i class="bi bi-exclamation-triangle"></i>
+              </div>
+
+              <div class="metric-info">
+
+                <span class="metric-label">
+                  Pendientes del periodo
+                </span>
+
+                <strong class="metric-value pending-value">
+                  {{ pendientes }}
+                </strong>
+
+                <span class="metric-period">
+                  {{ periodoTexto }}
+                </span>
+
+              </div>
+
+            </article>
+
+            <!-- Incidencias atendidas -->
+            <article class="metric-card">
+
+              <div class="metric-icon icon-attended">
+                <i class="bi bi-check-circle"></i>
+              </div>
+
+              <div class="metric-info">
+
+                <span class="metric-label">
+                  Atendidas del periodo
+                </span>
+
+                <strong class="metric-value attended-value">
+                  {{ atendidas }}
+                </strong>
+
+                <span class="metric-period">
+                  {{ periodoTexto }}
+                </span>
+
+              </div>
+
+            </article>
+
+          </section>
+
+        </div>
+
+        <!-- ============================================= -->
+        <!-- 10. GRÁFICO DE ESTADO DE RESOLUCIÓN - ED32    -->
+        <!-- ============================================= -->
+        <section
+          class="panel resolution-panel"
+          aria-label="Estado de resolución según periodo">
+
+          <h2 class="small-panel-title">
+            ESTADO DE RESOLUCIÓN SEGÚN PERIODO
+          </h2>
+
+          <div class="resolution-content">
+
+            <!-- Gráfico circular provisional -->
+            <div
+              class="donut-chart"
+              [style.background]="fondoGraficoDona"
+              aria-label="Gráfico de resolución de incidencias">
+
+              <div class="donut-center">
+
+                <strong>
+                  {{ porcentajeAtendidas }}%
+                </strong>
+
+                <span>ATENDIDAS</span>
+
+              </div>
+
+            </div>
+
+            <!-- Leyenda -->
+            <div class="donut-legend">
+
+              <div class="legend-item">
+
+                <span class="legend-dot green-dot"></span>
+
+                <div>
+                  <strong>{{ atendidas }} Atendidas</strong>
+                  <small>{{ porcentajeAtendidas }}% del total</small>
+                </div>
+
+              </div>
+
+              <div class="legend-item">
+
+                <span class="legend-dot yellow-dot"></span>
+
+                <div>
+                  <strong>{{ pendientes }} Pendientes</strong>
+                  <small>{{ porcentajePendientes }}% en espera</small>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- =============================================== -->
+      <!-- FILA INFERIOR: GRÁFICOS DE ANÁLISIS             -->
+      <!-- =============================================== -->
+      <div class="charts-grid">
+
+        <!-- ============================================= -->
+        <!-- 11. TENDENCIA MENSUAL DE INCIDENCIAS - ED63   -->
+        <!-- ============================================= -->
+        <section
+          class="panel chart-panel"
+          aria-label="Tendencia mensual de incidencias">
+
+          <!-- Encabezado y leyenda -->
+          <div class="chart-header">
+
+            <h2>
+              TENDENCIA MENSUAL DE INCIDENCIAS
+              <span>SEGÚN AÑO</span>
+            </h2>
+
+            <div class="chart-legend">
+
+              <span>
+                <i class="legend-dot green-dot"></i>
+                Atendidas
+              </span>
+
+              <span>
+                <i class="legend-dot blue-dot"></i>
+                Pendientes
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- Área del gráfico -->
+          <div class="line-chart">
+
+            <!-- Eje vertical -->
+            <div class="y-axis" aria-hidden="true">
+              <span>80</span>
+              <span>60</span>
+              <span>40</span>
+              <span>20</span>
+              <span>0</span>
+            </div>
+
+            <!-- Área reservada para Chart.js -->
+            <div class="line-plot">
+
+              <!-- Líneas horizontales -->
+              <div class="horizontal-grid" aria-hidden="true">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+
+              <!-- Estado sin información -->
+              <div class="chart-empty">
+
+                <i class="bi bi-graph-up"></i>
+
+                <span>
+                  Sin datos para mostrar
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- Eje horizontal: meses -->
+            <div class="x-axis" aria-label="Meses del año">
+
+              @for (mes of mesesCortos; track mes) {
+                <span>{{ mes }}</span>
+              }
+
+            </div>
+
+          </div>
+
+          <p class="axis-caption">
+            Meses de análisis
+          </p>
+
+        </section>
+
+        <!-- ============================================= -->
+        <!-- 12. DISTRIBUCIÓN POR CATEGORÍA - ED64         -->
+        <!-- ============================================= -->
+        <section
+          class="panel chart-panel"
+          aria-label="Distribución de incidencias por categoría">
+
+          <!-- Encabezado -->
+          <div class="chart-header">
+
+            <h2>
+              DISTRIBUCIÓN DE INCIDENCIAS POR CATEGORÍA
+              <span>SEGÚN PERIODO</span>
+            </h2>
+
+          </div>
+
+          <!-- Gráfico de barras horizontales -->
+          <div class="bar-chart">
+
+            <div class="bar-rows">
+
+              <!-- Categoría: Técnico -->
+              <div class="bar-row">
+
+                <span class="bar-label">
+                  Técnico
+                </span>
+
+                <div class="bar-track">
+                  <div class="bar-fill technical-bar"></div>
+                </div>
+
+                <span class="bar-percentage">
+                  0%
+                </span>
+
+              </div>
+
+              <!-- Categoría: Instalaciones -->
+              <div class="bar-row">
+
+                <span class="bar-label">
+                  Instalaciones
+                </span>
+
+                <div class="bar-track">
+                  <div class="bar-fill facilities-bar"></div>
+                </div>
+
+                <span class="bar-percentage">
+                  0%
+                </span>
+
+              </div>
+
+              <!-- Categoría: Preguntas -->
+              <div class="bar-row">
+
+                <span class="bar-label">
+                  Preguntas
+                </span>
+
+                <div class="bar-track">
+                  <div class="bar-fill questions-bar"></div>
+                </div>
+
+                <span class="bar-percentage">
+                  0%
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- Estado inicial sin incidencias -->
+            <div class="bar-empty">
+              Sin incidencias registradas para el periodo
+            </div>
+
+            <!-- Escala horizontal -->
+            <div class="bar-scale">
+              <span>0%</span>
+              <span>20%</span>
+              <span>40%</span>
+              <span>60%</span>
+              <span>80%</span>
+              <span>100%</span>
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
