@@ -1,0 +1,407 @@
+<div class="pagina-dashboard">
+  <!-- BARRA LATERAL (Sidebar corporativo de SportFit) -->
+  <aside class="barra-lateral" aria-label="Menú del Administrador">
+    <!-- Botón de notificaciones -->
+    <button class="boton-notificaciones" type="button" aria-label="Notificaciones">
+      <svg class="icono-campana" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-12 12a2 2 0 0 0 4 0"></path>
+      </svg>
+      <span class="punto-alerta" aria-hidden="true"></span>
+    </button>
+
+    <!-- Perfil del Administrador -->
+    <div class="perfil-admin">
+      <div class="avatar-marco">
+        <svg class="avatar-svg" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="50" fill="#c3ded3"></circle>
+          <circle cx="50" cy="40" r="20" fill="#527d86"></circle>
+          <path d="M18 88C18 70 32 64 50 64C68 64 82 70 82 88" fill="#527d86"></path>
+        </svg>
+      </div>
+      <p class="rol-admin">Administrador</p>
+    </div>
+
+    <!-- Menú de Navegación -->
+    <nav class="navegacion-principal" aria-label="Navegación del sistema">
+      <ul class="lista-menu">
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Perfil</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Solicitudes</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Clientes</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            <span>Reservas</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="2" y="3" width="20" height="18" rx="2"></rect>
+              <line x1="12" y1="3" x2="12" y2="21"></line>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span>Espacios</span>
+          </a>
+        </li>
+        <!-- Reportes (Desplegado con submenú corporativo) -->
+        <li class="menu-item-activo">
+          <div class="opcion-menu opcion-reportes-activa">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span>Reportes</span>
+          </div>
+          <ul class="submenu-reportes">
+            <li>
+              <button class="sub-enlace" type="button">Reservas por deporte y Sede</button>
+            </li>
+            <li>
+              <button class="sub-enlace" type="button" routerLink="/reportes/reservas-canceladas">Reservas Canceladas</button>
+            </li>
+            <li>
+              <button class="sub-enlace" type="button" routerLink="/reportes/financiero-periodo">Financiero por periodo</button>
+            </li>
+            <li>
+              <button class="sub-enlace sub-enlace--activo" type="button" routerLink="/reportes/cantidad-reservas" aria-current="page">Cantidad de Reservas</button>
+            </li>
+            <li>
+              <button class="sub-enlace" type="button">Incidencias enviadas y atendidas</button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Cerrar sesión -->
+    <button class="boton-cerrar-sesion" type="button">
+      <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+      <span>Cerrar sesión</span>
+    </button>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL DE LA VISTA -->
+  <main class="contenido-principal">
+    <!-- Navbar superior con Logo SportFit -->
+    <header class="navbar-superior">
+      <div class="logo-sportfit">
+        <span class="logo-texto">SportFit</span>
+        <svg class="logo-icono" viewBox="0 0 28 28" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="19" cy="6" r="3"></circle>
+          <path d="M12 12l4-2 3 4-4 4 1 5"></path>
+          <path d="M7 16l4-2"></path>
+          <path d="M11 22l-2-4"></path>
+        </svg>
+      </div>
+    </header>
+
+    <!-- Encabezado de presentación (Header Card) -->
+    <mat-card class="tarjeta-encabezado" appearance="outlined">
+      <div class="badge-analitico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00c988" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18"></path>
+          <path d="M18 9l-5 5-4-4-3 3"></path>
+        </svg>
+      </div>
+      <div class="titulos-encabezado">
+        <h1 class="titulo-principal">
+          <span class="texto-dash">DashBoard</span>
+          <span class="texto-verde">Cantidad de Reservas por Cliente</span>
+        </h1>
+        <p class="subtitulo-descriptivo">
+          Gestión, seguimiento y atención oportuna de incidencias reportadas por clientes
+        </p>
+      </div>
+    </mat-card>
+
+    <!-- Tarjeta de Filtros Superior -->
+    <mat-card class="tarjeta-filtros" appearance="outlined">
+      <header class="cabecera-filtros">
+        <svg class="icono-lupa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <h2 class="titulo-filtros">Filtro de búsqueda de Reservas por clientes</h2>
+      </header>
+
+      <form [formGroup]="formularioFiltros" class="formulario-filtros" (ngSubmit)="onBuscar()">
+        <div class="grid-filtros-contenedor">
+          <!-- 1. Fecha desde con selector de fecha funcional -->
+          <div class="campo-item">
+            <label class="etiqueta-campo" for="fechaDesde">Fecha desde</label>
+            <div class="input-con-icono">
+              <span class="btn-icono-calendario" aria-hidden="true">
+                <svg class="icono-calendario" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </span>
+              <input
+                id="fechaDesde"
+                type="date"
+                class="control-input input-fecha"
+                formControlName="fechaDesde"
+                placeholder="yyyy-mm-dd"
+              />
+            </div>
+          </div>
+
+          <!-- 2. Fecha hasta con selector de fecha funcional -->
+          <div class="campo-item">
+            <label class="etiqueta-campo" for="fechaHasta">Fecha hasta</label>
+            <div class="input-con-icono">
+              <span class="btn-icono-calendario" aria-hidden="true">
+                <svg class="icono-calendario" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </span>
+              <input
+                id="fechaHasta"
+                type="date"
+                class="control-input input-fecha"
+                formControlName="fechaHasta"
+                placeholder="yyyy-mm-dd"
+              />
+            </div>
+          </div>
+
+          <!-- 3. Cantidad mínima de reservas -->
+          <div class="campo-item">
+            <label class="etiqueta-campo" for="minReservas">Cantidad minima de reservas</label>
+            <div class="contenedor-entrada-num">
+              <input
+                id="minReservas"
+                type="number"
+                min="0"
+                class="control-input input-numerico"
+                formControlName="minReservas"
+              />
+            </div>
+          </div>
+
+          <!-- 4. Cantidad máxima de reservas -->
+          <div class="campo-item">
+            <label class="etiqueta-campo" for="maxReservas">Cantidad maxima de reservas</label>
+            <div class="contenedor-entrada-num">
+              <input
+                id="maxReservas"
+                type="number"
+                min="0"
+                class="control-input input-numerico"
+                formControlName="maxReservas"
+              />
+            </div>
+          </div>
+
+          <!-- 5. Cantidad top clientes -->
+          <div class="campo-item">
+            <label class="etiqueta-campo" for="topClientes">Cantidad top clientes</label>
+            <div class="contenedor-entrada-num">
+              <input
+                id="topClientes"
+                type="number"
+                min="0"
+                class="control-input input-numerico"
+                formControlName="top"
+              />
+            </div>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="acciones-formulario">
+            <button mat-flat-button class="btn-limpiar" type="button" (click)="onLimpiar()">
+              Limpiar
+            </button>
+            <button mat-flat-button class="btn-buscar" type="submit">
+              Buscar
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+
+    <!-- Layout Principal en 2 Columnas -->
+    <div class="contenedor-dos-columnas">
+      <!-- Columna Izquierda: Gráfico de Barras (~55%) -->
+      <mat-card class="tarjeta-grafico-barras" appearance="outlined">
+        <header class="cabecera-grafico">
+          <h2 class="titulo-grafico">
+            @if (tipoGraficaSeleccionada === 'barras_verticales') {
+              Gráfico de barras verticales de reservas por cliente
+            } @else {
+              Gráfico de barras horizontales de reservas por cliente
+            }
+          </h2>
+          <div class="selector-tipo-grafica">
+            <label class="etiqueta-selector">Tipo de grafica</label>
+            <mat-form-field appearance="outline" class="select-grafica" subscriptSizing="dynamic">
+              <mat-select [(ngModel)]="tipoGraficaSeleccionada">
+                @for (tipo of tiposGrafica; track tipo.valor) {
+                  <mat-option [value]="tipo.valor">{{ tipo.etiqueta }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </header>
+
+        <!-- VISTA 1: BARRAS HORIZONTALES (Por defecto) -->
+        @if (tipoGraficaSeleccionada === 'barras_horizontales') {
+          <div class="cuerpo-barras-horizontales">
+            <div class="lista-filas-barras">
+              @for (cliente of clientes; track cliente.clienteId; let i = $index) {
+                <div class="fila-cliente-barra">
+                  <span class="codigo-cliente">{{ cliente.clienteId }}</span>
+                  <div class="riel-barra">
+                    <div
+                      class="barra-llenado"
+                      [ngClass]="obtenerClaseBarra(i)"
+                      [style.width]="calcularAnchoBarra(cliente.totalReservas)"
+                    ></div>
+                    <span
+                      class="valor-cantidad-barra"
+                      [style.left]="'calc(' + calcularAnchoBarra(cliente.totalReservas) + ' + 10px)'"
+                    >
+                      {{ cliente.totalReservas }}
+                    </span>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Eje horizontal inferior con escala numérica -->
+            <div class="eje-x-contenedor">
+              <div class="lineas-guia-fondo">
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="valores-eje-x">
+                @for (escala of escalasEjeX; track escala) {
+                  <span class="escala-item">{{ escala }}</span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- VISTA 2: BARRAS VERTICALES -->
+        @if (tipoGraficaSeleccionada === 'barras_verticales') {
+          <div class="cuerpo-barras-verticales">
+            <div class="area-grafico-vertical">
+              <!-- Eje Y con valores de 0 a 50 -->
+              <div class="eje-y-vertical">
+                @for (val of escalasEjeY; track val) {
+                  <span class="escala-y-item">{{ val }}</span>
+                }
+              </div>
+
+              <!-- Cuadrícula y columnas verticales -->
+              <div class="cuadricula-columnas-verticales">
+                <div class="lineas-horizontales-guia">
+                  <span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+
+                <div class="lista-columnas-verticales">
+                  @for (cliente of clientes; track cliente.clienteId; let i = $index) {
+                    <div class="columna-vertical-item">
+                      <div class="riel-columna-vertical">
+                        <span class="valor-top-columna">{{ cliente.totalReservas }}</span>
+                        <div
+                          class="barra-llenado-vertical"
+                          [ngClass]="obtenerClaseBarra(i)"
+                          [style.height]="calcularAlturaBarra(cliente.totalReservas)"
+                        ></div>
+                      </div>
+                      <span class="codigo-cliente-vertical">{{ cliente.clienteId }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </mat-card>
+
+      <!-- Columna Derecha: Tabla Detallada con mat-table (~45%) -->
+      <mat-card class="tarjeta-tabla-clientes" appearance="outlined">
+        <div class="contenedor-tabla-mat">
+          <table mat-table [dataSource]="clientes" class="tabla-material">
+            <!-- Columna: Cliente ID -->
+            <ng-container matColumnDef="clienteId">
+              <th mat-header-cell *matHeaderCellDef class="cabecera-verde th-id">Cliente id</th>
+              <td mat-cell *matCellDef="let element" class="td-id">{{ element.clienteId }}</td>
+            </ng-container>
+
+            <!-- Columna: Nombre de Cliente -->
+            <ng-container matColumnDef="nombreCliente">
+              <th mat-header-cell *matHeaderCellDef class="cabecera-verde th-nombre">
+                <div class="th-con-orden">
+                  <span>Nombre de Cliente</span>
+                  <svg class="icono-orden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+              </th>
+              <td mat-cell *matCellDef="let element" class="td-nombre">{{ element.nombreCliente }}</td>
+            </ng-container>
+
+            <!-- Columna: Última Reserva -->
+            <ng-container matColumnDef="ultimaReserva">
+              <th mat-header-cell *matHeaderCellDef class="cabecera-verde th-fecha">Ultima Reserva</th>
+              <td mat-cell *matCellDef="let element" class="td-fecha">{{ element.ultimaReserva }}</td>
+            </ng-container>
+
+            <!-- Columna: Total de Reservas -->
+            <ng-container matColumnDef="totalReservas">
+              <th mat-header-cell *matHeaderCellDef class="cabecera-verde th-total">Total de Reservas</th>
+              <td mat-cell *matCellDef="let element" class="td-total">{{ element.totalReservas }}</td>
+            </ng-container>
+
+            <!-- Filas -->
+            <tr mat-header-row *matHeaderRowDef="columnasTabla"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+          </table>
+        </div>
+      </mat-card>
+    </div>
+  </main>
+</div>

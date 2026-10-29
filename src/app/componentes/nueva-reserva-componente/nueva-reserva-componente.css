@@ -1,0 +1,698 @@
+:host {
+  display: block;
+  color: #252525;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  --sidebar-width: clamp(180px, 13vw, 250px);
+  --sportfit-green: #40b983;
+  --sportfit-yellow: #f2ca25;
+  --border-color: #d4d4d4;
+}
+
+* { box-sizing: border-box; }
+button, input, select { font: inherit; }
+
+.reservation-page {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  overflow: auto;
+  background: #eaf4e5;
+}
+
+.client-sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  min-height: 100dvh;
+  background: #fff;
+  border-right: 1px solid var(--border-color);
+}
+
+.sidebar-top {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(22px, 2.1vw, 40px) 12px clamp(28px, 3.4vw, 48px);
+}
+
+.notification {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  width: clamp(30px, 2vw, 38px);
+  aspect-ratio: 1;
+  place-items: center;
+  color: #e0ad00;
+  background: #fff8d7;
+  border: 1px solid var(--sportfit-yellow);
+  border-radius: 50%;
+}
+
+.notification svg,
+.nav-item svg {
+  width: clamp(18px, 1.2vw, 22px);
+  height: clamp(18px, 1.2vw, 22px);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.profile-avatar {
+  display: grid;
+  width: clamp(110px, 8.75vw, 168px);
+  aspect-ratio: 1;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(145deg, #49bd92, #238c75);
+  border: 6px solid #f0f0f0;
+  border-radius: 50%;
+  font-size: clamp(24px, 1.7vw, 32px);
+  font-weight: 700;
+  line-height: 1.05;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.profile-name {
+  margin: clamp(12px, 1vw, 20px) 0 0;
+  color: #e3ad00;
+  font-size: clamp(13px, 0.9vw, 17px);
+}
+
+.side-navigation {
+  display: grid;
+  gap: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 0.8vw, 16px);
+  min-height: clamp(46px, 3vw, 58px);
+  padding: 0 0 0 clamp(30px, 2.6vw, 50px);
+  color: #929292;
+  font-size: clamp(14px, 0.9vw, 18px);
+  font-weight: 600;
+}
+
+.nav-item--active {
+  color: #858585;
+  background: #dedede;
+}
+
+.logout-button {
+  margin: auto 18px clamp(16px, 2.4vw, 32px);
+  padding: 10px;
+  color: var(--sportfit-green);
+  background: transparent;
+  border: 0;
+  font-size: clamp(13px, 0.9vw, 17px);
+  font-weight: 700;
+  cursor: default;
+}
+
+.main-content {
+  min-width: 0;
+  padding: 0 clamp(18px, 1.15vw, 24px) 22px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: clamp(74px, 5.6vw, 108px);
+  margin-bottom: clamp(12px, 1.05vw, 20px);
+}
+
+.brand-logo {
+  display: block;
+  width: 160px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.page-heading {
+  display: flex;
+  align-items: center;
+  min-height: clamp(80px, 5.2vw, 100px);
+  margin-bottom: clamp(12px, 1vw, 18px);
+  padding: 14px clamp(18px, 1.6vw, 30px);
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+}
+
+.page-heading h1 {
+  margin: 0;
+  color: var(--sportfit-green);
+  font-size: clamp(32px, 2.4vw, 46px);
+  line-height: 1.1;
+}
+
+.booking-layout {
+  display: grid;
+  grid-template-columns: minmax(250px, 26%) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(14px, 1.2vw, 22px);
+}
+
+.booking-sidebar {
+  display: grid;
+  gap: clamp(14px, 1.2vw, 20px);
+}
+
+.panel {
+  min-width: 0;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+}
+
+.filters-panel,
+.reservation-panel {
+  padding: clamp(15px, 1.2vw, 22px) clamp(16px, 1.4vw, 26px) clamp(18px, 1.4vw, 26px);
+}
+
+.panel-title {
+  margin: 0 0 clamp(16px, 1.25vw, 22px);
+  color: var(--sportfit-green);
+  font-size: clamp(17px, 1vw, 20px);
+  font-weight: 700;
+  text-align: center;
+}
+
+.filter-field,
+.summary-field {
+  display: grid;
+  grid-template-columns: clamp(50px, 4vw, 76px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(8px, 0.6vw, 10px);
+  margin-bottom: clamp(10px, 0.9vw, 15px);
+}
+
+.filter-field label,
+.summary-field > span:first-child {
+  text-align: right;
+}
+
+.filter-field input,
+.filter-field select,
+.summary-value {
+  min-width: 0;
+  width: 100%;
+  height: clamp(28px, 1.85vw, 34px);
+  padding: 0 clamp(8px, 0.7vw, 12px);
+  color: #8f8f8f;
+  background: #f0f2f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  font-size: clamp(12px, 0.82vw, 15px);
+}
+
+.filter-field input,
+.filter-field select { color-scheme: light; }
+
+.button {
+  display: block;
+  width: min(100%, 304px);
+  min-height: clamp(44px, 3.4vw, 58px);
+  margin: clamp(12px, 1vw, 18px) auto 0;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: clamp(13px, 0.9vw, 18px);
+  font-weight: 700;
+  text-align: center;
+  cursor: default;
+}
+
+.button--outline {
+  color: var(--sportfit-green);
+  background: #e4f5ec;
+  border-color: var(--sportfit-green);
+}
+
+.button--primary {
+  min-height: clamp(48px, 4vw, 64px);
+  color: #fff;
+  background: var(--sportfit-green);
+}
+
+.reservation-panel .panel-title {
+  margin-bottom: clamp(18px, 1.5vw, 28px);
+}
+
+.summary-field {
+  margin-bottom: clamp(14px, 1.2vw, 22px);
+}
+
+.summary-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
+.time-range {
+  display: flex;
+  align-items: center;
+  gap: clamp(5px, 0.5vw, 8px);
+  min-width: 0;
+}
+
+.time-arrow { font-size: clamp(18px, 1.4vw, 24px); }
+
+.price-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: fit-content;
+  max-width: 100%;
+  margin: clamp(18px, 1.7vw, 28px) auto clamp(14px, 1.2vw, 20px);
+  padding: 6px 10px;
+  border: 1px solid #65d987;
+  border-radius: 10px;
+  background: #edfff1;
+}
+
+.currency { color: #929292; }
+.price-value {
+  min-width: 74px;
+  padding: 4px 10px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+}
+
+.button--yellow {
+  min-height: clamp(48px, 4vw, 64px);
+  color: #fff;
+  background: var(--sportfit-yellow);
+}
+
+.schedule-section { min-width: 0; }
+
+.date-navigation {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 4px;
+  min-height: clamp(48px, 3.3vw, 64px);
+  margin-bottom: 4px;
+}
+
+.date-option,
+.date-arrow {
+  min-width: 0;
+  min-height: 38px;
+  padding: 6px 8px;
+  color: #111;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: clamp(13px, 0.95vw, 18px);
+  white-space: nowrap;
+  cursor: default;
+}
+
+.date-option--selected {
+  background: #f4edb1;
+  border-color: var(--sportfit-yellow);
+}
+
+.date-arrow {
+  padding: 0;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.schedule-panel {
+  min-height: clamp(430px, 34.3vw, 660px);
+  padding: clamp(12px, 1.2vw, 22px) clamp(12px, 1vw, 18px);
+}
+
+.schedule-scroll {
+  width: 100%;
+  overflow: auto;
+  outline-offset: 4px;
+}
+
+.availability-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: #9a9a9a;
+  font-size: clamp(12px, 0.75vw, 15px);
+  text-align: center;
+}
+
+.court-column { width: 78px; }
+.price-column { width: 72px; }
+.capacity-column { width: 56px; }
+.hour-column { width: 49px; }
+
+.availability-table th,
+.availability-table td {
+  height: 42px;
+  padding: 4px 3px;
+  border: 1px solid #dedede;
+}
+
+.availability-table thead th {
+  height: 42px;
+  color: #202020;
+  background: #eaf4e5;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.availability-table tbody th { font-weight: 700; }
+
+.availability-table thead th:nth-child(4),
+.availability-table tbody td:nth-child(4) {
+  border-left: 2px solid #aab4b0;
+}
+
+.slot { padding: 0 !important; background: #efefef; }
+.slot--free { background: #efefef; }
+.slot--busy { background: #ff6468; }
+.slot--selected { background: var(--sportfit-green); }
+
+.availability-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: clamp(16px, 1.5vw, 28px) 8px 0;
+  padding: 0;
+  color: #969696;
+  font-size: clamp(13px, 0.9vw, 18px);
+  list-style: none;
+}
+
+.availability-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.legend-dot {
+  width: clamp(18px, 1.35vw, 25px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.legend-dot--free { background: #d9d9d9; }
+.legend-dot--busy { background: #ff6468; }
+.legend-dot--selected { background: var(--sportfit-green); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@media (max-width: 980px) {
+  .reservation-page {
+    position: static;
+    min-height: 100dvh;
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .client-sidebar {
+    position: static;
+    width: 100%;
+    min-height: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .sidebar-top {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 10px 16px;
+  }
+
+  .notification {
+    position: static;
+    order: 2;
+    margin-left: auto;
+  }
+
+  .profile-avatar {
+    width: 42px;
+    border-width: 2px;
+    font-size: 13px;
+  }
+
+  .profile-name { margin: 0; }
+
+  .side-navigation {
+    display: flex;
+    overflow-x: auto;
+    border-top: 1px solid #eee;
+  }
+
+  .nav-item {
+    flex: 0 0 auto;
+    min-height: 46px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
+  .logout-button {
+    display: block;
+    align-self: flex-end;
+    margin: 0 12px 8px;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  .main-content { padding: 0 16px 20px; }
+
+  .topbar {
+    min-height: 56px;
+    margin-bottom: 10px;
+  }
+
+  .brand-logo { width: 125px; }
+
+  .page-heading {
+    min-height: 70px;
+    margin-bottom: 14px;
+  }
+
+  .page-heading h1 { font-size: clamp(28px, 5vw, 38px); }
+
+  .booking-layout { grid-template-columns: 1fr; }
+
+  .booking-sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .schedule-panel { min-height: 0; }
+}
+
+@media (max-width: 640px) {
+  .booking-sidebar { grid-template-columns: 1fr; }
+
+  .date-navigation {
+    grid-template-columns: 24px minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr) 24px;
+    gap: 2px;
+  }
+
+  .date-option { padding: 6px 2px; font-size: 12px; }
+
+  .schedule-panel { padding: 10px; }
+
+  .availability-legend {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 12px 20px;
+    margin: 16px 4px 0;
+  }
+}
+
+/* En escritorio, la vista queda contenida en el viewport. */
+@media (min-width: 981px) {
+  .reservation-page {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .client-sidebar {
+    align-self: start;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .logout-button {
+    flex: 0 0 auto;
+    margin-top: auto;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    padding-bottom: 12px;
+  }
+
+  .topbar {
+    flex: 0 0 clamp(86px, 12vh, 108px);
+    min-height: 0;
+    margin-bottom: clamp(2px, 0.4vh, 4px);
+  }
+
+  .page-heading {
+    flex: 0 0 68px;
+    min-height: 0;
+    margin-bottom: 12px;
+  }
+
+  .booking-layout {
+    flex: 1 1 0;
+    min-height: 0;
+    align-items: stretch;
+  }
+
+  .booking-sidebar {
+    grid-template-rows: minmax(0, 1.12fr) minmax(0, 1fr);
+    align-content: start;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .filters-panel,
+  .reservation-panel {
+    min-height: 0;
+    padding: clamp(10px, 1vh, 14px) clamp(12px, 1vw, 18px);
+  }
+
+  .panel-title,
+  .reservation-panel .panel-title { margin-bottom: clamp(8px, 1vh, 12px); }
+
+  .filter-field { margin-bottom: clamp(12px, 0.85vw, 16px); }
+
+  .summary-field { margin-bottom: clamp(16px, 1vw, 20px); }
+
+  .filter-field input,
+  .filter-field select,
+  .summary-value { height: clamp(23px, 1.5vw, 30px); }
+
+  .button {
+    min-height: clamp(38px, 4.2vh, 50px);
+    width: min(100%, clamp(180px, 15.8vw, 304px));
+    margin-top: clamp(12px, 0.8vh, 16px);
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .filters-panel .button--outline { margin-top: clamp(16px, 1vw, 20px); }
+
+  .button--primary,
+  .button--yellow { min-height: clamp(42px, 4.6vh, 54px); }
+
+  .reservation-panel .summary-field { margin-bottom: clamp(16px, 1.25vw, 20px); }
+
+  .price-field {
+    margin-top: clamp(18px, 1.7vw, 26px);
+    margin-bottom: clamp(12px, 0.9vw, 16px);
+    padding: 4px 8px;
+  }
+
+  .schedule-section {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    min-height: 0;
+  }
+
+  .date-navigation {
+    min-height: clamp(42px, 6vh, 58px);
+  }
+
+  .schedule-panel {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .schedule-scroll { height: 100%; overflow: auto; }
+
+  .availability-table { min-width: 0; }
+
+  .hour-column { width: auto; }
+
+  .availability-table th,
+  .availability-table td,
+  .availability-table thead th { height: 42px; }
+
+  .availability-legend {
+    margin-top: clamp(8px, 1vh, 14px);
+  }
+}
+
+@media (min-width: 981px) and (max-height: 760px) {
+  .sidebar-top {
+    padding-top: 12px;
+    padding-bottom: 16px;
+  }
+
+  .profile-avatar {
+    width: min(112px, 15dvh);
+    border-width: 4px;
+  }
+
+  .profile-name {
+    margin-top: 8px;
+  }
+
+  .nav-item {
+    min-height: 40px;
+  }
+
+  .logout-button {
+    margin-bottom: 8px;
+    padding: 7px;
+  }
+
+  .filters-panel,
+  .reservation-panel { padding-top: 10px; padding-bottom: 12px; }
+
+  .panel-title { margin-bottom: clamp(16px, 1vw, 18px); }
+
+  .filter-field { margin-bottom: clamp(8px, 0.8vw, 12px); }
+
+  .summary-field,
+  .reservation-panel .summary-field { margin-bottom: 11px; }
+
+  .button { min-height: 38px; margin-top: 8px; }
+
+  .button--primary,
+  .button--yellow { min-height: 42px; }
+
+  .reservation-panel .panel-title { margin-bottom: clamp(16px, 1vw, 18px); }
+
+  .filters-panel .button--outline { margin-top: 24px; }
+
+  .price-field { margin-top: 20px; margin-bottom: 10px; }
+}

@@ -1,0 +1,322 @@
+<!-- Biblioteca de iconos Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+<!-- ============================================= -->
+<!-- HU10 - DASHBOARD PRINCIPAL DEL CLIENTE        -->
+<!-- ============================================= -->
+
+<div class="dashboard">
+
+  <!-- =========================================== -->
+  <!-- 1. MENÚ LATERAL IZQUIERDO                   -->
+  <!-- =========================================== -->
+  <aside class="sidebar">
+
+    <!-- Perfil del cliente -->
+    <div class="sidebar-profile">
+
+      <button class="notification-button"
+              type="button"
+              aria-label="Notificaciones">
+        <i class="bi bi-bell"></i>
+      </button>
+
+      <!-- Imagen temporal del perfil -->
+      <div class="profile-avatar">
+        <i class="bi bi-person-fill"></i>
+      </div>
+
+      <span class="profile-name">Cliente SportFit</span>
+    </div>
+
+    <!-- Navegación principal -->
+    <nav class="sidebar-nav" aria-label="Menú principal">
+
+      <button class="nav-item active" type="button">
+        <i class="bi bi-house-door"></i>
+        <span>Home</span>
+      </button>
+
+      <button class="nav-item" type="button">
+        <i class="bi bi-plus-circle"></i>
+        <span>Nueva reserva</span>
+      </button>
+
+      <button class="nav-item" type="button">
+        <i class="bi bi-layers"></i>
+        <span>Mis reservas</span>
+      </button>
+
+      <button class="nav-item" type="button">
+        <i class="bi bi-person"></i>
+        <span>Cuenta</span>
+      </button>
+
+      <button class="nav-item" type="button">
+        <i class="bi bi-tools"></i>
+        <span>Incidencias</span>
+      </button>
+
+    </nav>
+
+    <!-- Cerrar sesión -->
+    <div class="sidebar-footer">
+      <button class="logout-button" type="button">
+        <i class="bi bi-box-arrow-left"></i>
+        <span>Cerrar sesión</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- =========================================== -->
+  <!-- 2. CONTENIDO PRINCIPAL                      -->
+  <!-- =========================================== -->
+  <main class="main-content">
+
+    <!-- Logo superior -->
+    <header class="top-header">
+      <div class="brand">
+        <span>SportFit</span>
+        <i class="bi bi-person-walking"></i>
+      </div>
+    </header>
+
+    <!-- ========================================= -->
+    <!-- 3. BANNER DE BIENVENIDA                   -->
+    <!-- ========================================= -->
+    <section class="welcome-banner">
+
+      <div class="welcome-left">
+
+        <div class="welcome-icon">
+          <i class="bi bi-hand-thumbs-up"></i>
+        </div>
+
+        <div class="welcome-text">
+          <h1>¡Bienvenido de vuelta!</h1>
+          <p>¡Encuentra tus mejores horarios!</p>
+        </div>
+
+      </div>
+
+      <button class="reserve-button" type="button">
+        RESERVAR AHORA
+      </button>
+
+    </section>
+
+    <!-- ========================================= -->
+    <!-- 4. CONTENEDOR DE REPORTES                 -->
+    <!-- ========================================= -->
+    <div class="dashboard-content">
+
+      <!-- ======================================= -->
+      <!-- COLUMNA IZQUIERDA                       -->
+      <!-- ======================================= -->
+      <div class="left-column">
+
+        <!-- ===================================== -->
+        <!-- 5. TARJETAS DE MÉTRICAS               -->
+        <!-- ===================================== -->
+        <section class="metrics-grid" aria-label="Resumen de reservas">
+
+          <!-- Tarjeta: Reservas próximas -->
+          <article class="metric-card">
+            <span class="metric-number">0</span>
+            <span class="metric-label">Reservas próximas</span>
+          </article>
+
+          <!-- Tarjeta: Reservas realizadas -->
+          <article class="metric-card">
+            <span class="metric-number">0</span>
+            <span class="metric-label">Reservas realizadas</span>
+          </article>
+
+          <!-- Tarjeta: Reservas canceladas -->
+          <article class="metric-card">
+            <span class="metric-number">0</span>
+            <span class="metric-label">Reservas canceladas</span>
+          </article>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- 6. TABLA DE PRÓXIMAS RESERVAS         -->
+        <!-- ===================================== -->
+        <section class="panel upcoming-panel">
+
+          <h2 class="panel-title">Próximas reservas</h2>
+
+          <div class="table-container">
+            <table class="data-table">
+
+              <!-- Encabezados de la tabla -->
+              <thead>
+              <tr>
+                <th>Deporte</th>
+                <th>Sede</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+              </tr>
+              </thead>
+
+              <!-- Cuerpo de la tabla -->
+              <!-- Aquí se cargarán las reservas desde Angular -->
+              <tbody>
+
+              <!-- Estado inicial sin registros -->
+              <tr class="empty-row">
+                <td colspan="4">
+                  <div class="empty-state">
+                    <i class="bi bi-calendar2-week"></i>
+                    <span>No tienes próximas reservas</span>
+                  </div>
+                </td>
+              </tr>
+
+              </tbody>
+
+            </table>
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- ======================================= -->
+      <!-- COLUMNA DERECHA                         -->
+      <!-- ======================================= -->
+      <div class="right-column">
+
+        <!-- ===================================== -->
+        <!-- 7. TABLA DE SOLICITUDES DE RESERVA    -->
+        <!-- ===================================== -->
+        <section class="panel requests-panel">
+
+          <h2 class="panel-title">Solicitudes de reserva</h2>
+
+          <div class="table-container">
+            <table class="data-table">
+
+              <!-- Encabezados de la tabla -->
+              <thead>
+              <tr>
+                <th>Deporte</th>
+                <th>Sede</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+              </tr>
+              </thead>
+
+              <!-- Cuerpo de la tabla -->
+              <!-- Aquí se cargarán las solicitudes del cliente -->
+              <tbody>
+
+              <tr class="empty-row">
+                <td colspan="4">
+                  <div class="empty-state">
+                    <i class="bi bi-clipboard2-check"></i>
+                    <span>No tienes solicitudes pendientes</span>
+                  </div>
+                </td>
+              </tr>
+
+              </tbody>
+
+            </table>
+          </div>
+
+        </section>
+
+        <!-- ===================================== -->
+        <!-- 8. GRÁFICO DE TENDENCIA MENSUAL       -->
+        <!-- ===================================== -->
+        <section class="panel chart-panel">
+
+          <div class="chart-wrapper">
+
+            <h2 class="chart-title">
+              Tendencia mensual de horas de actividad
+            </h2>
+
+            <!-- Contenedor temporal del gráfico -->
+            <!-- Posteriormente aquí irá Chart.js -->
+            <div class="chart-placeholder">
+
+              <!-- Etiqueta vertical -->
+              <span class="chart-y-label">Horas</span>
+
+              <!-- Área del gráfico -->
+              <div class="chart-area">
+
+                <!-- Líneas horizontales de referencia -->
+                <div class="chart-grid">
+
+                  <div class="grid-line">
+                    <span>50</span>
+                  </div>
+
+                  <div class="grid-line">
+                    <span>40</span>
+                  </div>
+
+                  <div class="grid-line">
+                    <span>30</span>
+                  </div>
+
+                  <div class="grid-line">
+                    <span>20</span>
+                  </div>
+
+                  <div class="grid-line">
+                    <span>10</span>
+                  </div>
+
+                  <div class="grid-line">
+                    <span>0</span>
+                  </div>
+
+                </div>
+
+                <!-- Mensaje cuando no existen datos -->
+                <div class="chart-empty">
+                  <i class="bi bi-graph-up"></i>
+                  <span>Sin datos para mostrar</span>
+                </div>
+
+                <!-- Meses del eje horizontal -->
+                <div class="chart-months">
+                  <span>Ene</span>
+                  <span>Feb</span>
+                  <span>Mar</span>
+                  <span>Abr</span>
+                  <span>May</span>
+                  <span>Jun</span>
+                  <span>Jul</span>
+                  <span>Ago</span>
+                  <span>Sep</span>
+                  <span>Oct</span>
+                  <span>Nov</span>
+                  <span>Dic</span>
+                </div>
+
+              </div>
+
+            </div>
+
+            <span class="chart-x-label">Meses</span>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
