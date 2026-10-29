@@ -1,0 +1,401 @@
+<div class="pagina-dashboard">
+  <!-- BARRA LATERAL (Sidebar corporativo de SportFit) -->
+  <aside class="barra-lateral" aria-label="Menú del Administrador">
+    <!-- Botón de notificaciones -->
+    <button class="boton-notificaciones" type="button" aria-label="Notificaciones">
+      <svg class="icono-campana" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-12 12a2 2 0 0 0 4 0"></path>
+      </svg>
+      <span class="punto-alerta" aria-hidden="true"></span>
+    </button>
+
+    <!-- Perfil del Administrador -->
+    <div class="perfil-admin">
+      <div class="avatar-marco">
+        <svg class="avatar-svg" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="50" fill="#c3ded3"></circle>
+          <circle cx="50" cy="40" r="20" fill="#527d86"></circle>
+          <path d="M18 88C18 70 32 64 50 64C68 64 82 70 82 88" fill="#527d86"></path>
+        </svg>
+      </div>
+      <p class="rol-admin">Administrador</p>
+    </div>
+
+    <!-- Menú de Navegación -->
+    <nav class="navegacion-principal" aria-label="Navegación del sistema">
+      <ul class="lista-menu">
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Perfil</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Solicitudes</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Clientes</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            <span>Reservas</span>
+          </a>
+        </li>
+        <li>
+          <a class="opcion-menu" href="javascript:void(0)">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="2" y="3" width="20" height="18" rx="2"></rect>
+              <line x1="12" y1="3" x2="12" y2="21"></line>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span>Espacios</span>
+          </a>
+        </li>
+        <!-- Reportes (Desplegado con submenú corporativo) -->
+        <li class="menu-item-activo">
+          <div class="opcion-menu opcion-reportes-activa">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span>Reportes</span>
+          </div>
+          <ul class="submenu-reportes">
+            <li>
+              <button class="sub-enlace" type="button">Reservas por deporte y Sede</button>
+            </li>
+            <li>
+              <button class="sub-enlace sub-enlace--activo" type="button" routerLink="/reportes/reservas-canceladas" aria-current="page">Reservas Canceladas</button>
+            </li>
+            <li>
+              <button class="sub-enlace" type="button" routerLink="/reportes/financiero-periodo">Financiero por periodo</button>
+            </li>
+            <li>
+              <button class="sub-enlace" type="button" routerLink="/reportes/cantidad-reservas">Cantidad de Reservas</button>
+            </li>
+            <li>
+              <button class="sub-enlace" type="button">Incidencias enviadas y atendidas</button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Cerrar sesión -->
+    <button class="boton-cerrar-sesion" type="button">
+      <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+      <span>Cerrar sesión</span>
+    </button>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL DE LA VISTA -->
+  <main class="contenido-principal">
+    <!-- Navbar superior con Logo SportFit -->
+    <header class="navbar-superior">
+      <div class="logo-sportfit">
+        <span class="logo-texto">SportFit</span>
+        <svg class="logo-icono" viewBox="0 0 28 28" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="19" cy="6" r="3"></circle>
+          <path d="M12 12l4-2 3 4-4 4 1 5"></path>
+          <path d="M7 16l4-2"></path>
+          <path d="M11 22l-2-4"></path>
+        </svg>
+      </div>
+    </header>
+
+    <!-- Encabezado de presentación (Header Card) -->
+    <mat-card class="tarjeta-encabezado" appearance="outlined">
+      <div class="badge-analitico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#00c988" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3v18h18"></path>
+          <path d="M18 9l-5 5-4-4-3 3"></path>
+        </svg>
+      </div>
+      <div class="titulos-encabezado">
+        <h1 class="titulo-principal">
+          <span class="texto-dash">DashBoard</span>
+          <span class="texto-verde">Motivos de cancelación de reserva</span>
+        </h1>
+        <p class="subtitulo-descriptivo">
+          Análisis general de cancelaciones de reservas, con motivos y seguimiento mensual
+        </p>
+      </div>
+    </mat-card>
+
+    <!-- Fila 1: Filtro de Búsqueda y Bloque de KPIs -->
+    <section class="fila-superior">
+      <!-- Panel de Filtros -->
+      <mat-card class="tarjeta-filtros" appearance="outlined">
+        <header class="cabecera-filtros">
+          <svg class="icono-lupa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <h2 class="titulo-filtros">Filtro de búsqueda</h2>
+        </header>
+
+        <div class="cuerpo-filtros">
+          <div class="grupo-controles">
+            <!-- Selector de Mes -->
+            <div class="campo-control">
+              <label class="etiqueta-control">Mes</label>
+              <mat-form-field appearance="outline" class="select-personalizado" subscriptSizing="dynamic">
+                <mat-select [(ngModel)]="mesSeleccionado" placeholder="Seleccionar tipo">
+                  @for (mes of mesesDisponibles; track mes.valor) {
+                    <mat-option [value]="mes.valor">{{ mes.etiqueta }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Selector de Año -->
+            <div class="campo-control">
+              <label class="etiqueta-control">Año</label>
+              <mat-form-field appearance="outline" class="select-personalizado" subscriptSizing="dynamic">
+                <mat-select [(ngModel)]="anioSeleccionado" placeholder="Seleccionar fecha">
+                  @for (anio of aniosDisponibles; track anio.valor) {
+                    <mat-option [value]="anio.valor">{{ anio.etiqueta }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="acciones-filtros">
+            <button mat-flat-button class="btn-accion btn-buscar" type="button" (click)="onBuscar()">
+              Buscar
+            </button>
+            <button mat-flat-button class="btn-accion btn-ver-monto" type="button" (click)="onVerMonto()">
+              Ver monto
+            </button>
+            <button mat-flat-button class="btn-accion btn-limpiar" type="button" (click)="onLimpiar()">
+              Limpiar
+            </button>
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Bloque de KPIs -->
+      <div class="contenedor-kpis">
+        <!-- KPI 1: Total de Cancelaciones -->
+        <mat-card class="tarjeta-kpi" appearance="outlined">
+          <p class="kpi-titulo">Total de cancelaciones</p>
+          <div class="kpi-contenido">
+            <svg class="kpi-icono icono-usuario" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span class="kpi-numero">{{ totalCancelacionesDTO.totalCanceladas }}</span>
+          </div>
+          <span class="kpi-pie">{{ mesNombreKpi }}</span>
+        </mat-card>
+
+        <!-- KPI 2: Principal Motivo de Cancelación -->
+        <mat-card class="tarjeta-kpi" appearance="outlined">
+          <p class="kpi-titulo">Principal motivo de cancelación</p>
+          <div class="kpi-contenido">
+            <svg class="kpi-icono icono-deporte" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="m4.93 4.93 4.24 4.24"></path>
+              <path d="m14.83 9.17 4.24-4.24"></path>
+              <path d="m14.83 14.83 4.24 4.24"></path>
+              <path d="m9.17 14.83-4.24 4.24"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span class="kpi-numero">{{ motivoPrincipalDTO.cantidad }}</span>
+          </div>
+          <span class="kpi-pie">{{ motivoPrincipalDTO.tipoCancelacion }}</span>
+        </mat-card>
+      </div>
+    </section>
+
+    <!-- Fila 2: Bloque de Gráficos (Grid de 2 columnas) -->
+    <section class="fila-graficos">
+      <!-- Gráfico Izquierda: DISTRIBUCIÓN DE INCIDENCIAS POR CATEGORÍA -->
+      <mat-card class="tarjeta-grafico" appearance="outlined">
+        <h2 class="titulo-grafico">DISTRIBUCIÓN DE INCIDENCIAS POR CATEGORÍA</h2>
+
+        <div class="contenedor-barras-horizontales">
+          <div class="lista-barras">
+            <!-- Barra 1: Inasistencia (55%) -->
+            <div class="fila-barra">
+              <span class="etiqueta-categoria">Inasistencia</span>
+              <div class="area-riel">
+                <div class="barra-color barra-verde-oscuro" style="width: 55%;">
+                  <span class="valor-porcentaje">55%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Barra 2: Cancelación por el cliente (30%) -->
+            <div class="fila-barra">
+              <span class="etiqueta-categoria">Cancelación por el cliente</span>
+              <div class="area-riel">
+                <div class="barra-color barra-verde-oscuro" style="width: 30%;">
+                  <span class="valor-porcentaje">30%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Barra 3: Administración (10%) -->
+            <div class="fila-barra">
+              <span class="etiqueta-categoria">Administración</span>
+              <div class="area-riel">
+                <div class="barra-color barra-celeste-medio" style="width: 10%;">
+                  <span class="valor-porcentaje">10%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Barra 4: Fuerza mayor (5%) -->
+            <div class="fila-barra">
+              <span class="etiqueta-categoria">Fuerza mayor</span>
+              <div class="area-riel">
+                <div class="barra-color barra-celeste-claro" style="width: 5%;">
+                  <span class="valor-porcentaje">5%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Escala del Eje X -->
+          <div class="eje-x-escalas">
+            <div class="lineas-guia-fondo">
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="valores-eje-x">
+              <span>0</span>
+              <span>5</span>
+              <span>10</span>
+              <span>15</span>
+              <span>20</span>
+              <span>25</span>
+              <span>30</span>
+              <span>35</span>
+              <span>45</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Gráfico Derecha: TENDENCIA MENSUAL DE CANCELACIONES -->
+      <mat-card class="tarjeta-grafico" appearance="outlined">
+        <h2 class="titulo-grafico">TENDENCIA MENSUAL DE CANCELACIONES</h2>
+
+        <div class="contenedor-tendencia">
+          <!-- Área del Gráfico Cartesiano -->
+          <div class="grafico-cartesiano-tendencia">
+            <!-- Eje Y con etiqueta rotada -->
+            <div class="eje-y-contenedor">
+              <span class="etiqueta-eje-y">Número de incidencias</span>
+              <div class="valores-eje-y">
+                <span>80</span>
+                <span>70</span>
+                <span>60</span>
+                <span>50</span>
+                <span>40</span>
+                <span>30</span>
+                <span>20</span>
+                <span>10</span>
+              </div>
+            </div>
+
+            <!-- Grilla y Líneas SVG -->
+            <div class="cuadricula-tendencia">
+              <div class="lineas-horizontales-guia">
+                <div class="guia"></div>
+                <div class="guia"></div>
+                <div class="guia"></div>
+                <div class="guia"></div>
+                <div class="guia"></div>
+                <div class="guia"></div>
+                <div class="guia"></div>
+                <div class="guia"></div>
+              </div>
+
+              <!-- Trazado de Curvas SVG -->
+              <svg class="svg-curvas-tendencia" viewBox="0 0 570 190" preserveAspectRatio="none">
+                <!-- Línea de Inasistencia (Verde) -->
+                <polyline
+                  [attr.points]="puntosInasistencia"
+                  fill="none"
+                  stroke="#38a169"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <!-- Línea de Cancelación por cliente (Amarilla) -->
+                <polyline
+                  [attr.points]="puntosCancelacionCliente"
+                  fill="none"
+                  stroke="#f4c430"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+
+              <!-- Meses en el Eje X -->
+              <div class="meses-eje-x">
+                @for (mes of mesesTendencia; track mes) {
+                  <span class="mes-etiqueta">{{ mes }}</span>
+                }
+              </div>
+
+              <div class="titulo-eje-x">Meses</div>
+            </div>
+
+            <!-- Leyenda por Colores -->
+            <aside class="leyenda-tendencia" aria-label="Leyenda de motivos de cancelación">
+              <div class="item-leyenda">
+                <span class="muestra-color color-inasistencia"></span>
+                <span class="texto-leyenda">Inasistencia</span>
+              </div>
+              <div class="item-leyenda">
+                <span class="muestra-color color-cancelacion-cliente"></span>
+                <span class="texto-leyenda">Cancelación por el cliente</span>
+              </div>
+              <div class="item-leyenda">
+                <span class="muestra-color color-administracion"></span>
+                <span class="texto-leyenda">Administración</span>
+              </div>
+              <div class="item-leyenda">
+                <span class="muestra-color color-fuerza-mayor"></span>
+                <span class="texto-leyenda">Fuerza mayor</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </mat-card>
+    </section>
+  </main>
+</div>
