@@ -43,7 +43,7 @@ export interface PuntoGraficoIngreso {
     MatDialogModule
   ],
   templateUrl: './reporte-financiero.component.html',
-  styleUrls: ['./reporte-financiero.component.scss']
+  styleUrl: './reporte-financiero.component.css'
 })
 export class ReporteFinancieroComponent implements OnInit {
   // Filtros de búsqueda

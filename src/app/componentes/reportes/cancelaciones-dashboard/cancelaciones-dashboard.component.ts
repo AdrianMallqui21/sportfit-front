@@ -44,7 +44,7 @@ export interface OpcionSelector {
     MatDialogModule
   ],
   templateUrl: './cancelaciones-dashboard.component.html',
-  styleUrls: ['./cancelaciones-dashboard.component.scss']
+  styleUrl: './cancelaciones-dashboard.component.css'
 })
 export class CancelacionesDashboardComponent implements OnInit {
   // Filtros de búsqueda

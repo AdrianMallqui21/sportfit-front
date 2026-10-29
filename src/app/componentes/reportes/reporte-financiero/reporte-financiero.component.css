@@ -1,0 +1,963 @@
+:host {
+  display: block;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #202625;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   LAYOUT GENERAL (Sidebar + Contenido Principal)
+   ========================================================================== */
+.pagina-dashboard {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
+
+/* ==========================================================================
+   BARRA LATERAL (Sidebar corporativo)
+   ========================================================================== */
+.barra-lateral {
+  background-color: #527d86;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 40px 0 20px;
+  z-index: 10;
+}
+
+.boton-notificaciones {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: 1.5px solid #f4cf20;
+  border-radius: 50%;
+  color: #f4cf20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.boton-notificaciones .icono-campana {
+  width: 18px;
+  height: 18px;
+}
+
+.boton-notificaciones .punto-alerta {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  background-color: #f4cf20;
+  border-radius: 50%;
+}
+
+.perfil-admin {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.perfil-admin .avatar-marco {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  overflow: hidden;
+  background-color: #d7e8e1;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.perfil-admin .avatar-marco .avatar-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.perfil-admin .rol-admin {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+}
+
+.navegacion-principal {
+  flex: 1;
+}
+
+.navegacion-principal .lista-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navegacion-principal .lista-menu li {
+  margin-bottom: 2px;
+}
+
+.navegacion-principal .opcion-menu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 28px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14.5px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.navegacion-principal .opcion-menu .icono {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.navegacion-principal .opcion-menu:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.navegacion-principal .opcion-reportes-activa {
+  background-color: #f4cf20;
+  color: #202625;
+  font-weight: 700;
+}
+
+.navegacion-principal .opcion-reportes-activa .icono {
+  stroke: #202625;
+}
+
+.navegacion-principal .submenu-reportes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #f4cf20;
+}
+
+.navegacion-principal .submenu-reportes li {
+  margin: 0;
+}
+
+.navegacion-principal .submenu-reportes .sub-enlace {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #202625;
+  padding: 9px 24px 9px 36px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1.25;
+  display: block;
+  transition: background-color 0.15s;
+}
+
+.navegacion-principal .submenu-reportes .sub-enlace:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.navegacion-principal .submenu-reportes .sub-enlace--activo {
+  background-color: #5c5525 !important;
+  color: #ffffff !important;
+}
+
+.boton-cerrar-sesion {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  padding: 14px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: auto;
+  transition: background-color 0.2s;
+}
+
+.boton-cerrar-sesion .icono {
+  width: 19px;
+  height: 19px;
+}
+
+.boton-cerrar-sesion:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ==========================================================================
+   CONTENIDO PRINCIPAL
+   ========================================================================== */
+.contenido-principal {
+  padding: 24px 36px 40px;
+  min-width: 0;
+}
+
+.navbar-superior {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.navbar-superior .logo-sportfit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navbar-superior .logo-sportfit .logo-texto {
+  color: #00c988;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.navbar-superior .logo-sportfit .logo-icono {
+  width: 28px;
+  height: 28px;
+}
+
+/* Encabezado principal */
+.tarjeta-encabezado {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px !important;
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.tarjeta-encabezado .badge-analitico {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #e6f9f2;
+  border: 2px solid #00c988;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tarjeta-encabezado .badge-analitico svg {
+  width: 28px;
+  height: 28px;
+}
+
+.tarjeta-encabezado .titulos-encabezado .titulo-principal {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.tarjeta-encabezado .titulos-encabezado .titulo-principal .texto-dash {
+  color: #1e293b;
+  margin-right: 8px;
+}
+
+.tarjeta-encabezado .titulos-encabezado .titulo-principal .texto-verde {
+  color: #00c988;
+}
+
+.tarjeta-encabezado .titulos-encabezado .subtitulo-descriptivo {
+  margin: 6px 0 0;
+  color: #718096;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   BARRA DE FILTROS SUPERIOR
+   ========================================================================== */
+.tarjeta-filtros {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px !important;
+  padding: 16px 24px;
+  margin-bottom: 22px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.tarjeta-filtros .barra-filtros-contenedor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.tarjeta-filtros .seccion-filtros-izquierda {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.tarjeta-filtros .seccion-filtros-izquierda .cabecera-filtros {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tarjeta-filtros .seccion-filtros-izquierda .cabecera-filtros .icono-lupa {
+  width: 19px;
+  height: 19px;
+  color: #1e293b;
+}
+
+.tarjeta-filtros .seccion-filtros-izquierda .cabecera-filtros .titulo-filtros {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.tarjeta-filtros .seccion-filtros-izquierda .grupo-controles-filtros {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tarjeta-filtros .btn-total {
+  background-color: #f4cf20;
+  color: #202625;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tarjeta-filtros .btn-total:hover {
+  background-color: #e5bf13;
+}
+
+.tarjeta-filtros .btn-total--activo {
+  box-shadow: 0 2px 6px rgba(244, 207, 32, 0.4);
+}
+
+.tarjeta-filtros .control-filtro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tarjeta-filtros .control-filtro .etiqueta-filtro {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.tarjeta-filtros .control-filtro .select-filtro {
+  width: 165px;
+}
+
+.tarjeta-filtros .control-filtro .select-filtro ::ng-deep .mat-mdc-text-field-wrapper {
+  padding: 0 12px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  background-color: #f8fafc;
+}
+
+.tarjeta-filtros .control-filtro .select-filtro ::ng-deep .mat-mdc-form-field-infix {
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.tarjeta-filtros .control-filtro .select-filtro ::ng-deep .mat-mdc-select-value {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.tarjeta-filtros .btn-buscar-filtro {
+  background-color: #00a651 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 13.5px;
+  border-radius: 8px !important;
+  height: 36px;
+  padding: 0 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.tarjeta-filtros .btn-buscar-filtro:hover {
+  background-color: #008f45 !important;
+}
+
+.tarjeta-filtros .seccion-filtros-derecha .btn-exportar {
+  background-color: #00a651 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 8px !important;
+  height: 36px;
+  padding: 0 24px;
+  border: none;
+  cursor: pointer;
+}
+
+.tarjeta-filtros .seccion-filtros-derecha .btn-exportar:hover {
+  background-color: #008f45 !important;
+}
+
+/* ==========================================================================
+   LAYOUT PRINCIPAL: 2 COLUMNAS (Gráfico Lineal ~60% + Derecha ~40%)
+   ========================================================================== */
+.contenedor-dos-columnas {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+/* --------------------------------------------------------------------------
+   COLUMNA IZQUIERDA: GRÁFICO DE INGRESOS (LINEAL O BARRAS)
+   -------------------------------------------------------------------------- */
+.tarjeta-grafico-lineal {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px !important;
+  padding: 22px 26px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.tarjeta-grafico-lineal .cabecera-grafico {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.tarjeta-grafico-lineal .cabecera-grafico .titulo-grafico {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.tarjeta-grafico-lineal .cabecera-grafico .selector-tipo-grafica {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.tarjeta-grafico-lineal .cabecera-grafico .selector-tipo-grafica .etiqueta-selector {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  white-space: nowrap;
+}
+
+.tarjeta-grafico-lineal .cabecera-grafico .selector-tipo-grafica .select-grafica {
+  width: 155px;
+}
+
+.tarjeta-grafico-lineal .cabecera-grafico .selector-tipo-grafica .select-grafica ::ng-deep .mat-mdc-text-field-wrapper {
+  padding: 0 10px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  background-color: #f8fafc;
+}
+
+.tarjeta-grafico-lineal .cabecera-grafico .selector-tipo-grafica .select-grafica ::ng-deep .mat-mdc-form-field-infix {
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.tarjeta-grafico-lineal .cabecera-grafico .selector-tipo-grafica .select-grafica ::ng-deep .mat-mdc-select-value {
+  font-size: 12px;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* MODO 1: GRÁFICO LINEAL */
+.tarjeta-grafico-lineal .area-grafico-lineal {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.tarjeta-grafico-lineal .eje-y-lineal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 240px;
+  text-align: right;
+}
+
+.tarjeta-grafico-lineal .eje-y-lineal .escala-y-valor {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.tarjeta-grafico-lineal .cuadricula-lineal {
+  position: relative;
+  border-left: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  height: 240px;
+}
+
+.tarjeta-grafico-lineal .cuadricula-lineal .lineas-horizontales-guia {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.tarjeta-grafico-lineal .cuadricula-lineal .lineas-horizontales-guia span {
+  width: 100%;
+  height: 1px;
+  background-color: #f1f5f9;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.tarjeta-grafico-lineal .cuadricula-lineal .svg-grafico-ingresos {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.tarjeta-grafico-lineal .cuadricula-lineal .svg-grafico-ingresos .nodo-punto {
+  cursor: pointer;
+}
+
+.tarjeta-grafico-lineal .cuadricula-lineal .svg-grafico-ingresos .nodo-punto circle {
+  transition: transform 0.2s;
+}
+
+.tarjeta-grafico-lineal .cuadricula-lineal .svg-grafico-ingresos .nodo-punto:hover circle {
+  r: 6px;
+  stroke-width: 3px;
+}
+
+.tarjeta-grafico-lineal .cuadricula-lineal .svg-grafico-ingresos .nodo-punto .texto-monto-nodo {
+  font-size: 9.5px;
+  font-weight: 700;
+  fill: #475569;
+  letter-spacing: -0.2px;
+}
+
+.tarjeta-grafico-lineal .cuadricula-lineal .eje-x-meses {
+  position: absolute;
+  bottom: -24px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.tarjeta-grafico-lineal .cuadricula-lineal .eje-x-meses .mes-etiqueta {
+  font-size: 10px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-align: center;
+  flex: 1;
+}
+
+/* MODO 2: GRÁFICO DE BARRAS DE INGRESOS */
+.tarjeta-grafico-lineal .area-grafico-barras-ingresos {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.tarjeta-grafico-lineal .area-grafico-barras-ingresos .cuadricula-barras-ingresos {
+  position: relative;
+  border-left: 1.5px solid #cbd5e1;
+  border-bottom: 1.5px solid #cbd5e1;
+  height: 240px;
+}
+
+.tarjeta-grafico-lineal .area-grafico-barras-ingresos .cuadricula-barras-ingresos .lineas-horizontales-guia {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.tarjeta-grafico-lineal .area-grafico-barras-ingresos .cuadricula-barras-ingresos .lineas-horizontales-guia span {
+  width: 100%;
+  height: 1px;
+  background-color: #f1f5f9;
+}
+
+.tarjeta-grafico-lineal .area-grafico-barras-ingresos .cuadricula-barras-ingresos .lista-columnas-ingresos {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding: 0 6px;
+}
+
+.tarjeta-grafico-lineal .area-grafico-barras-ingresos .cuadricula-barras-ingresos .lista-columnas-ingresos .columna-mes-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 32px;
+  height: 100%;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.tarjeta-grafico-lineal .area-grafico-barras-ingresos .cuadricula-barras-ingresos .lista-columnas-ingresos .columna-mes-item .monto-valor-barra {
+  font-size: 10px;
+  font-weight: 800;
+  color: #475569;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.tarjeta-grafico-lineal .area-grafico-barras-ingresos .cuadricula-barras-ingresos .lista-columnas-ingresos .columna-mes-item .barra-llenado-mes {
+  width: 22px;
+  background-color: #7b61ff;
+  border-radius: 4px 4px 0 0;
+  border: 1.5px solid #5b41df;
+  transition: height 0.35s ease;
+}
+
+.tarjeta-grafico-lineal .area-grafico-barras-ingresos .cuadricula-barras-ingresos .lista-columnas-ingresos .columna-mes-item .barra-llenado-mes:hover {
+  background-color: #6a4fe8;
+}
+
+.tarjeta-grafico-lineal .area-grafico-barras-ingresos .cuadricula-barras-ingresos .lista-columnas-ingresos .columna-mes-item .mes-etiqueta-barra {
+  position: absolute;
+  bottom: -22px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.tarjeta-grafico-lineal .pie-grafico-lineal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 36px;
+}
+
+.tarjeta-grafico-lineal .pie-grafico-lineal .item-leyenda-lineal {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tarjeta-grafico-lineal .pie-grafico-lineal .item-leyenda-lineal .muestra-linea-adobe {
+  width: 16px;
+  height: 3px;
+  background-color: #7b61ff;
+  border-radius: 2px;
+  position: relative;
+}
+
+.tarjeta-grafico-lineal .pie-grafico-lineal .item-leyenda-lineal .muestra-linea-adobe::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: -2.5px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid #7b61ff;
+}
+
+.tarjeta-grafico-lineal .pie-grafico-lineal .item-leyenda-lineal .texto-leyenda-adobe {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* --------------------------------------------------------------------------
+   COLUMNA DERECHA: DISTRIBUCIÓN + GRID MÉTRICAS 2X2
+   -------------------------------------------------------------------------- */
+.columna-derecha-financiera {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Card Distribución por método de pago */
+.tarjeta-distribucion-pago {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px !important;
+  padding: 18px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow: visible;
+}
+
+.tarjeta-distribucion-pago .titulo-distribucion {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.tarjeta-distribucion-pago .cuerpo-distribucion {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 16px;
+}
+
+.tarjeta-distribucion-pago .contenedor-dona-vectorial {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.tarjeta-distribucion-pago .contenedor-dona-vectorial .circulo-pastel {
+  width: 135px;
+  height: 135px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #818cf8 0deg 70.1deg,
+    #fb7185 70.1deg 177.9deg,
+    #22d3ee 177.9deg 360deg
+  );
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.tarjeta-distribucion-pago .contenedor-dona-vectorial .etiqueta-valor-flotante {
+  position: absolute;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.tarjeta-distribucion-pago .contenedor-dona-vectorial .etiqueta-valor-flotante .etiqueta-badge {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  display: inline-block;
+}
+
+.tarjeta-distribucion-pago .contenedor-dona-vectorial .etiqueta-valor-flotante .badge-plin {
+  background: #ffffff;
+  color: #4f46e5;
+  border: 1.5px solid #818cf8;
+}
+
+.tarjeta-distribucion-pago .contenedor-dona-vectorial .etiqueta-valor-flotante .badge-transferencia {
+  background: #ffffff;
+  color: #e11d48;
+  border: 1.5px solid #fb7185;
+}
+
+.tarjeta-distribucion-pago .contenedor-dona-vectorial .etiqueta-valor-flotante .badge-yape {
+  background: #ffffff;
+  color: #0891b2;
+  border: 1.5px solid #22d3ee;
+}
+
+.tarjeta-distribucion-pago .contenedor-dona-vectorial .valor-plin {
+  top: -6px;
+  right: -24px;
+}
+
+.tarjeta-distribucion-pago .contenedor-dona-vectorial .valor-transferencia {
+  bottom: 14px;
+  right: -28px;
+}
+
+.tarjeta-distribucion-pago .contenedor-dona-vectorial .valor-yape {
+  top: 42%;
+  left: -32px;
+}
+
+.tarjeta-distribucion-pago .leyenda-metodos-pago {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tarjeta-distribucion-pago .leyenda-metodos-pago .item-metodo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tarjeta-distribucion-pago .leyenda-metodos-pago .item-metodo .punto-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tarjeta-distribucion-pago .leyenda-metodos-pago .item-metodo .punto-plin {
+  background-color: #818cf8;
+}
+
+.tarjeta-distribucion-pago .leyenda-metodos-pago .item-metodo .punto-transferencia {
+  background-color: #fb7185;
+}
+
+.tarjeta-distribucion-pago .leyenda-metodos-pago .item-metodo .punto-yape {
+  background-color: #22d3ee;
+}
+
+.tarjeta-distribucion-pago .leyenda-metodos-pago .item-metodo .nombre-metodo {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* Grid 2x2 de métricas financieras */
+.grid-metricas-financieras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.grid-metricas-financieras .tarjeta-metrica {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px !important;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  min-height: 100px;
+}
+
+.grid-metricas-financieras .tarjeta-metrica .titulo-metrica {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.grid-metricas-financieras .tarjeta-metrica .valor-metrica {
+  margin: 8px 0 0;
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.grid-metricas-financieras .tarjeta-metrica .valor-verde {
+  color: #00c988;
+}
+
+.grid-metricas-financieras .tarjeta-metrica .valor-amarillo {
+  color: #eab308;
+}
+
+.grid-metricas-financieras .tarjeta-metrica .subtexto-fecha {
+  margin-top: 4px;
+  font-size: 11.5px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 1280px) {
+  .contenedor-dos-columnas {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .pagina-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .barra-lateral {
+    position: relative;
+    height: auto;
+    padding: 20px 14px;
+  }
+
+  .barra-lateral .perfil-admin {
+    margin-bottom: 16px;
+  }
+
+  .barra-lateral .perfil-admin .avatar-marco {
+    width: 60px;
+    height: 60px;
+  }
+
+  .barra-lateral .lista-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .barra-lateral .opcion-menu {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .barra-lateral .submenu-reportes {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 6px;
+  }
+
+  .contenido-principal {
+    padding: 16px 14px;
+  }
+
+  .grid-metricas-financieras {
+    grid-template-columns: 1fr;
+  }
+}

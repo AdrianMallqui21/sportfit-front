@@ -37,7 +37,7 @@ import { SinReservasModalComponent } from './modales/sin-reservas-modal.componen
     MatDialogModule
   ],
   templateUrl: './reservas-cliente.component.html',
-  styleUrls: ['./reservas-cliente.component.scss']
+  styleUrl: './reservas-cliente.component.css'
 })
 export class ReservasClienteComponent implements OnInit {
   // Formulario Reactivo de Filtros
