@@ -1,5 +1,6 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal, TemplateRef, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 interface IncidenciaAdministrador {
   id: number;
@@ -15,12 +16,14 @@ interface IncidenciaAdministrador {
 }
 
 @Component({
-  imports: [FormsModule],
+  imports: [FormsModule, MatDialogModule],
   selector: 'app-a26-listado-incidencias-administrador-componente',
   templateUrl: './a26-listado-incidencias-administrador-componente.html',
   styleUrl: './a26-listado-incidencias-administrador-componente.css',
 })
 export class A26ListadoIncidenciasAdministradorComponente {
+  private readonly dialogo = inject(MatDialog);
+  private readonly confirmacionRespuesta = viewChild.required<TemplateRef<unknown>>('confirmacionRespuesta');
   // DATOS DE PRUEBA: eliminar al conectar el backend y obtener las incidencias del servicio.
   // Las acciones son locales y se restablecen al recargar la página.
   readonly incidencias = signal<IncidenciaAdministrador[]>([
@@ -129,6 +132,8 @@ export class A26ListadoIncidenciasAdministradorComponente {
         ? { ...incidencia, respuesta, estado: 'Atendido', fechaAtencion: this.fechaActual() }
         : incidencia,
     ));
+    // Simulación local: todavía no se guarda ni se notifica al cliente mediante un servicio.
+    this.dialogo.open(this.confirmacionRespuesta(), { width: '480px', maxWidth: '92vw', ariaLabelledBy: 'titulo-respuesta-enviada', ariaDescribedBy: 'descripcion-respuesta-enviada' });
     this.respuesta.set(respuesta);
     this.errorRespuesta.set('');
     if (!this.incidenciasFiltradas().some((incidencia) => incidencia.id === seleccionada.id)) {
@@ -136,3 +141,4 @@ export class A26ListadoIncidenciasAdministradorComponente {
     }
   }
 }
+

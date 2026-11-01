@@ -13,3 +13,4 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 
 .indicador > div { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; min-width:0; }.indicador h2 { margin:0; line-height:1.4; }.indicador p { margin:0; line-height:1.1; }.tabla-incidencias tbody tr:has(.boton-seleccionar) { cursor:pointer; }.tabla-incidencias tbody tr:has(.boton-seleccionar):hover { background:#f1faf5; }
 
+.confirmacion-respuesta{position:relative;padding:28px 20px;text-align:center;color:#111}.confirmacion-respuesta h2{font-size:16px;line-height:1.4}.confirmacion-respuesta p{margin:24px 0 20px;font-size:14px;line-height:1.4}.cerrar-confirmacion{position:absolute;right:8px;top:4px;border:0;background:none;font-size:20px}

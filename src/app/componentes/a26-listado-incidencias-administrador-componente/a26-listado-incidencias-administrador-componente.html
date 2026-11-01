@@ -123,3 +123,13 @@
   </main>
 </div>
 
+
+<ng-template #confirmacionRespuesta>
+  <section class="confirmacion-respuesta">
+    <button class="cerrar-confirmacion" type="button" mat-dialog-close aria-label="Cerrar mensaje">×</button>
+    <h2 id="titulo-respuesta-enviada">Respuesta enviada</h2>
+    <!-- Mensaje visual de prueba: el envío y la notificación reales se conectarán al backend. -->
+    <p id="descripcion-respuesta-enviada">Tu respuesta se guardó y se notificó al cliente sobre la atención de su incidencia.</p>
+    <button class="boton" type="button" mat-dialog-close>Continuar</button>
+  </section>
+</ng-template>

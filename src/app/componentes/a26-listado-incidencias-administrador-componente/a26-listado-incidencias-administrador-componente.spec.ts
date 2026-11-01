@@ -1,3 +1,5 @@
+import { firstValueFrom } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { TestBed } from '@angular/core/testing';
 import { A26ListadoIncidenciasAdministradorComponente } from './a26-listado-incidencias-administrador-componente';
 
@@ -16,10 +18,20 @@ describe('Gestión local de incidencias', () => {
     expect(componente.incidenciaSeleccionada()?.cliente).toBe('Andrea Rivas');
     componente.respuesta.set('   ');
     componente.enviarRespuesta();
+    expect(TestBed.inject(MatDialog).openDialogs.length).toBe(0);
     expect(componente.errorRespuesta()).toBeTruthy();
     expect(componente.incidenciaSeleccionada()?.estado).toBe('Pendiente');
     componente.respuesta.set(' Revisaremos la iluminación. ');
     componente.enviarRespuesta();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(TestBed.inject(MatDialog).openDialogs.length).toBe(1);
+    expect(document.querySelector('#titulo-respuesta-enviada')?.textContent).toContain('Respuesta enviada');
+    const cierre = firstValueFrom(TestBed.inject(MatDialog).openDialogs[0].afterClosed());
+    (document.querySelector('.confirmacion-respuesta .boton') as HTMLButtonElement).click();
+    await cierre;
+    await fixture.whenStable();
+    expect(TestBed.inject(MatDialog).openDialogs.length).toBe(0);
     expect(componente.incidenciasFiltradas().length).toBe(1);
     expect(componente.incidenciaSeleccionada()).toBeNull();
     componente.limpiarFiltros();
@@ -37,4 +49,6 @@ describe('Gestión local de incidencias', () => {
     expect(componente.incidenciaSeleccionada()).toBeNull();
   });
 });
+
+
 
