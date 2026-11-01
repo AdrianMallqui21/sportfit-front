@@ -1,3 +1,4 @@
+import { A28ReporteDeporteSedeComponente } from './componentes/a28-reporte-deporte-sede-componente/a28-reporte-deporte-sede-componente';
 import { Routes } from '@angular/router';
 import { InicioSesionClienteComponente } from './componentes/inicio-sesion-cliente-componente/inicio-sesion-cliente-componente';
 import { RegistroClienteComponente } from './componentes/registro-cliente-componente/registro-cliente-componente';
@@ -10,6 +11,8 @@ import { A11NotificacionesAdministradorComponente } from './componentes/a11-noti
 import { A26ListadoIncidenciasAdministradorComponente } from './componentes/a26-listado-incidencias-administrador-componente/a26-listado-incidencias-administrador-componente';
 
 export const routes: Routes = [
+  // Ruta de prueba de la vista A28.
+  { path: 'reporte-deporte-sede', component: A28ReporteDeporteSedeComponente },
   { path: '', component: InicioSesionClienteComponente },
   { path: 'registro', component: RegistroClienteComponente },
   { path: 'administrador', component: InicioSesionAdministradorComponente },
@@ -19,3 +22,4 @@ export const routes: Routes = [
   { path: 'notificaciones', component: A11NotificacionesAdministradorComponente },
   { path: 'incidencias', component: A26ListadoIncidenciasAdministradorComponente },
 ];
+

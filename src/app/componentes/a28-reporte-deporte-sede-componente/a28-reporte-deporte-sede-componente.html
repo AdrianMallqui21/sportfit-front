@@ -1,0 +1,68 @@
+<div class="pagina-reporte">
+  <header class="encabezado-pagina"><span>Reportes</span><!-- Agregar la ruta del logotipo cuando esté disponible. --><span class="logotipo" aria-label="SportFit">SportFit <span aria-hidden="true">↗</span></span></header>
+  <main class="contenido-reporte">
+    <section class="presentacion" aria-labelledby="titulo-reporte">
+      <span class="icono-presentacion" aria-hidden="true">▥</span>
+      <div><h1 id="titulo-reporte">Dashboard <span>Reservas por deporte y sede</span></h1><p>Análisis general de reservas por ubicación y tipo de cancha</p></div>
+    </section>
+    <section class="indicadores" aria-label="Resumen de reservas">
+      <article class="indicador"><span class="icono-indicador verde" aria-hidden="true">▦</span><div><h2>Total de reservas</h2><p>{{ totalReservas() | number }}</p></div></article>
+      <article class="indicador"><span class="icono-indicador celeste" aria-hidden="true">▦</span><div><h2>Reservas del mes</h2><p>{{ reservasMes() | number }}</p></div></article>
+      <article class="indicador"><span class="icono-indicador amarillo" aria-hidden="true">⚽</span><div><h2>Deporte más reservado</h2><p class="valor-texto">{{ deportePrincipal() }}</p></div></article>
+      <article class="indicador"><span class="icono-indicador morado" aria-hidden="true">▥</span><div><h2>Sede con más demanda</h2><p class="valor-texto">{{ sedePrincipal() }}</p></div></article>
+    </section>
+
+    <div class="graficos-superiores">
+      <section class="panel panel-comparacion" aria-labelledby="titulo-comparacion">
+        <header class="encabezado-panel"><h2 id="titulo-comparacion">Reservas por deporte y sede</h2><div class="filtros">
+          <select aria-label="Métrica del gráfico" [ngModel]="metrica()" (ngModelChange)="metrica.set($event)"><option value="reservas">Número de reservas</option><option value="ingresos">Ingresos (S/)</option></select>
+          <select aria-label="Filtrar por sede" [ngModel]="sedeSeleccionada()" (ngModelChange)="sedeSeleccionada.set($event)"><option value="">Todas las sedes</option>@for (sede of sedes(); track sede) {<option [value]="sede">{{ sede }}</option>}</select>
+        </div></header>
+        @if (barras().length) {
+          <div class="grafico-desplazable"><svg class="grafico" viewBox="0 0 520 205" role="img" aria-label="Comparación por sede y deporte">
+            <path class="ejes" d="M30 20V165H510"/>
+            @for (barra of barras(); track $index) {<rect [attr.x]="barra.x" [attr.y]="165 - barra.altura" [attr.width]="barra.ancho" [attr.height]="barra.altura" [attr.fill]="barra.color"><title>{{ barra.sede }} · {{ barra.deporte }}: {{ barra.valor }}</title></rect><text [attr.x]="barra.x + barra.ancho / 2" [attr.y]="158 - barra.altura" text-anchor="middle">{{ barra.valor | number:'1.0-2' }}</text><text [attr.x]="barra.x + barra.ancho / 2" y="187" text-anchor="middle">{{ barra.sede }}</text>}
+          </svg></div>
+          <div class="leyenda">@for (deporte of porDeporte(); track deporte.nombre) {<span><i [style.background]="colorDeporte(deporte.nombre)"></i>{{ deporte.nombre }}</span>}</div>
+        } @else {<div class="grafico-vacio"><span aria-hidden="true">▥</span><p>Sin información para mostrar</p><small>Las reservas por sede y deporte aparecerán aquí.</small></div>}
+      </section>
+
+      <section class="panel" aria-labelledby="titulo-participacion"><header class="encabezado-panel"><h2 id="titulo-participacion">Participación de reservas por deporte</h2></header>
+        @if (totalReservas() > 0) {
+          <svg class="grafico-dona" viewBox="0 0 200 160" role="img" aria-label="Porcentaje de reservas por deporte">
+            @for (segmento of participaciones(); track segmento.nombre) {<circle cx="100" cy="77" r="49" fill="none" stroke-width="22" pathLength="100" transform="rotate(-90 100 77)" [attr.stroke]="segmento.color" [attr.stroke-dasharray]="segmento.porcentaje + ' ' + (100 - segmento.porcentaje)" [attr.stroke-dashoffset]="-segmento.inicio"><title>{{ segmento.nombre }}: {{ segmento.porcentaje | number:'1.0-1' }}%</title></circle>}
+            <text x="100" y="76" text-anchor="middle" class="total-dona">{{ totalReservas() | number }}</text><text x="100" y="94" text-anchor="middle">reservas</text>
+          </svg>
+          <div class="leyenda">@for (segmento of participaciones(); track segmento.nombre) {<span><i [style.background]="segmento.color"></i>{{ segmento.nombre }} {{ segmento.porcentaje | number:'1.0-1' }}%</span>}</div>
+        } @else {<div class="grafico-vacio"><span class="dona-vacia" aria-hidden="true"></span><p>Sin reservas para calcular porcentajes</p></div>}
+      </section>
+
+      <section class="panel" aria-labelledby="titulo-sedes"><header class="encabezado-panel"><h2 id="titulo-sedes">Reservas por sede</h2></header>
+        @if (porSede().length) {<div class="barras-sedes">@for (sede of porSede(); track sede.nombre) {<div class="fila-sede"><span>{{ sede.nombre }}</span><div class="pista-barra"><span class="barra-sede" [style.width.%]="sede.reservas / maximoSede() * 100"></span></div><strong>{{ sede.reservas | number }}</strong></div>}</div>}
+        @else {<div class="grafico-vacio"><span aria-hidden="true">☷</span><p>Sin información de sedes</p></div>}
+      </section>
+    </div>
+
+    <div class="paneles-inferiores">
+      <section class="panel" aria-labelledby="titulo-tendencia"><header class="encabezado-panel"><h2 id="titulo-tendencia">Tendencia mensual de reservas</h2><div class="filtros">
+        <select aria-label="Año del reporte" [ngModel]="anioSeleccionado()" (ngModelChange)="anioSeleccionado.set(+$event)">@for (anio of anios(); track anio) {<option [ngValue]="anio">{{ anio }}</option>}</select>
+        <select aria-label="Periodo del reporte" [ngModel]="mesesSeleccionados()" (ngModelChange)="mesesSeleccionados.set(+$event)"><option [ngValue]="12">Últimos 12 meses</option><option [ngValue]="6">Últimos 6 meses</option><option [ngValue]="1">Último mes</option></select>
+      </div></header>
+        @if (filtrados().length) {<div class="grafico-desplazable"><svg class="grafico tendencia" viewBox="0 0 550 210" role="img" aria-label="Evolución mensual de reservas por deporte">
+          @for (nivel of [0, 1, 2, 3, 4]; track nivel) {<line class="cuadricula" x1="40" x2="520" [attr.y1]="165 - nivel * 35" [attr.y2]="165 - nivel * 35"/><text x="32" [attr.y]="169 - nivel * 35" text-anchor="end">{{ tendencia().maximo * nivel / 4 | number:'1.0-0' }}</text>}
+          @for (periodo of tendencia().periodos; track periodo.clave; let indice = $index) {<text [attr.x]="40 + indice * 470 / (tendencia().periodos.length > 1 ? tendencia().periodos.length - 1 : 1)" y="187" text-anchor="middle">{{ periodo.etiqueta }}</text>}
+          @for (serie of tendencia().series; track serie.nombre) {<polyline fill="none" stroke-width="3" [attr.stroke]="serie.color" [attr.points]="serie.puntos"><title>{{ serie.nombre }}: {{ serie.valores.join(', ') }}</title></polyline>}
+        </svg></div><div class="leyenda">@for (serie of tendencia().series; track serie.nombre) {<span><i [style.background]="serie.color"></i>{{ serie.nombre }}</span>}</div>}
+        @else {<div class="grafico-vacio vacio-inferior"><span aria-hidden="true">⌁</span><p>Sin historial de reservas</p><small>La tendencia se mostrará cuando se cargue información.</small></div>}
+      </section>
+
+      <section class="panel" aria-labelledby="titulo-detalle"><header class="encabezado-panel"><h2 id="titulo-detalle">Detalle por sede</h2><button class="boton-exportar" type="button" [disabled]="!detalle().length" (click)="exportarReporte()">↓ Exportar CSV</button></header>
+        <p class="periodo-aplicado">Se aplican la sede, el año y el periodo seleccionados en los gráficos.</p>
+        <div class="contenedor-tabla" tabindex="0" role="region" aria-label="Detalle de reservas por sede y deporte"><table><thead><tr><th scope="col">Sedes</th><th scope="col">Deporte</th><th scope="col">Reservas</th><th scope="col">Ingresos</th></tr></thead><tbody>
+          @for (fila of detalle(); track $index) {<tr><th scope="row">{{ fila.sede }}</th><td>{{ fila.deporte }}</td><td>{{ fila.reservas | number }}</td><td>{{ fila.ingresos | currency:'PEN':'S/ ':'1.2-2' }}</td></tr>}
+          @empty {<tr><td colspan="4" class="tabla-vacia">No hay información disponible para este periodo.</td></tr>}
+        </tbody></table></div>
+      </section>
+    </div>
+  </main>
+</div>
