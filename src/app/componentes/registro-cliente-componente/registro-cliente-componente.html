@@ -7,6 +7,8 @@
     </header>
 
     <form
+      #formularioRegistro
+      (submit)="registrarCliente($event, formularioRegistro, confirmacionRegistro)"
       id="formulario-registro"
       class="formulario-registro"
       aria-labelledby="titulo-registro"
@@ -116,6 +118,8 @@
           <input
             class="entrada-formulario"
             type="password"
+            #contrasenaRegistro
+            (input)="validarConfirmacion(contrasenaRegistro, confirmarContrasena)"
             id="contrasena-registro"
             name="contrasena"
             placeholder="Ingresa tu contraseña"
@@ -144,6 +148,8 @@
           <input
             class="entrada-formulario"
             type="password"
+            #confirmarContrasena
+            (input)="validarConfirmacion(contrasenaRegistro, confirmarContrasena)"
             id="confirmar-contrasena"
             name="confirmar-contrasena"
             placeholder="Repite tu contraseña"
@@ -187,3 +193,33 @@
     >
   </div>
 </div>
+
+
+<!-- Confirmación de registro C3 dentro del mismo componente, sin ruta adicional. -->
+<ng-template #confirmacionRegistro>
+  <section class="confirmacion-registro">
+    <span class="icono-confirmacion-registro" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m8 11 4 4L22 4"></path>
+        <path d="M21 12a9 9 0 1 1-6-8.5"></path>
+      </svg>
+    </span>
+
+    <h2 id="titulo-confirmacion-registro" class="titulo-confirmacion-registro">
+      ¡Registro completado!
+    </h2>
+
+    <p id="descripcion-confirmacion-registro" class="descripcion-confirmacion-registro">
+      Tu cuenta fue creada correctamente. Ya puedes acceder a SportFit con tus datos.
+    </p>
+
+    <button
+      class="boton-iniciar-sesion"
+      type="button"
+      mat-dialog-close="iniciar-sesion"
+    >
+      Iniciar sesión
+    </button>
+  </section>
+</ng-template>

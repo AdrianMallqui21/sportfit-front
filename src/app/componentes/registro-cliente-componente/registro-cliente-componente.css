@@ -185,3 +185,61 @@ a:focus-visible {
     font-size: 16px;
   }
 }
+
+
+/* Confirmación C3: el fondo y la gestión del foco pertenecen a MatDialog. */
+.confirmacion-registro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 36px 26px;
+  background: #fff;
+  color: #252525;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+.icono-confirmacion-registro {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  background: #dff3e9;
+  color: #39b985;
+}
+
+.icono-confirmacion-registro svg { width: 23px; height: 23px; }
+
+.titulo-confirmacion-registro {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.descripcion-confirmacion-registro {
+  max-width: 310px;
+  margin: 18px 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.boton-iniciar-sesion {
+  min-height: 40px;
+  padding: 11px 25px;
+  border: 0;
+  border-radius: 7px;
+  background: #39b985;
+  color: #fff;
+  font: 700 12px Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.boton-iniciar-sesion:hover { background: #2c9d6f; }
+
+@media (max-width: 480px) {
+  .confirmacion-registro { padding: 26px 24px; }
+}
