@@ -1,0 +1,125 @@
+<div class="pagina-incidencias">
+  <header class="encabezado-pagina">
+    <!-- Agregar src con la ruta real del logotipo. -->
+    <img class="logotipo" alt="SportFit">
+  </header>
+
+  <main class="contenido-incidencias">
+    <section class="presentacion" aria-labelledby="titulo-incidencias">
+      <h1 id="titulo-incidencias">Dashboard <span>Gestión y respuestas de incidencias</span></h1>
+      <p>Gestión, seguimiento y atención oportuna de incidencias reportadas por clientes</p>
+    </section>
+
+    <section class="indicadores" aria-label="Resumen de incidencias">
+<article class="indicador indicador--total"><span class="icono-indicador"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 2v6m8-6v6M3 11h18"/></svg></span><div><h2>Total de incidencias</h2><p>{{ totalIncidencias() }}</p></div></article>
+<article class="indicador indicador--pendientes"><span class="icono-indicador"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4 2 18a2 2 0 0 0 2 3h16a2 2 0 0 0 2-3L14 4a2.3 2.3 0 0 0-4 0Z"/><path d="M12 9v5m0 3h.01"/></svg></span><div><h2>Pendientes este mes</h2><p>{{ pendientesMes() }}</p></div></article>
+<article class="indicador indicador--atendidas"><span class="icono-indicador"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 11 4 4L22 4"/><path d="M21 12a9 9 0 1 1-6-8.5"/></svg></span><div><h2>Atendidas este mes</h2><p>{{ atendidasMes() }}</p></div></article>
+    </section>
+
+    <section class="panel panel-filtros" aria-labelledby="titulo-filtros-incidencias">
+      <h2 id="titulo-filtros-incidencias"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><path d="m16 16 6 6"/></svg>Filtro de búsqueda de incidencias</h2>
+      <form class="formulario-filtros" (ngSubmit)="buscarIncidencias()">
+        <div class="campo-filtro">
+          <label for="incidencia-filtro-tipo">Tipo</label>
+          <select id="incidencia-filtro-tipo" name="tipo" [(ngModel)]="filtroTipo">
+            <option value="">Seleccionar tipo</option>
+            @for (tipo of tipos(); track tipo) { <option [value]="tipo">{{ tipo }}</option> }
+          </select>
+        </div>
+        <div class="campo-filtro">
+          <label for="incidencia-filtro-fecha">Fecha</label>
+          <input id="incidencia-filtro-fecha" name="fecha" type="date" [(ngModel)]="filtroFecha">
+        </div>
+        <div class="campo-filtro">
+          <label for="incidencia-filtro-estado">Estado</label>
+          <select id="incidencia-filtro-estado" name="estado" [(ngModel)]="filtroEstado">
+            <option value="">Seleccionar estado</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Atendido">Atendido</option>
+          </select>
+        </div>
+        <div class="acciones-filtros">
+          <button class="boton boton-limpiar" type="button" (click)="limpiarFiltros()">Limpiar</button>
+          <button class="boton boton-buscar" type="submit">Buscar</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="columnas-incidencias">
+      <section class="panel panel-listado" aria-labelledby="titulo-listado-incidencias">
+        <header class="encabezado-listado">
+          <h2 id="titulo-listado-incidencias">Listado de incidencias</h2>
+          <span class="cantidad-registros" role="status">{{ incidenciasFiltradas().length }} registros</span>
+        </header>
+        <div class="contenedor-tabla" tabindex="0" role="region" aria-label="Listado de incidencias con desplazamiento">
+          <table class="tabla-incidencias">
+            <thead><tr>
+              <th scope="col">Código</th><th scope="col">Cliente</th><th scope="col">Tipo / Motivo</th>
+              <th scope="col">Fecha</th><th scope="col">Estado</th>
+            </tr></thead>
+            <tbody>
+              <!-- DATOS DE PRUEBA del TS. Reemplazar al conectar el backend. -->
+              @for (incidencia of incidenciasFiltradas(); track incidencia.id) {
+                <tr (click)="seleccionarIncidencia(incidencia.id)" [class.fila-seleccionada]="incidenciaSeleccionada()?.id === incidencia.id">
+                  <th scope="row"><button class="boton-seleccionar" type="button"
+                    [attr.aria-label]="'Ver incidencia ' + incidencia.codigo + ' de ' + incidencia.cliente"
+                    [attr.aria-pressed]="incidenciaSeleccionada()?.id === incidencia.id"
+                    (click)="seleccionarIncidencia(incidencia.id)">#{{ incidencia.codigo }}</button></th>
+                  <td class="nombre-cliente">{{ incidencia.cliente }}</td>
+                  <td>{{ incidencia.tipo }}</td>
+                  <td>{{ mostrarFecha(incidencia.fecha) }}</td>
+                  <td><span class="estado" [class.estado--pendiente]="incidencia.estado === 'Pendiente'"
+                    [class.estado--atendido]="incidencia.estado === 'Atendido'">{{ incidencia.estado }}</span></td>
+                </tr>
+              } @empty {
+                <tr><td colspan="5" class="sin-resultados">No se encontraron incidencias para los filtros seleccionados.</td></tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <aside class="panel panel-detalle" aria-label="Detalle y respuesta de la incidencia">
+        @if (incidenciaSeleccionada(); as incidencia) {
+          <header class="encabezado-detalle">
+            <h2><span class="punto-estado" [class.punto-estado--atendido]="incidencia.estado === 'Atendido'" aria-hidden="true"></span>Incidencia #{{ incidencia.codigo }}</h2>
+            <span class="estado" [class.estado--pendiente]="incidencia.estado === 'Pendiente'"
+              [class.estado--atendido]="incidencia.estado === 'Atendido'" role="status">{{ incidencia.estado }}</span>
+          </header>
+
+          <dl class="resumen-incidencia">
+            <div><dt>Cliente:</dt><dd>{{ incidencia.cliente }}</dd></div>
+            <div><dt>Fecha y hora del reporte:</dt><dd>{{ mostrarFecha(incidencia.fecha) }} · {{ incidencia.hora }} hrs</dd></div>
+          </dl>
+
+          <section class="seccion-descripcion" aria-labelledby="titulo-descripcion-incidencia">
+            <h3 id="titulo-descripcion-incidencia"><svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h18v13H8l-5 5Zm4 5h10M7 12h6"/></svg>Descripción:</h3>
+            <p class="descripcion-incidencia">{{ incidencia.descripcion }}</p>
+          </section>
+
+          <form class="formulario-respuesta" (ngSubmit)="enviarRespuesta()">
+            <label for="respuesta-incidencia">Respuesta oficial al cliente <span aria-hidden="true">*</span></label>
+            <textarea id="respuesta-incidencia" name="respuesta" rows="5"
+              placeholder="Escribe la respuesta para el cliente..."
+              [ngModel]="respuesta()" (ngModelChange)="respuesta.set($event); errorRespuesta.set('')"
+              [readOnly]="incidencia.estado === 'Atendido'" required
+              [attr.aria-invalid]="errorRespuesta() ? 'true' : null"
+              [attr.aria-describedby]="errorRespuesta() ? 'error-respuesta-incidencia' : null"></textarea>
+            @if (errorRespuesta()) {
+              <p id="error-respuesta-incidencia" class="error-respuesta" role="alert">{{ errorRespuesta() }}</p>
+            }
+            <div class="acciones-respuesta">
+              <button class="boton boton-enviar" type="submit" [disabled]="incidencia.estado === 'Atendido'">
+                {{ incidencia.estado === 'Atendido' ? 'Incidencia atendida' : 'Enviar respuesta y cerrar' }}
+              </button>
+              <button class="boton boton-cancelar" type="button" (click)="cancelarRespuesta()">Cancelar</button>
+            </div>
+          </form>
+        } @else {
+          <div class="detalle-vacio"><h2>Detalle de la incidencia</h2><p>Selecciona una incidencia del listado para revisar su información y responder.</p></div>
+        }
+      </aside>
+    </div>
+  </main>
+</div>
+

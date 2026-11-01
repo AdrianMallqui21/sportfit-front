@@ -7,6 +7,8 @@ import { A2PerfilAdministradorComponente } from './componentes/a2-perfil-adminis
 
 import { A11NotificacionesAdministradorComponente } from './componentes/a11-notificaciones-administrador-componente/a11-notificaciones-administrador-componente';
 
+import { A26ListadoIncidenciasAdministradorComponente } from './componentes/a26-listado-incidencias-administrador-componente/a26-listado-incidencias-administrador-componente';
+
 export const routes: Routes = [
   { path: '', component: InicioSesionClienteComponente },
   { path: 'registro', component: RegistroClienteComponente },
@@ -15,4 +17,5 @@ export const routes: Routes = [
   { path: 'home', component: C4HomeClienteComponente },
   { path: 'perfil-administrador', component: A2PerfilAdministradorComponente },
   { path: 'notificaciones', component: A11NotificacionesAdministradorComponente },
+  { path: 'incidencias', component: A26ListadoIncidenciasAdministradorComponente },
 ];
