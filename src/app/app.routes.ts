@@ -5,6 +5,8 @@ import { InicioSesionAdministradorComponente } from './componentes/inicio-sesion
 import { C4HomeClienteComponente } from './componentes/c4-home-cliente-componente/c4-home-cliente-componente';
 import { A2PerfilAdministradorComponente } from './componentes/a2-perfil-administrador-componente/a2-perfil-administrador-componente';
 
+import { A11NotificacionesAdministradorComponente } from './componentes/a11-notificaciones-administrador-componente/a11-notificaciones-administrador-componente';
+
 export const routes: Routes = [
   { path: '', component: InicioSesionClienteComponente },
   { path: 'registro', component: RegistroClienteComponente },
@@ -12,4 +14,5 @@ export const routes: Routes = [
 
   { path: 'home', component: C4HomeClienteComponente },
   { path: 'perfil-administrador', component: A2PerfilAdministradorComponente },
+  { path: 'notificaciones', component: A11NotificacionesAdministradorComponente },
 ];

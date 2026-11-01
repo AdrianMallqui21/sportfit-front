@@ -1,0 +1,124 @@
+<div class="pagina-notificaciones-administrador">
+  <header class="encabezado-notificaciones">
+    <!-- Agregar el atributo src con la ruta real del logotipo. -->
+    <img alt="SportFit" class="logotipo">
+  </header>
+
+  <main class="contenido-notificaciones">
+    <div class="columna-notificaciones">
+      <section class="bienvenida" aria-labelledby="titulo-notificaciones">
+        <!-- Agregar el atributo src con la ruta real del icono de saludo. -->
+        <img alt="" class="icono-saludo">
+        <h1 id="titulo-notificaciones">
+          Bienvenido/a<span class="nombre-administrador"><!-- Nombre del administrador. --></span>,
+          te presentamos un resumen de tus notificaciones.
+        </h1>
+      </section>
+
+      <section class="listado-notificaciones" aria-labelledby="titulo-listado-notificaciones">
+        <h2 id="titulo-listado-notificaciones" class="titulo-listado">Notificaciones</h2>
+
+        <div
+          class="contenedor-listado"
+          tabindex="0"
+          role="region"
+          aria-label="Listado de notificaciones con desplazamiento"
+        >
+          <ul class="lista-notificaciones">
+            <!-- DATOS DE PRUEBA: reemplazar por los datos reales al conectar el backend. -->
+            @for (notificacion of notificaciones(); track notificacion.id) {
+            <li class="elemento-notificacion">
+              <article
+                class="tarjeta-notificacion"
+                [class.tarjeta-notificacion--seleccionada]="notificacionSeleccionada()?.id === notificacion.id"
+                [attr.aria-labelledby]="'titulo-notificacion-' + notificacion.id"
+              >
+                
+                <h3 [id]="'titulo-notificacion-' + notificacion.id" class="titulo-notificacion">{{ notificacion.titulo }}</h3>
+
+                <div class="resumen-notificacion">
+                  <span class="icono-notificacion" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
+                         stroke="currentColor" stroke-width="1.5"
+                         stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M10 4 2 18a2 2 0 0 0 2 3h16a2 2 0 0 0 2-3L14 4a2.3 2.3 0 0 0-4 0Z"></path>
+                      <path d="M12 9v5m0 3h.01"></path>
+                    </svg>
+                  </span>
+                  <p class="mensaje-notificacion">{{ notificacion.resumen }}</p>
+                </div>
+
+                <span class="estado-lectura">{{ notificacion.leida ? 'Leída' : 'No leída' }}</span>
+                <button class="boton-ver-detalles" type="button"
+                  (click)="verDetalles(notificacion.id)"
+                  [attr.aria-label]="'Ver detalles: ' + notificacion.titulo"
+                  [attr.aria-pressed]="notificacionSeleccionada()?.id === notificacion.id">Ver detalles</button>
+              </article>
+            </li>
+            } @empty {
+              <li class="listado-vacio">No tienes notificaciones.</li>
+            }
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <aside class="detalles-notificacion" aria-labelledby="titulo-panel-detalle">
+      <h2 id="titulo-panel-detalle" class="titulo-panel-detalle">Detalle de la notificación</h2>
+      @if (notificacionSeleccionada(); as notificacion) {
+      <p class="indicacion-seleccion" role="status">
+        {{ notificacion.leida ? 'Notificación leída' : 'Notificación no leída' }}
+      </p>
+
+      <div class="contenido-detalle" tabindex="0" role="region" aria-label="Información de la notificación con desplazamiento">
+        <section class="seccion-titulo" aria-labelledby="etiqueta-titulo-notificacion">
+          <h3 id="etiqueta-titulo-notificacion">Título</h3>
+          <p class="titulo-notificacion-seleccionada">{{ notificacion.titulo }}</p>
+        </section>
+
+        <section class="seccion-descripcion" aria-labelledby="etiqueta-descripcion-notificacion">
+          <h3 id="etiqueta-descripcion-notificacion">Detalles de la notificación</h3>
+          <p class="descripcion-notificacion">{{ notificacion.descripcion }}</p>
+        </section>
+
+        <section class="seccion-informacion" aria-labelledby="etiqueta-informacion-notificacion">
+          <h3 id="etiqueta-informacion-notificacion">Información de envío</h3>
+
+          <dl class="datos-notificacion">
+            <div class="dato-notificacion tipo-notificacion">
+              <dt>Tipo de notificación</dt>
+              <dd>{{ notificacion.tipo }}</dd>
+            </div>
+
+            <div class="fila-fecha-hora">
+              <div class="dato-notificacion fecha-notificacion">
+                <dt>Fecha de envío</dt>
+                <dd>{{ notificacion.fechaEnvio }}</dd>
+              </div>
+
+              <div class="dato-notificacion hora-notificacion">
+                <dt>Hora de envío</dt>
+                <dd>{{ notificacion.horaEnvio }}</dd>
+              </div>
+            </div>
+          </dl>
+        </section>
+      </div>
+
+      <div class="acciones-notificacion">
+        <button class="boton-marcar-leido" type="button"
+                (click)="marcarComoLeido()" [disabled]="notificacion.leida">
+          {{ notificacion.leida ? 'Marcada como leída' : 'Marcar como leído' }}
+        </button>
+        <button class="boton-eliminar-notificacion" type="button" (click)="eliminarNotificacion()">
+          Eliminar notificación
+        </button>
+      </div>
+      } @else {
+        <p class="indicacion-seleccion" role="status">
+          Selecciona una notificación para consultar su información.
+        </p>
+      }
+    </aside>
+  </main>
+</div>
