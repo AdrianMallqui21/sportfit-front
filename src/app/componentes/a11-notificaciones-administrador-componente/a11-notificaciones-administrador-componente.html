@@ -110,7 +110,7 @@
                 (click)="marcarComoLeido()" [disabled]="notificacion.leida">
           {{ notificacion.leida ? 'Marcada como leída' : 'Marcar como leído' }}
         </button>
-        <button class="boton-eliminar-notificacion" type="button" (click)="eliminarNotificacion()">
+        <button class="boton-eliminar-notificacion" type="button" (click)="eliminarNotificacion(confirmacionEliminacion, notificacionEliminada)">
           Eliminar notificación
         </button>
       </div>
@@ -122,3 +122,34 @@
     </aside>
   </main>
 </div>
+
+
+<!-- A12 y A13: diálogos dentro de A11, sin componentes ni rutas adicionales. -->
+<ng-template #confirmacionEliminacion>
+  <section class="ventana-eliminacion">
+    <h2 id="titulo-confirmar-eliminacion" class="titulo-confirmar-eliminacion">
+      ¿Eliminar esta notificación?
+    </h2>
+    <p id="descripcion-confirmar-eliminacion" class="mensaje-eliminacion">
+      Esta notificación se eliminará permanentemente y no podrás recuperarla. ¿Deseas continuar?
+    </p>
+    <div class="acciones-dialogo-eliminacion">
+      <button class="boton-cancelar-eliminacion" type="button" [mat-dialog-close]="false">No</button>
+      <button class="boton-confirmar-eliminacion" type="button" [mat-dialog-close]="true">Sí</button>
+    </div>
+  </section>
+</ng-template>
+
+<ng-template #notificacionEliminada>
+  <section class="ventana-eliminacion">
+    <h2 id="titulo-notificacion-eliminada" class="titulo-notificacion-eliminada">
+      Notificación eliminada
+    </h2>
+    <p id="descripcion-notificacion-eliminada" class="mensaje-eliminacion">
+      La notificación se eliminó correctamente y ya no aparecerá en tu lista de notificaciones.
+    </p>
+    <div class="acciones-dialogo-eliminacion">
+      <button class="boton-entendido-eliminacion" type="button" mat-dialog-close>Entendido</button>
+    </div>
+  </section>
+</ng-template>

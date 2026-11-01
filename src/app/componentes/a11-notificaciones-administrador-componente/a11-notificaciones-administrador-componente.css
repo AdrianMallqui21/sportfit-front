@@ -298,3 +298,37 @@ button:focus-visible, [tabindex]:focus-visible { outline: 3px solid #197658; out
 .tarjeta-notificacion--seleccionada { border-color: #39b985; box-shadow: 0 0 0 1px #39b985; }
 .estado-lectura { display: inline-block; margin-top: 12px; color: #68796d; font-size: 12px; }
 .listado-vacio { padding: 20px; color: #849087; font-size: 14px; text-align: center; }
+
+
+/* Diálogos de confirmación y resultado gestionados por Angular Material. */
+.ventana-eliminacion {
+  padding: 30px 36px 32px;
+  background: #fff;
+  color: #171d1a;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+.ventana-eliminacion h2 { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.4; }
+.titulo-confirmar-eliminacion { color: #df292b; }
+.titulo-notificacion-eliminada { color: #00a476; }
+.mensaje-eliminacion { margin: 34px 0; font-size: 14px; line-height: 1.4; }
+.acciones-dialogo-eliminacion { display: flex; justify-content: center; gap: 65px; }
+.acciones-dialogo-eliminacion button {
+  min-width: 120px;
+  min-height: 38px;
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 7px;
+  background: #39b985;
+  color: #fff;
+  font: 600 13px Arial, Helvetica, sans-serif;
+  cursor: pointer;
+}
+.acciones-dialogo-eliminacion .boton-cancelar-eliminacion { background: #dc2d30; }
+.acciones-dialogo-eliminacion button:hover { background: #2c9d6f; }
+.acciones-dialogo-eliminacion .boton-cancelar-eliminacion:hover { background: #be2326; }
+@media (max-width: 480px) {
+  .ventana-eliminacion { padding: 28px 22px; }
+  .acciones-dialogo-eliminacion { gap: 25px; }
+  .acciones-dialogo-eliminacion button { min-width: 100px; }
+}

@@ -1,4 +1,5 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal, TemplateRef } from '@angular/core';
+import { MatDialog, MatDialogClose } from '@angular/material/dialog';
 
 interface NotificacionAdministrador {
   id: number;
@@ -12,12 +13,13 @@ interface NotificacionAdministrador {
 }
 
 @Component({
-  imports: [],
+  imports: [MatDialogClose],
   selector: 'app-a11-notificaciones-administrador-componente',
   styleUrl: './a11-notificaciones-administrador-componente.css',
   templateUrl: './a11-notificaciones-administrador-componente.html',
 })
 export class A11NotificacionesAdministradorComponente {
+  private readonly dialogo = inject(MatDialog);
   // DATOS DE PRUEBA: eliminar al conectar el backend y cargar la lista desde el servicio.
   // Las acciones solo modifican esta lista en memoria; al recargar se restablece.
   readonly notificaciones = signal<NotificacionAdministrador[]>([
@@ -83,14 +85,40 @@ export class A11NotificacionesAdministradorComponente {
     );
   }
 
-  eliminarNotificacion(): void {
+  eliminarNotificacion(
+    confirmacionEliminacion: TemplateRef<unknown>,
+    notificacionEliminada: TemplateRef<unknown>,
+  ): void {
     const seleccionada = this.notificacionSeleccionada();
     if (!seleccionada) return;
 
-    // Pendiente: eliminar en el backend cuando se implemente el servicio.
-    this.notificaciones.update((notificaciones) =>
-      notificaciones.filter((notificacion) => notificacion.id !== seleccionada.id),
-    );
-    this.idSeleccionado.set(null);
+    const confirmacion = this.dialogo.open(confirmacionEliminacion, {
+      width: '460px',
+      maxWidth: 'calc(100vw - 32px)',
+      ariaLabelledBy: 'titulo-confirmar-eliminacion',
+      ariaDescribedBy: 'descripcion-confirmar-eliminacion',
+      autoFocus: '.boton-cancelar-eliminacion',
+    });
+
+    confirmacion.afterClosed().subscribe((eliminar: boolean | undefined) => {
+      // No, Escape o clic en el fondo conservan la notificación y su detalle.
+      if (eliminar !== true) return;
+
+      // Simulación temporal: no hay solicitudes al backend ni recarga de página.
+      this.notificaciones.update((notificaciones) =>
+        notificaciones.filter((notificacion) => notificacion.id !== seleccionada.id),
+      );
+      if (this.idSeleccionado() === seleccionada.id) {
+        this.idSeleccionado.set(null);
+      }
+
+      this.dialogo.open(notificacionEliminada, {
+        width: '460px',
+        maxWidth: 'calc(100vw - 32px)',
+        ariaLabelledBy: 'titulo-notificacion-eliminada',
+        ariaDescribedBy: 'descripcion-notificacion-eliminada',
+        autoFocus: 'first-tabbable',
+      });
+    });
   }
 }
