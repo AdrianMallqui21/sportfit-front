@@ -1,0 +1,138 @@
+<div class="perfil-administrador">
+  <header class="encabezado-perfil-administrador">
+    <h1>Perfil del administrador</h1>
+    <!-- Agregar el atributo src con la ruta real del logotipo. -->
+    <img alt="SportFit" class="logotipo">
+  </header>
+
+  <main class="contenido-perfil-administrador">
+    <div class="columna-identidad">
+      <mat-card class="fotografia-admin" appearance="outlined">
+        <mat-card-content>
+          <!-- Agregar el atributo src con la fotografía del administrador. -->
+          <img class="imagen-administrador" alt="Fotografía del administrador">
+
+          <!-- Luego conectar el nombre y estado con el backend. -->
+          <h2 class="nombre-administrador">—</h2>
+          <p class="rol">Administrador</p>
+          <span class="estado-admin">—</span>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-stroked-button class="boton-cambiar-fotografia" type="button">
+            Cambiar fotografía
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="banners-admin" appearance="outlined">
+        <mat-card-content>
+          <section class="tiempo" aria-labelledby="titulo-miembro-desde">
+            <h2 id="titulo-miembro-desde">Miembro desde</h2>
+            <!-- Luego conectar la fecha de registro con el backend. -->
+            <p class="fecha-registro">—</p>
+          </section>
+
+          <section class="dispositivos" aria-labelledby="titulo-dispositivos">
+            <!-- Indicador fijo conservado de tu estructura inicial. -->
+            <h2 id="titulo-dispositivos">1 dispositivo</h2>
+            <p class="estado-dispositivo">Activo</p>
+          </section>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="columna-informacion">
+      <mat-card class="informacion-admin" appearance="outlined">
+        <mat-card-header>
+          <div class="encabezado-informacion">
+            <h2 id="titulo-informacion-personal">Información personal</h2>
+            <p>Administra tus datos personales y de contacto</p>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- Cada dd recibirá el dato correspondiente cuando se conecte el backend. -->
+          <dl class="datos-personales" aria-labelledby="titulo-informacion-personal">
+            <div class="dato-personal">
+              <dt>Nombres</dt>
+              <dd class="nombres-administrador">—</dd>
+            </div>
+
+            <div class="dato-personal">
+              <dt>Apellidos</dt>
+              <dd class="apellidos-administrador">—</dd>
+            </div>
+
+            <div class="dato-personal">
+              <dt>DNI</dt>
+              <dd class="dni-administrador">—</dd>
+            </div>
+
+            <div class="dato-personal">
+              <dt>Teléfono</dt>
+              <dd class="telefono-administrador">—</dd>
+            </div>
+
+            <div class="dato-personal">
+              <dt>Correo</dt>
+              <dd class="correo-administrador">—</dd>
+            </div>
+
+            <div class="dato-personal">
+              <dt>Rol</dt>
+              <dd class="rol-administrador">Administrador</dd>
+            </div>
+          </dl>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <!-- Pendiente: abrir el formulario de edición. -->
+          <button mat-stroked-button class="boton-editar-informacion" type="button">
+            Editar información
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="seguridad-admin" appearance="outlined">
+        <mat-card-header>
+          <h2 id="titulo-seguridad-cuenta">Seguridad de la cuenta</h2>
+        </mat-card-header>
+
+        <mat-card-content>
+          <dl class="datos-seguridad" aria-labelledby="titulo-seguridad-cuenta">
+            <div class="dato-seguridad">
+              <dt>Contraseña</dt>
+              <!-- Indicador visual de contraseña protegida; no contiene la contraseña real. -->
+              <dd class="contrasena-protegida">
+                <span aria-label="Contraseña protegida">************</span>
+              </dd>
+            </div>
+
+            <div class="dato-seguridad">
+              <dt>Último acceso</dt>
+              <dd class="ultimo-acceso">—</dd>
+            </div>
+
+            <div class="dato-seguridad">
+              <dt>Sesiones activas</dt>
+              <dd class="sesiones-activas">—</dd>
+            </div>
+
+            <div class="dato-seguridad">
+              <dt>Correo verificado</dt>
+              <dd class="correo-verificado">—</dd>
+            </div>
+          </dl>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <!-- Pendiente: abrir el formulario de cambio de contraseña. -->
+          <button mat-stroked-button class="boton-cambiar-contrasena" type="button">
+            Cambiar contraseña
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </main>
+</div>

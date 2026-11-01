@@ -3,10 +3,13 @@ import { InicioSesionClienteComponente } from './componentes/inicio-sesion-clien
 import { RegistroClienteComponente } from './componentes/registro-cliente-componente/registro-cliente-componente';
 import { InicioSesionAdministradorComponente } from './componentes/inicio-sesion-administrador-componente/inicio-sesion-administrador-componente';
 import { C4HomeClienteComponente } from './componentes/c4-home-cliente-componente/c4-home-cliente-componente';
+import { A2PerfilAdministradorComponente } from './componentes/a2-perfil-administrador-componente/a2-perfil-administrador-componente';
 
 export const routes: Routes = [
   { path: '', component: InicioSesionClienteComponente },
   { path: 'registro', component: RegistroClienteComponente },
   { path: 'administrador', component: InicioSesionAdministradorComponente },
+
   { path: 'home', component: C4HomeClienteComponente },
+  { path: 'perfil-administrador', component: A2PerfilAdministradorComponente },
 ];
