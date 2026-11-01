@@ -53,7 +53,7 @@
         <div class="contenedor-entrada">
           <input
             class="entrada-formulario"
-            type="password"
+            [type]="mostrarContrasena() ? 'text' : 'password'"
             id="contrasena"
             name="contrasena"
             placeholder="Ingresa tu contraseña"
@@ -65,9 +65,11 @@
             class="boton-mostrar-contrasena"
             type="button"
             aria-controls="contrasena"
-            aria-label="Mostrar contraseña"
+            (click)="mostrarContrasena.set(!mostrarContrasena())"
+            [attr.aria-pressed]="mostrarContrasena()"
+            [attr.aria-label]="mostrarContrasena() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
           >
-            Mostrar
+            {{ mostrarContrasena() ? 'Ocultar' : 'Mostrar' }}
           </button>
         </div>
       </div>

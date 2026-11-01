@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -9,4 +9,6 @@ import {RouterLink} from '@angular/router';
   styleUrl: './inicio-sesion-cliente-componente.css',
   templateUrl: './inicio-sesion-cliente-componente.html',
 })
-export class InicioSesionClienteComponente {}
+export class InicioSesionClienteComponente {
+  readonly mostrarContrasena = signal(false);
+}

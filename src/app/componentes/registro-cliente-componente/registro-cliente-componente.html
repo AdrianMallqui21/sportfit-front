@@ -117,7 +117,7 @@
         <div class="contenedor-entrada">
           <input
             class="entrada-formulario"
-            type="password"
+            [type]="mostrarContrasena() ? 'text' : 'password'"
             #contrasenaRegistro
             (input)="validarConfirmacion(contrasenaRegistro, confirmarContrasena)"
             id="contrasena-registro"
@@ -127,14 +127,15 @@
             required
           >
 
-          <!-- Pendiente: agregar la lógica para mostrar la contraseña. -->
           <button
             class="boton-mostrar-contrasena"
             type="button"
             aria-controls="contrasena-registro"
-            aria-label="Mostrar contraseña"
+            (click)="mostrarContrasena.set(!mostrarContrasena())"
+            [attr.aria-pressed]="mostrarContrasena()"
+            [attr.aria-label]="mostrarContrasena() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
           >
-            Mostrar
+            {{ mostrarContrasena() ? 'Ocultar' : 'Mostrar' }}
           </button>
         </div>
       </div>
@@ -147,7 +148,7 @@
         <div class="contenedor-entrada">
           <input
             class="entrada-formulario"
-            type="password"
+            [type]="mostrarConfirmacion() ? 'text' : 'password'"
             #confirmarContrasena
             (input)="validarConfirmacion(contrasenaRegistro, confirmarContrasena)"
             id="confirmar-contrasena"
@@ -157,14 +158,15 @@
             required
           >
 
-          <!-- Pendiente: agregar la lógica para mostrar la confirmación. -->
           <button
             class="boton-mostrar-contrasena"
             type="button"
             aria-controls="confirmar-contrasena"
-            aria-label="Mostrar confirmación de contraseña"
+            (click)="mostrarConfirmacion.set(!mostrarConfirmacion())"
+            [attr.aria-pressed]="mostrarConfirmacion()"
+            [attr.aria-label]="mostrarConfirmacion() ? 'Ocultar confirmación de contraseña' : 'Mostrar confirmación de contraseña'"
           >
-            Mostrar
+            {{ mostrarConfirmacion() ? 'Ocultar' : 'Mostrar' }}
           </button>
         </div>
       </div>

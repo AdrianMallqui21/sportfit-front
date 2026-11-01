@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -7,4 +7,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './inicio-sesion-administrador-componente.css',
   templateUrl: './inicio-sesion-administrador-componente.html',
 })
-export class InicioSesionAdministradorComponente {}
+export class InicioSesionAdministradorComponente {
+  readonly mostrarContrasena = signal(false);
+}

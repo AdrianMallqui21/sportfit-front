@@ -1,4 +1,4 @@
-import { Component, inject, TemplateRef } from '@angular/core';
+import { Component, inject, signal, TemplateRef } from '@angular/core';
 import { MatDialog, MatDialogClose } from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
 
@@ -9,6 +9,9 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './registro-cliente-componente.html',
 })
 export class RegistroClienteComponente {
+  readonly mostrarContrasena = signal(false);
+  readonly mostrarConfirmacion = signal(false);
+
   private readonly dialogo = inject(MatDialog);
   private readonly enrutador = inject(Router);
 
