@@ -1,0 +1,49 @@
+<div class="pagina-reporte">
+  <header class="encabezado-pagina"><span>Reportes</span><!-- Reemplazar por el recurso del logotipo cuando esté disponible. --><span class="logotipo" aria-label="SportFit">SportFit <span aria-hidden="true">↗</span></span></header>
+  <main class="contenido-reporte">
+    <section class="presentacion" aria-labelledby="titulo-reporte-cancelaciones">
+      <span class="icono-reporte" aria-hidden="true">▥</span>
+      <div><h1 id="titulo-reporte-cancelaciones">Dashboard <span>Motivos de cancelación de reserva</span></h1><p>Análisis general de cancelaciones de reservas, con motivos y seguimiento mensual</p></div>
+    </section>
+
+    <div class="resumen-reporte">
+      <section class="panel panel-filtros" aria-labelledby="titulo-filtros-cancelaciones">
+        <h2 id="titulo-filtros-cancelaciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m15 15 7 7"/></svg>Filtro de búsqueda</h2>
+        <form (ngSubmit)="buscar()">
+          <div class="campos-filtros">
+            <div class="campo"><label for="mes-cancelaciones">Mes</label><select id="mes-cancelaciones" name="mes" [(ngModel)]="mesSeleccionado"><option value="">Todos los meses</option>@for (mes of meses; track mes; let indice = $index) {<option [value]="(indice + 1).toString().padStart(2, '0')">{{ mes }}</option>}</select></div>
+            <div class="campo"><label for="anio-cancelaciones">Año</label><select id="anio-cancelaciones" name="anio" [(ngModel)]="anioSeleccionado">@for (anio of anios(); track anio) {<option [ngValue]="anio">{{ anio }}</option>}</select></div>
+          </div>
+          <div class="acciones-filtros"><button class="boton" type="submit">Buscar</button><button class="boton" type="button" [attr.aria-pressed]="verMonto()" (click)="verMonto.set(!verMonto())">{{ verMonto() ? 'Ver cantidad' : 'Ver monto' }}</button><button class="boton boton-limpiar" type="button" (click)="limpiar()">Limpiar</button></div>
+        </form>
+      </section>
+
+      <section class="indicadores" aria-label="Resumen de cancelaciones">
+        <article class="panel indicador"><h2>{{ verMonto() ? 'Monto de cancelaciones' : 'Total de cancelaciones' }}</h2><div class="valor-indicador"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="16" cy="9" r="6"/><path d="M5 29v-3a11 11 0 0 1 22 0v3"/></svg><strong>@if (verMonto()) { {{ montoTotal() | currency:'PEN':'S/ ':'1.2-2' }} } @else { {{ total() | number }} }</strong></div><p>{{ periodo() }}</p></article>
+        <article class="panel indicador"><h2>Principal motivo de cancelación</h2><div class="valor-indicador"><span class="icono-motivo" aria-hidden="true">⊗</span><strong>@if (motivoPrincipal(); as motivo) {@if (verMonto()) { {{ motivo.monto | currency:'PEN':'S/ ':'1.2-2' }} } @else { {{ motivo.cantidad | number }} }} @else {—}</strong></div><p>{{ motivoPrincipal()?.motivo ?? 'Sin información' }}</p></article>
+      </section>
+    </div>
+
+    <div class="graficos">
+      <section class="panel panel-grafico" aria-labelledby="titulo-distribucion"><h2 id="titulo-distribucion">Distribución de cancelaciones por motivo</h2>
+        @if (categorias().length) {
+          <div class="distribucion" role="list" aria-label="Cancelaciones agrupadas por motivo">@for (categoria of categorias(); track categoria.motivo) {<div class="fila-categoria" role="listitem"><span>{{ categoria.motivo }}</span><div class="pista-barra"><span class="barra" [style.background]="categoria.color" [style.width.%]="(verMonto() ? categoria.monto : categoria.cantidad) / maximoCategoria() * 100"></span></div><strong>@if (verMonto()) { {{ categoria.monto | currency:'PEN':'S/ ':'1.2-2' }} } @else { {{ categoria.porcentaje | number:'1.0-1' }}%}</strong></div>}</div>
+          <p class="nota-grafico">{{ verMonto() ? 'Monto acumulado por motivo (S/)' : 'Participación sobre el total de cancelaciones' }} · {{ periodo() }}</p>
+        } @else {<div class="grafico-vacio"><span aria-hidden="true">☷</span><p>No hay cancelaciones para el periodo seleccionado.</p><small>La distribución aparecerá cuando se cargue información.</small></div>}
+      </section>
+
+      <section class="panel panel-grafico" aria-labelledby="titulo-tendencia-cancelaciones"><h2 id="titulo-tendencia-cancelaciones">Tendencia mensual de cancelaciones</h2>
+        @if (tendencia().series.length) {
+          <p class="nota-grafico">{{ filtros().anio }} · {{ verMonto() ? 'Monto de cancelaciones (S/)' : 'Número de cancelaciones' }}</p>
+          <div class="contenedor-grafico"><svg class="grafico-lineas" viewBox="0 0 510 235" role="img" aria-label="Tendencia anual de cancelaciones por motivo">
+            @for (nivel of [0, 1, 2, 3, 4]; track nivel) {<line class="cuadricula" x1="45" x2="485" [attr.y1]="190 - nivel * 40" [attr.y2]="190 - nivel * 40"/><text x="38" [attr.y]="194 - nivel * 40" text-anchor="end">{{ tendencia().maximo * nivel / 4 | number:'1.0-0' }}</text>}
+            @for (mes of meses; track mes; let indice = $index) {<text [attr.x]="45 + indice * 39" y="215" text-anchor="middle">{{ mes.slice(0, 3) }}</text>}
+            @for (serie of tendencia().series; track serie.motivo) {<polyline fill="none" stroke-width="2.5" [attr.stroke]="serie.color" [attr.points]="serie.puntos"><title>{{ serie.motivo }}: {{ serie.valores.join(', ') }}</title></polyline>}
+          </svg></div>
+          <div class="leyenda">@for (serie of tendencia().series; track serie.motivo) {<span><i [style.background]="serie.color"></i>{{ serie.motivo }}</span>}</div>
+        } @else {<div class="grafico-vacio"><span aria-hidden="true">⌁</span><p>No hay historial de cancelaciones para {{ filtros().anio }}.</p><small>La tendencia mensual aparecerá al cargar los registros.</small></div>}
+      </section>
+    </div>
+  </main>
+</div>
+
