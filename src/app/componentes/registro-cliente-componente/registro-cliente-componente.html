@@ -13,165 +13,133 @@
       class="formulario-registro"
       aria-labelledby="titulo-registro"
     >
-      <div class="campo-formulario">
-        <label class="etiqueta-campo" for="nombres">
-          Nombres
-        </label>
+      <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Nombres</mat-label>
+        <input matInput
+          class="entrada-formulario"
+          type="text"
+          id="nombres"
+          name="nombres"
+          placeholder="Ingresa tus nombres"
+          autocomplete="given-name"
+          required
+        >
+      </mat-form-field>
 
-        <div class="contenedor-entrada">
-          <input
-            class="entrada-formulario"
-            type="text"
-            id="nombres"
-            name="nombres"
-            placeholder="Ingresa tus nombres"
-            autocomplete="given-name"
-            required
-          >
-        </div>
-      </div>
-
-      <div class="campo-formulario">
-        <label class="etiqueta-campo" for="apellidos">
-          Apellidos
-        </label>
-
-        <div class="contenedor-entrada">
-          <input
-            class="entrada-formulario"
-            type="text"
-            id="apellidos"
-            name="apellidos"
-            placeholder="Ingresa tus apellidos"
-            autocomplete="family-name"
-            required
-          >
-        </div>
-      </div>
+      <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Apellidos</mat-label>
+        <input matInput
+          class="entrada-formulario"
+          type="text"
+          id="apellidos"
+          name="apellidos"
+          placeholder="Ingresa tus apellidos"
+          autocomplete="family-name"
+          required
+        >
+      </mat-form-field>
 
       <div class="fila-campos">
-        <div class="campo-formulario">
-          <label class="etiqueta-campo" for="dni">
-            DNI
-          </label>
-
-          <div class="contenedor-entrada">
-            <input
-              class="entrada-formulario"
-              type="text"
-              id="dni"
-              name="dni"
-              placeholder="Ingresa tu DNI"
-              inputmode="numeric"
-              pattern="[0-9]{8}"
-              minlength="8"
-              maxlength="8"
-              title="Ingresa los 8 dígitos de tu DNI"
-              required
-            >
-          </div>
-        </div>
-
-        <div class="campo-formulario">
-          <label class="etiqueta-campo" for="telefono">
-            Teléfono
-          </label>
-
-          <div class="contenedor-entrada">
-            <input
-              class="entrada-formulario"
-              type="tel"
-              id="telefono"
-              name="telefono"
-              placeholder="Ingresa tu teléfono"
-              autocomplete="tel"
-              required
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="campo-formulario">
-        <label class="etiqueta-campo" for="correo-registro">
-          Correo electrónico
-        </label>
-
-        <div class="contenedor-entrada">
-          <input
+        <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+          <mat-label>DNI</mat-label>
+          <input matInput
             class="entrada-formulario"
-            type="email"
-            id="correo-registro"
-            name="correo"
-            placeholder="Ingresa tu correo electrónico"
-            autocomplete="email"
+            type="text"
+            id="dni"
+            name="dni"
+            placeholder="Ingresa tu DNI"
+            inputmode="numeric"
+            pattern="[0-9]{8}"
+            minlength="8"
+            maxlength="8"
+            title="Ingresa los 8 dígitos de tu DNI"
             required
           >
-        </div>
-      </div>
+        </mat-form-field>
 
-      <div class="campo-formulario">
-        <label class="etiqueta-campo" for="contrasena-registro">
-          Contraseña
-        </label>
-
-        <div class="contenedor-entrada">
-          <input
+        <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Teléfono</mat-label>
+          <input matInput
             class="entrada-formulario"
-            [type]="mostrarContrasena() ? 'text' : 'password'"
-            #contrasenaRegistro
-            (input)="validarConfirmacion(contrasenaRegistro, confirmarContrasena)"
-            id="contrasena-registro"
-            name="contrasena"
-            placeholder="Ingresa tu contraseña"
-            autocomplete="new-password"
+            type="tel"
+            id="telefono"
+            name="telefono"
+            placeholder="Ingresa tu teléfono"
+            autocomplete="tel"
             required
           >
-
-          <button
-            class="boton-mostrar-contrasena"
-            type="button"
-            aria-controls="contrasena-registro"
-            (click)="mostrarContrasena.set(!mostrarContrasena())"
-            [attr.aria-pressed]="mostrarContrasena()"
-            [attr.aria-label]="mostrarContrasena() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
-          >
-            {{ mostrarContrasena() ? 'Ocultar' : 'Mostrar' }}
-          </button>
-        </div>
+        </mat-form-field>
       </div>
 
-      <div class="campo-formulario">
-        <label class="etiqueta-campo" for="confirmar-contrasena">
-          Confirmar contraseña
-        </label>
+      <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput
+          class="entrada-formulario"
+          type="email"
+          id="correo-registro"
+          name="correo"
+          placeholder="Ingresa tu correo electrónico"
+          autocomplete="email"
+          required
+        >
+      </mat-form-field>
 
-        <div class="contenedor-entrada">
-          <input
-            class="entrada-formulario"
-            [type]="mostrarConfirmacion() ? 'text' : 'password'"
-            #confirmarContrasena
-            (input)="validarConfirmacion(contrasenaRegistro, confirmarContrasena)"
-            id="confirmar-contrasena"
-            name="confirmar-contrasena"
-            placeholder="Repite tu contraseña"
-            autocomplete="new-password"
-            required
-          >
+      <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Contraseña</mat-label>
+        <input matInput
+          class="entrada-formulario"
+          [type]="mostrarContrasena() ? 'text' : 'password'"
+          #contrasenaRegistro
+          (input)="validarConfirmacion(contrasenaRegistro, confirmarContrasena)"
+          id="contrasena-registro"
+          name="contrasena"
+          placeholder="Ingresa tu contraseña"
+          autocomplete="new-password"
+          required
+        >
 
-          <button
-            class="boton-mostrar-contrasena"
-            type="button"
-            aria-controls="confirmar-contrasena"
-            (click)="mostrarConfirmacion.set(!mostrarConfirmacion())"
-            [attr.aria-pressed]="mostrarConfirmacion()"
-            [attr.aria-label]="mostrarConfirmacion() ? 'Ocultar confirmación de contraseña' : 'Mostrar confirmación de contraseña'"
-          >
-            {{ mostrarConfirmacion() ? 'Ocultar' : 'Mostrar' }}
-          </button>
-        </div>
-      </div>
+        <button
+          mat-button matSuffix class="boton-mostrar-contrasena"
+          type="button"
+          aria-controls="contrasena-registro"
+          (click)="mostrarContrasena.set(!mostrarContrasena())"
+          [attr.aria-pressed]="mostrarContrasena()"
+          [attr.aria-label]="mostrarContrasena() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+        >
+          {{ mostrarContrasena() ? 'Ocultar' : 'Mostrar' }}
+        </button>
+      </mat-form-field>
 
-      <button class="boton-registrarse" type="submit">
+      <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Confirmar contraseña</mat-label>
+        <input matInput
+          class="entrada-formulario"
+          [type]="mostrarConfirmacion() ? 'text' : 'password'"
+          #confirmarContrasena
+          (input)="validarConfirmacion(contrasenaRegistro, confirmarContrasena)"
+          id="confirmar-contrasena"
+          name="confirmar-contrasena"
+          placeholder="Repite tu contraseña"
+          autocomplete="new-password"
+          required
+        >
+
+        <button
+          mat-button matSuffix class="boton-mostrar-contrasena"
+          type="button"
+          aria-controls="confirmar-contrasena"
+          (click)="mostrarConfirmacion.set(!mostrarConfirmacion())"
+          [attr.aria-pressed]="mostrarConfirmacion()"
+          [attr.aria-label]="mostrarConfirmacion() ? 'Ocultar confirmación de contraseña' : 'Mostrar confirmación de contraseña'"
+        >
+          {{ mostrarConfirmacion() ? 'Ocultar' : 'Mostrar' }}
+        </button>
+      </mat-form-field>
+
+      @if (errorRegistro()) {
+        <p role="alert">{{ errorRegistro() }}</p>
+      }
+      <button mat-flat-button class="boton-registrarse" type="submit" [disabled]="enviando()">
         Registrarme
       </button>
 
@@ -187,12 +155,7 @@
   </main>
 
   <div class="contenedor-ilustracion" aria-hidden="true">
-    <!-- Reemplazar "." por la ruta de la ilustración de deportistas. -->
-    <img
-      class="ilustracion-deportistas"
-      src="."
-      alt=""
-    >
+    <!-- Espacio reservado para la ilustración original. -->
   </div>
 </div>
 

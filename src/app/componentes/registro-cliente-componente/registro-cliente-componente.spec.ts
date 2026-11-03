@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MatDialog, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { provideRouter, Router } from '@angular/router';
@@ -10,6 +12,8 @@ describe('Confirmación del registro de cliente', () => {
       imports: [RegistroClienteComponente],
       providers: [
         provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         {
           provide: MAT_DIALOG_DEFAULT_OPTIONS,
           useValue: { enterAnimationDuration: 0, exitAnimationDuration: 0 },
@@ -19,6 +23,7 @@ describe('Confirmación del registro de cliente', () => {
   });
 
   afterEach(() => {
+    TestBed.inject(HttpTestingController).verify();
     TestBed.inject(MatDialog).closeAll();
   });
 
@@ -76,6 +81,8 @@ describe('Confirmación del registro de cliente', () => {
     escribir('contrasena', 'Otra123!');
     expect(confirmacion.validity.customError).toBe(false);
     enviar();
+    expect(TestBed.inject(MatDialog).openDialogs).toHaveLength(0);
+    TestBed.inject(HttpTestingController).expectOne('http://localhost:8080/api/auth/register').flush({});
     expect(TestBed.inject(MatDialog).openDialogs).toHaveLength(1);
   });
 
@@ -84,6 +91,7 @@ describe('Confirmación del registro de cliente', () => {
     const navegar = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
     completar();
     enviar();
+    TestBed.inject(HttpTestingController).expectOne('http://localhost:8080/api/auth/register').flush({});
     await vista.whenStable();
 
     const dialogo = document.querySelector('mat-dialog-container') as HTMLElement;

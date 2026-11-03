@@ -93,53 +93,27 @@
 }
 
 .campo-formulario {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.etiqueta-campo {
-  font-size: 12px;
-}
-
-.contenedor-entrada {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  border: 1px solid #e9edf2;
-  border-radius: 7px;
-  background: #f6f8fb;
-}
-
-.contenedor-entrada:focus-within {
-  border-color: #39b985;
-  outline: 2px solid rgb(57 185 133 / 20%);
-}
-
-.entrada-formulario {
   width: 100%;
-  min-width: 0;
-  padding: 12px;
-  border: 0;
-  outline: none;
-  background: transparent;
-  color: #252525;
-  font: inherit;
-  font-size: 12px;
-}
-
-.entrada-formulario::placeholder {
-  color: #929292;
+  --mat-form-field-container-height: 42px;
+  --mat-form-field-container-vertical-padding: 10px;
+  --mat-form-field-container-text-font: Arial, Helvetica, sans-serif;
+  --mat-form-field-container-text-size: 12px;
+  --mat-form-field-outlined-label-text-size: 12px;
+  --mat-form-field-outlined-label-text-color: #666;
+  --mat-form-field-outlined-container-shape: 7px;
+  --mat-form-field-outlined-outline-color: #dce3e8;
+  --mat-form-field-outlined-hover-outline-color: #a7b5af;
+  --mat-form-field-outlined-focus-outline-color: #23875f;
+  --mat-form-field-outlined-focus-label-text-color: #23875f;
+  background: #f6f8fb;
+  border-radius: 7px;
 }
 
 .boton-mostrar-contrasena {
-  align-self: stretch;
-  padding: 0 10px;
-  border: 0;
-  background: transparent;
-  color: #666;
-  font-size: 11px;
-  cursor: pointer;
+  --mat-button-text-label-text-color: #52635b;
+  --mat-button-text-label-text-size: 11px;
+  --mat-button-text-container-height: 36px;
+  margin-right: 4px;
 }
 
 /* Recordarme y recuperación */
@@ -153,18 +127,13 @@
 }
 
 .opcion-recordarme {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #777;
-}
-
-.casilla-recordarme {
-  width: 15px;
-  height: 15px;
-  margin: 0;
-  accent-color: #39b985;
-  cursor: pointer;
+  margin-left: -8px;
+  --mat-checkbox-label-text-size: 11px;
+  --mat-checkbox-label-text-color: #666;
+  --mat-checkbox-selected-icon-color: #23875f;
+  --mat-checkbox-selected-hover-icon-color: #176c50;
+  --mat-checkbox-selected-focus-icon-color: #176c50;
+  --mat-checkbox-selected-pressed-icon-color: #176c50;
 }
 
 .enlace-recuperar-contrasena,
@@ -190,13 +159,14 @@
 }
 
 .logotipo {
-  display: block;
-  width: 125px;
-  max-width: 100%;
-  height: auto;
+  color: #23875f;
+  font-size: 25px;
+  font-weight: 800;
 }
 
 .boton-acceder {
+  --mat-button-filled-container-height: 42px;
+  --mat-button-filled-container-shape: 6px;
   width: 190px;
   max-width: 100%;
   align-self: center;

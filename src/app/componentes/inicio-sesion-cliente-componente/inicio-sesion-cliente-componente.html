@@ -22,47 +22,31 @@
       </p>
     </header>
 
-    <form
+    <form [formGroup]="formulario" (ngSubmit)="onSubmit()"
       id="formulario-inicio-sesion"
       class="formulario-inicio-sesion"
       aria-labelledby="titulo-inicio-sesion"
     >
-      <div class="campo-formulario">
-        <label class="etiqueta-campo" for="correo">
-          Correo electrónico
-        </label>
+      <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput class="entrada-formulario" type="email" id="correo" name="correo" formControlName="correo"
+               autocomplete="username" placeholder="Ingresa tu correo electrónico" required>
+      </mat-form-field>
 
-        <div class="contenedor-entrada">
-          <input
-            class="entrada-formulario"
-            type="email"
-            id="correo"
-            name="correo"
-            placeholder="Ingresa tu correo electrónico"
-            autocomplete="username"
-            required
-          >
-        </div>
-      </div>
-
-      <div class="campo-formulario">
-        <label class="etiqueta-campo" for="contrasena">
-          Contraseña
-        </label>
-
-        <div class="contenedor-entrada">
-          <input
+      <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Contraseña</mat-label>
+        <input matInput
             class="entrada-formulario"
             [type]="mostrarContrasena() ? 'text' : 'password'"
             id="contrasena"
-            name="contrasena"
+            name="contrasena" formControlName="contrasena"
             placeholder="Ingresa tu contraseña"
             autocomplete="current-password"
             required
           >
 
           <button
-            class="boton-mostrar-contrasena"
+            mat-button matSuffix class="boton-mostrar-contrasena"
             type="button"
             aria-controls="contrasena"
             (click)="mostrarContrasena.set(!mostrarContrasena())"
@@ -71,20 +55,10 @@
           >
             {{ mostrarContrasena() ? 'Ocultar' : 'Mostrar' }}
           </button>
-        </div>
-      </div>
+      </mat-form-field>
 
       <div class="opciones-inicio-sesion">
-        <div class="opcion-recordarme">
-          <input
-            class="casilla-recordarme"
-            type="checkbox"
-            id="recordarme"
-            name="recordarme"
-          >
-
-          <label for="recordarme">Recordarme</label>
-        </div>
+        <mat-checkbox class="opcion-recordarme" name="recordarme" formControlName="recordarme">Recordarme</mat-checkbox>
 
         <!-- Reemplazar "." por la ruta de recuperación de contraseña. -->
         <a class="enlace-recuperar-contrasena" href=".">
@@ -93,15 +67,13 @@
       </div>
 
       <div class="contenedor-logotipo">
-        <!-- Reemplazar "." por la ruta de la imagen del logotipo. -->
-        <img
-          class="logotipo"
-          src="."
-          alt="SportFit"
-        >
+        <span class="logotipo">SportFit</span>
       </div>
 
-      <button class="boton-acceder" type="submit">
+      @if (mensajeError()) {
+        <p role="alert">{{ mensajeError() }}</p>
+      }
+      <button mat-flat-button class="boton-acceder" type="submit" [disabled]="enviando()">
         Acceder
       </button>
 
@@ -117,11 +89,6 @@
   </main>
 
   <div class="contenedor-ilustracion" aria-hidden="true">
-    <!-- Reemplazar "." por la ruta de la ilustración de deportistas. -->
-    <img
-      class="ilustracion-deportistas"
-      src="."
-      alt=""
-    >
+    <!-- Espacio reservado para la ilustración original. -->
   </div>
 </div>

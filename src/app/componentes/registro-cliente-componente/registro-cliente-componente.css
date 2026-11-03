@@ -47,44 +47,20 @@
 }
 
 .campo-formulario {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-width: 0;
-}
-
-.etiqueta-campo {
-  font-size: 12px;
-}
-
-.contenedor-entrada {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  border: 1px solid #e9edf2;
-  border-radius: 7px;
-  background: #f6f8fb;
-}
-
-.contenedor-entrada:focus-within {
-  border-color: #39b985;
-  outline: 2px solid rgb(57 185 133 / 20%);
-}
-
-.entrada-formulario {
   width: 100%;
-  min-width: 0;
-  padding: 11px 12px;
-  border: 0;
-  outline: none;
-  background: transparent;
-  color: #252525;
-  font: inherit;
-  font-size: 12px;
-}
-
-.entrada-formulario::placeholder {
-  color: #929292;
+  --mat-form-field-container-height: 42px;
+  --mat-form-field-container-vertical-padding: 10px;
+  --mat-form-field-container-text-font: Arial, Helvetica, sans-serif;
+  --mat-form-field-container-text-size: 12px;
+  --mat-form-field-outlined-label-text-size: 12px;
+  --mat-form-field-outlined-label-text-color: #666;
+  --mat-form-field-outlined-container-shape: 7px;
+  --mat-form-field-outlined-outline-color: #dce3e8;
+  --mat-form-field-outlined-hover-outline-color: #a7b5af;
+  --mat-form-field-outlined-focus-outline-color: #23875f;
+  --mat-form-field-outlined-focus-label-text-color: #23875f;
+  background: #f6f8fb;
+  border-radius: 7px;
 }
 
 /* DNI y teléfono en una misma fila */
@@ -95,18 +71,16 @@
 }
 
 .boton-mostrar-contrasena {
-  align-self: stretch;
-  padding: 0 10px;
-  border: 0;
-  background: transparent;
-  color: #666;
-  font: inherit;
-  font-size: 11px;
-  cursor: pointer;
+  --mat-button-text-label-text-color: #52635b;
+  --mat-button-text-label-text-size: 11px;
+  --mat-button-text-container-height: 36px;
+  margin-right: 4px;
 }
 
 /* Registro y enlace de acceso */
 .boton-registrarse {
+  --mat-button-filled-container-height: 42px;
+  --mat-button-filled-container-shape: 6px;
   width: 190px;
   max-width: 100%;
   align-self: center;
@@ -155,12 +129,6 @@ a:focus-visible {
 .contenedor-ilustracion {
   width: 48%;
   max-width: 560px;
-}
-
-.ilustracion-deportistas {
-  display: block;
-  width: 100%;
-  height: auto;
 }
 
 /* Celulares */
