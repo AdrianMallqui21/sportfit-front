@@ -1,0 +1,53 @@
+<!-- Barra de navegación -->
+<nav aria-label="Tipo de acceso" class="tipos-acceso">
+  <a aria-current="page" class="tipo-acceso tipo-acceso--activo" mat-button routerLink="/">
+    Usuario
+  </a>
+  <a [routerLink]="'/administrador'" class="tipo-acceso" mat-button>
+    Administrador
+  </a>
+</nav>
+
+<!-- Título y descripción -->
+<header class="encabezado-inicio-sesion">
+  <h1 class="titulo-inicio-sesion" id="titulo-inicio-sesion">Iniciar sesión</h1>
+  <p class="subtitulo-inicio-sesion">Disfruta del deporte al máximo</p>
+</header>
+
+<!-- Formulario de inicio de sesión -->
+<form (ngSubmit)="onSubmit()" [formGroup]="loginCliente" class="form-container">
+  <p>Correo electrónico</p>
+  <mat-form-field>
+    <mat-label>Enter your email</mat-label>
+    <input [formField]="email" matInput placeholder="correo@sportfit.com"/>
+    @for (error of email().errors(); track error) {
+      <mat-error>{{ error.message }}</mat-error>
+    }
+  </mat-form-field>
+
+  <p>Contraseña</p>
+  <mat-form-field>
+    <mat-label>Ingresa tu contraseña</mat-label>
+    <input [type]="hide() ? 'password' : 'text'" matInput/>
+    <button
+      (click)="clickEvent($event)"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide()"
+      matIconButton
+      matSuffix
+    >
+      <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <mat-checkbox class="recuerdame-checkboc">Recuerdame</mat-checkbox>
+
+</form>
+
+<button matButton="filled">
+  Acceder
+  <mat-icon fontSet="material-symbols-outlined" iconPositionEnd>
+    arrow_forward
+  </mat-icon>
+</button>
+<a [routerLink]="'/registro'">¿No tienes una cuenta? Registrate Aqui</a>

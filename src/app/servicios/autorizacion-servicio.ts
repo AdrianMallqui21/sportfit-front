@@ -1,7 +1,6 @@
 import { inject, Service } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { RespuestaLoginModelo } from '../modelos/respuesta-login-modelo';
 import { Observable } from 'rxjs';
 
 @Service()
@@ -10,13 +9,6 @@ export class AutorizacionServicio {
   private httpClient: HttpClient = inject(HttpClient);
   constructor() {}
 
-  iniciarSesion(correo: string, contrasena: string): Observable<RespuestaLoginModelo> {
-    return this.httpClient.post<RespuestaLoginModelo>(this.url + '/authenticate', {
-      correo: correo.trim(),
-      password: contrasena,
-    });
-  }
-
   registrarCliente(datos: {
     nombre: string;
     apellido: string;
@@ -24,7 +16,7 @@ export class AutorizacionServicio {
     telefono: string;
     correo: string;
     contrasenaHash: string;
-  }): Observable<RespuestaLoginModelo> {
-    return this.httpClient.post<RespuestaLoginModelo>(this.url + '/auth/register', datos);
+  }): Observable<unknown> {
+    return this.httpClient.post<unknown>(this.url + '/auth/register', datos);
   }
 }

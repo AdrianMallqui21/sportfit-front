@@ -1,5 +1,4 @@
 export class UsuarioModelo {
-  jwt: string;
   idUsuario: number;
   nombre: string;
   apellido: string;
@@ -12,4 +11,5 @@ export class UsuarioModelo {
   modificadoPor: string | null;
   fCreacion: string;
   fModificacion: string | null;
+  idRol: number;
 }

@@ -1,19 +1,15 @@
 <div class="pagina-inicio-sesion">
   <main class="tarjeta-inicio-sesion">
-    <nav class="tipos-acceso" aria-label="Tipo de acceso">
-      <button
-        class="tipo-acceso tipo-acceso--activo"
-        type="button"
-        aria-pressed="true"
-      >
-        Usuario
-      </button>
 
-      <a class="tipo-acceso" routerLink="/administrador">Administrador</a>
+    <!-- Barra de navegación -->
+    <nav aria-label="Tipo de acceso" class="tipos-acceso">
+      <a mat-button routerLink="/" class="tipo-acceso tipo-acceso--activo" aria-current="page">Usuario</a>
+      <a mat-button routerLink="/administrador" class="tipo-acceso">Administrador</a>
     </nav>
 
+    <!-- Título y descripción -->
     <header class="encabezado-inicio-sesion">
-      <h1 id="titulo-inicio-sesion" class="titulo-inicio-sesion">
+      <h1 class="titulo-inicio-sesion" id="titulo-inicio-sesion">
         Iniciar sesión
       </h1>
 
@@ -22,43 +18,58 @@
       </p>
     </header>
 
-    <form [formGroup]="formulario" (ngSubmit)="onSubmit()"
-      id="formulario-inicio-sesion"
-      class="formulario-inicio-sesion"
+    <!-- Campos y opciones de acceso -->
+    <form
+      #formularioAcceso="ngForm"
+      [formGroup]="formulario"
+      (ngSubmit)="onSubmit()"
       aria-labelledby="titulo-inicio-sesion"
+      class="formulario-inicio-sesion"
+      id="formulario-inicio-sesion"
     >
-      <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+      <mat-form-field appearance="outline" class="campo-formulario" subscriptSizing="dynamic">
         <mat-label>Correo electrónico</mat-label>
-        <input matInput class="entrada-formulario" type="email" id="correo" name="correo" formControlName="correo"
-               autocomplete="username" placeholder="Ingresa tu correo electrónico" required>
+        <input autocomplete="username" class="entrada-formulario" id="correo" matInput formControlName="correo"
+               placeholder="Ingresa tu correo electrónico" required type="email">
+        @if (formulario.controls.correo.hasError('required')) {
+          <mat-error>Ingresa tu correo electrónico.</mat-error>
+        } @else if (formulario.controls.correo.hasError('email')) {
+          <mat-error>Ingresa un correo electrónico válido.</mat-error>
+        }
       </mat-form-field>
 
-      <mat-form-field class="campo-formulario" appearance="outline" subscriptSizing="dynamic">
+      <mat-form-field appearance="outline" class="campo-formulario" subscriptSizing="dynamic">
         <mat-label>Contraseña</mat-label>
-        <input matInput
-            class="entrada-formulario"
-            [type]="mostrarContrasena() ? 'text' : 'password'"
-            id="contrasena"
-            name="contrasena" formControlName="contrasena"
-            placeholder="Ingresa tu contraseña"
-            autocomplete="current-password"
-            required
-          >
+        <input [type]="mostrarContrasena() ? 'text' : 'password'"
+               autocomplete="current-password"
+               class="entrada-formulario"
+               id="contrasena"
+               matInput
+               formControlName="contrasena"
+               placeholder="Ingresa tu contraseña"
+               required
+        >
 
-          <button
-            mat-button matSuffix class="boton-mostrar-contrasena"
-            type="button"
-            aria-controls="contrasena"
-            (click)="mostrarContrasena.set(!mostrarContrasena())"
-            [attr.aria-pressed]="mostrarContrasena()"
-            [attr.aria-label]="mostrarContrasena() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
-          >
-            {{ mostrarContrasena() ? 'Ocultar' : 'Mostrar' }}
-          </button>
+        <button
+          (click)="mostrarContrasena.set(!mostrarContrasena())"
+          [attr.aria-label]="mostrarContrasena() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          [attr.aria-pressed]="mostrarContrasena()"
+          aria-controls="contrasena"
+          class="boton-mostrar-contrasena"
+          mat-button
+          matSuffix
+          type="button"
+        >
+          {{ mostrarContrasena() ? 'Ocultar' : 'Mostrar' }}
+        </button>
+        @if (formulario.controls.contrasena.hasError('required')) {
+          <mat-error>Ingresa tu contraseña.</mat-error>
+        }
       </mat-form-field>
 
+      <!-- Recordarme y recuperación de contraseña -->
       <div class="opciones-inicio-sesion">
-        <mat-checkbox class="opcion-recordarme" name="recordarme" formControlName="recordarme">Recordarme</mat-checkbox>
+        <mat-checkbox class="opcion-recordarme" formControlName="recordarme">Recordarme</mat-checkbox>
 
         <!-- Reemplazar "." por la ruta de recuperación de contraseña. -->
         <a class="enlace-recuperar-contrasena" href=".">
@@ -66,17 +77,20 @@
         </a>
       </div>
 
+      <!-- Marca y botón de acceso -->
       <div class="contenedor-logotipo">
         <span class="logotipo">SportFit</span>
       </div>
 
-      @if (mensajeError()) {
-        <p role="alert">{{ mensajeError() }}</p>
-      }
-      <button mat-flat-button class="boton-acceder" type="submit" [disabled]="enviando()">
+      <button class="boton-acceder" mat-flat-button type="submit">
         Acceder
       </button>
 
+      @if (formularioAcceso.submitted && formulario.valid) {
+        <p role="status">Formulario válido. El acceso está en modo de prueba.</p>
+      }
+
+      <!-- Enlace al registro de clientes -->
       <p class="texto-registro">
         ¿No tienes una cuenta?
 
@@ -88,7 +102,7 @@
     </form>
   </main>
 
-  <div class="contenedor-ilustracion" aria-hidden="true">
+  <div aria-hidden="true" class="contenedor-ilustracion">
     <!-- Espacio reservado para la ilustración original. -->
   </div>
 </div>

@@ -1,0 +1,103 @@
+:host {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 380px);
+  align-content: center;
+  min-height: 100dvh;
+  padding: 2rem clamp(1.25rem, 15vw, 14rem);
+  background: linear-gradient(110deg, #079c87, #80cb32);
+  color: #252525;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.tipos-acceso {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+  border-radius: 14px 14px 0 0;
+  background: #ededed;
+}
+
+.tipos-acceso .tipo-acceso {
+  position: relative;
+  display: grid;
+  min-height: 56px;
+  place-items: center;
+  border-radius: 0;
+  color: #252525;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tipos-acceso .tipo-acceso--activo {
+  background: #fff;
+}
+
+.tipo-acceso--activo::after {
+  position: absolute;
+  inset: auto 18% 3px;
+  height: 3px;
+  background: #39b985;
+  content: "";
+}
+
+.encabezado-inicio-sesion,
+.form-container {
+  background: #fff;
+}
+
+.encabezado-inicio-sesion {
+  padding: 26px 24px 0;
+  text-align: center;
+}
+
+.titulo-inicio-sesion {
+  margin: 0;
+  color: #32b67f;
+  font-size: 29px;
+}
+
+.subtitulo-inicio-sesion {
+  margin: 4px 0 0;
+  color: #666;
+  font-size: 12px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 32px clamp(1rem, 4vw, 2rem) 18px;
+  border-radius: 0 0 14px 14px;
+}
+
+.form-container > p {
+  margin: 0 0 4px;
+  font-size: 12px;
+}
+
+.form-container mat-form-field {
+  --mat-form-field-container-height: 48px;
+  --mat-form-field-container-text-size: 13px;
+  --mat-form-field-filled-container-color: #f4f6f8;
+  --mat-form-field-filled-container-shape: 7px;
+  --mat-form-field-filled-active-indicator-color: #dce3e8;
+  --mat-form-field-filled-focus-active-indicator-color: #23875f;
+  --mat-form-field-filled-focus-label-text-color: #23875f;
+  --mat-form-field-filled-caret-color: #23875f;
+}
+
+.form-container button[matIconButton] {
+  color: #303a36;
+}
+
+.form-container mat-icon {
+  font-family: 'Material Symbols Outlined';
+  font-feature-settings: 'liga';
+}
+
+@media (max-width: 600px) {
+  :host {
+    justify-content: center;
+    padding-inline: 1.25rem;
+  }
+}

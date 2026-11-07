@@ -34,10 +34,13 @@
   background: #ededed;
 }
 
-.tipo-acceso {
+.tipos-acceso .tipo-acceso {
+  --mat-button-text-label-text-color: #333;
+  border-radius: 0;
+  min-height: 56px;
   position: relative;
   flex: 1;
-  padding: 22px 12px;
+  padding: 0 12px;
   color: #333;
   text-align: center;
   text-decoration: none;
@@ -45,7 +48,7 @@
   font-weight: 700;
 }
 
-.tipo-acceso--activo {
+.tipos-acceso .tipo-acceso--activo {
   background: #fff;
 }
 
