@@ -18,21 +18,21 @@
   </header>
 
   <!-- Formulario de inicio de sesión -->
-  <form class="form-container">
+  <form class="form-container" [formGroup]="loginAdministrador" (ngSubmit)="onSubmit()">
     <!-- Correo electrónico -->
     <label for="correo-administrador">Correo electrónico</label>
     <mat-form-field>
       <mat-icon matIconPrefix fontSet="material-symbols-outlined">mail</mat-icon>
-      <input matInput id="correo-administrador" type="email" autocomplete="username" placeholder="Ingresa tu correo electrónico" />
+      <input matInput id="correo-administrador" formControlName="email" type="email" autocomplete="username" placeholder="Ingresa tu correo electrónico" />
     </mat-form-field>
 
     <!-- Contraseña -->
     <label for="contrasena-administrador">Contraseña</label>
     <mat-form-field>
       <mat-icon matIconPrefix fontSet="material-symbols-outlined">lock</mat-icon>
-      <input matInput id="contrasena-administrador" autocomplete="current-password"
+      <input matInput id="contrasena-administrador" formControlName="password" autocomplete="current-password"
              [type]="hide() ? 'password' : 'text'" placeholder="Ingresa tu contraseña" />
-      <button matIconButton matSuffix type="button" (click)="hide.set(!hide())"
+      <button matIconButton matSuffix type="button" (click)="clickEvent($event)"
               [attr.aria-label]="hide() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
               [attr.aria-pressed]="!hide()">
         <mat-icon fontSet="material-symbols-outlined">{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
@@ -41,16 +41,17 @@
 
     <!-- Recordar -->
     <mat-checkbox class="recuerdame-checkboc">Recordarme</mat-checkbox>
-  </form>
+
 
   <!-- Logotipo -->
   <img src="loge-sportfit.png" alt="SportFit" />
 
   <!-- Botón de acceso -->
-  <button matButton="filled" type="button">
+  <button matButton="filled" type="submit">
     Acceder
     <mat-icon fontSet="material-symbols-outlined" iconPositionEnd>arrow_forward</mat-icon>
   </button>
+  </form>
 </div>
 
 <!-- Imagen de portada -->

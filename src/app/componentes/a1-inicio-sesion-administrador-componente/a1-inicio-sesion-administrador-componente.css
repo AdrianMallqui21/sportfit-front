@@ -110,11 +110,11 @@
   margin: -8px 0 0 -10px;
 }
 
-.formulario-inicio-administrador > img {
+.form-container > img {
   display: block;
   width: 120px;
   height: auto;
-  justify-self: center;
+  align-self: center;
   margin: 4px 0 10px;
 }
 
@@ -126,12 +126,12 @@
   object-fit: contain;
 }
 
-.formulario-inicio-administrador > button {
+.form-container > button[type="submit"] {
   --mat-button-filled-container-color: #23875f;
   --mat-button-filled-label-text-color: #fff;
   --mat-button-filled-container-shape: 6px;
   width: min(52%, 200px);
-  justify-self: center;
+  align-self: center;
   margin-bottom: 24px;
 }
 
