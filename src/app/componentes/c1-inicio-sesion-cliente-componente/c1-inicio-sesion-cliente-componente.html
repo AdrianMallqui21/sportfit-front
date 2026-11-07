@@ -24,24 +24,24 @@
     <!-- Correo electronico -->
     <label for="correo-cliente">Correo electrónico</label>
     <mat-form-field>
-      <mat-icon matIconPrefix fontSet="material-symbols-outlined">mail</mat-icon>
-      <input [formField]="email" matInput id="correo-cliente" placeholder="Ingresa tu correo electrónico"/>
-      @for (error of email().errors(); track error) {
-        <mat-error>{{ error.message }}</mat-error>
-      }
+      <mat-icon fontSet="material-symbols-outlined" matIconPrefix>mail</mat-icon>
+      <input formControlName="email" id="correo-cliente" matInput placeholder="Ingresa tu correo electrónico"/>
     </mat-form-field>
 
     <!-- Contraseña -->
     <label for="contrasena-cliente">Contraseña</label>
     <mat-form-field>
-      <mat-icon matIconPrefix fontSet="material-symbols-outlined">lock</mat-icon>
-      <input [type]="hide() ? 'password' : 'text'" matInput id="contrasena-cliente" placeholder="Ingresa tu contraseña"/>
+      <mat-icon fontSet="material-symbols-outlined" matIconPrefix>lock</mat-icon>
+      <input [type]="hide() ? 'password' : 'text'" formControlName="password" id="contrasena-cliente" matInput
+             placeholder="Ingresa tu contraseña"/>
+
       <button
         (click)="clickEvent($event)"
         [attr.aria-label]="'Hide password'"
         [attr.aria-pressed]="hide()"
         matIconButton
         matSuffix
+        type="button"
       >
         <mat-icon fontSet="material-symbols-outlined">{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
@@ -50,21 +50,23 @@
     <!-- Recordar -->
     <mat-checkbox class="recuerdame-checkboc">Recuerdame</mat-checkbox>
 
+    <!-- Boton de envio -->
+    <button matButton="filled" type="submit">
+      Acceder
+      <mat-icon fontSet="material-symbols-outlined" iconPositionEnd>
+        arrow_forward
+      </mat-icon>
+    </button>
+
   </form>
 
   <!-- Logotipo -->
-  <img alt="logotipo" src="../../../../public/loge-sportfit.png"/>
+  <img alt="logotipo" src="loge-sportfit.png"/>
 
-  <!-- Boton de envio -->
-  <button matButton="filled">
-    Acceder
-    <mat-icon fontSet="material-symbols-outlined" iconPositionEnd>
-      arrow_forward
-    </mat-icon>
-  </button>
+
   <a [routerLink]="'/registro'">¿No tienes una cuenta? Registrate Aqui</a>
 
 </div>
 
 
-<img src="../../../../public/portada-sportfit.png"/>
+<img src="portada-sportfit.png"/>
