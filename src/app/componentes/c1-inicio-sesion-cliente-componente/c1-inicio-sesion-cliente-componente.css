@@ -1,28 +1,40 @@
 :host {
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: minmax(0, 380px);
-  align-content: center;
+  grid-template-columns: minmax(0, 380px) minmax(0, 449px);
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 8vw, 7rem);
   min-height: 100dvh;
-  padding: 2rem clamp(1.25rem, 15vw, 14rem);
-  background: linear-gradient(110deg, #079c87, #80cb32);
+  padding: 2rem clamp(1.25rem, 6vw, 6rem);
+  background:
+    radial-gradient(circle at 74% 55%, #fff0 0 28%, rgb(255 255 255 / 7%) 28% 32%, #fff0 32%),
+    linear-gradient(110deg, #079c87, #80cb32);
   color: #252525;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.formulario-inicio-cliente {
+  display: grid;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #fff;
 }
 
 .tipos-acceso {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  overflow: hidden;
-  border-radius: 14px 14px 0 0;
   background: #ededed;
 }
 
 .tipos-acceso .tipo-acceso {
   position: relative;
-  display: grid;
+  display: flex;
+  min-width: 0;
   min-height: 56px;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   border-radius: 0;
   color: #252525;
   font-size: 13px;
@@ -39,11 +51,6 @@
   height: 3px;
   background: #39b985;
   content: "";
-}
-
-.encabezado-inicio-sesion,
-.form-container {
-  background: #fff;
 }
 
 .encabezado-inicio-sesion {
@@ -66,8 +73,7 @@
 .form-container {
   display: flex;
   flex-direction: column;
-  padding: 32px clamp(1rem, 4vw, 2rem) 18px;
-  border-radius: 0 0 14px 14px;
+  padding: 28px clamp(1rem, 4vw, 2rem) 0;
 }
 
 .form-container > p {
@@ -76,8 +82,10 @@
 }
 
 .form-container mat-form-field {
-  --mat-form-field-container-height: 48px;
+  --mat-form-field-container-height: 44px;
   --mat-form-field-container-text-size: 13px;
+  --mat-form-field-filled-with-label-container-padding-top: 18px;
+  --mat-form-field-filled-with-label-container-padding-bottom: 6px;
   --mat-form-field-filled-container-color: #f4f6f8;
   --mat-form-field-filled-container-shape: 7px;
   --mat-form-field-filled-active-indicator-color: #dce3e8;
@@ -95,9 +103,56 @@
   font-feature-settings: 'liga';
 }
 
-@media (max-width: 600px) {
+.recuerdame-checkboc {
+  --mat-checkbox-selected-icon-color: #23875f;
+  --mat-checkbox-label-text-size: 12px;
+  align-self: flex-start;
+  margin: -8px 0 0 -10px;
+}
+
+/* Las URLs relativas permiten que Angular incluya los PNG desde este CSS. */
+.formulario-inicio-cliente > img {
+  content: url('../../../../public/loge-sportfit.png') / 'Logotipo de SportFit';
+  display: block;
+  width: 120px;
+  height: auto;
+  justify-self: center;
+  margin: 4px 0 10px;
+}
+
+:host > img {
+  content: url('../../../../public/portada-sportfit.png') / '';
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 80dvh;
+  object-fit: contain;
+}
+
+.formulario-inicio-cliente > button {
+  --mat-button-filled-container-color: #23875f;
+  --mat-button-filled-label-text-color: #fff;
+  --mat-button-filled-container-shape: 6px;
+  width: min(52%, 200px);
+  justify-self: center;
+}
+
+.formulario-inicio-cliente > a {
+  justify-self: center;
+  margin: 8px 12px 12px;
+  color: #666;
+  font-size: 11px;
+  text-align: center;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 700px) {
   :host {
-    justify-content: center;
-    padding-inline: 1.25rem;
+    grid-template-columns: minmax(0, 380px);
+    gap: 1.5rem;
+  }
+
+  :host > img {
+    max-height: 35dvh;
   }
 }

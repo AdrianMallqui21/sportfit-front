@@ -5,7 +5,7 @@ import {
   A28ReporteDeporteSedeComponente
 } from './componentes/a28-reporte-deporte-sede-componente/a28-reporte-deporte-sede-componente';
 import {Routes} from '@angular/router';
-import {RegistroClienteComponente} from './componentes/registro-cliente-componente/registro-cliente-componente';
+import {C2RegistroClienteComponente} from './componentes/c2-registro-cliente-componente/c2-registro-cliente-componente';
 import {
   InicioSesionAdministradorComponente
 } from './componentes/inicio-sesion-administrador-componente/inicio-sesion-administrador-componente';
@@ -29,7 +29,7 @@ export const routes: Routes = [
   // Ruta de prueba de la vista A28.
 
   {path: '', component: C1InicioSesionClienteComponente},
-  {path: 'registro', component: RegistroClienteComponente},
+  {path: 'registro', component: C2RegistroClienteComponente},
   {path: 'administrador', component: InicioSesionAdministradorComponente},
 
   {path: 'home', component: C4HomeClienteComponente},

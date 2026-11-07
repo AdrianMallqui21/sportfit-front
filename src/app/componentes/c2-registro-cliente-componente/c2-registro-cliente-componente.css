@@ -1,0 +1,116 @@
+:host {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 350px) minmax(0, 449px);
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 8vw, 7rem);
+  min-height: 100dvh;
+  padding: 2rem clamp(1.25rem, 6vw, 6rem);
+  background:
+    radial-gradient(circle at 74% 55%, transparent 0 28%, rgb(255 255 255 / 7%) 28% 32%, transparent 32%),
+    linear-gradient(110deg, #079c87, #80cb32);
+  color: #252525;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.tarjeta-registro {
+  min-width: 0;
+  padding: 20px clamp(1rem, 3vw, 2rem) 16px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.tarjeta-registro h1 {
+  margin: 0 0 8px;
+  color: #32b67f;
+  font-size: 27px;
+  text-align: center;
+}
+
+.formulario-registro {
+  display: grid;
+  gap: 0;
+}
+
+.campo {
+  display: grid;
+  min-width: 0;
+  gap: 0;
+}
+
+.formulario-registro label {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12px;
+}
+
+.fila-documento-contacto {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.formulario-registro mat-form-field {
+  margin-bottom: 8px;
+  --mat-form-field-container-height: 34px;
+  --mat-form-field-container-vertical-padding: 7px;
+  --mat-form-field-container-text-size: 12px;
+  --mat-form-field-filled-container-color: #f4f6f8;
+  --mat-form-field-filled-container-shape: 7px;
+  --mat-form-field-filled-active-indicator-color: transparent;
+  --mat-form-field-filled-hover-active-indicator-color: #dce3e8;
+  --mat-form-field-filled-focus-active-indicator-color: #23875f;
+  --mat-form-field-filled-caret-color: #23875f;
+}
+
+.formulario-registro mat-icon[matIconPrefix] {
+  width: 16px;
+  height: 16px;
+  padding: 0 0 0 8px;
+  color: #64706b;
+  font-size: 16px;
+}
+
+.formulario-registro > button {
+  --mat-button-filled-container-color: #23875f;
+  --mat-button-filled-label-text-color: #fff;
+  --mat-button-filled-container-shape: 6px;
+  width: min(62%, 200px);
+  justify-self: center;
+  margin-top: 2px;
+}
+
+.portada-registro {
+  width: 100%;
+  display: block;
+  height: auto;
+  max-height: 80dvh;
+  object-fit: contain;
+}
+
+@media (max-width: 700px) {
+  :host {
+    grid-template-columns: minmax(0, 350px);
+    gap: 1.5rem;
+  }
+
+  .portada-registro {
+    max-height: 35dvh;
+  }
+}
+
+@media (max-width: 340px) {
+  .fila-documento-contacto {
+    grid-template-columns: 1fr;
+  }
+}
+
+.formulario-registro > a {
+  justify-self: center;
+  margin-top: 10px;
+  color: #23875f;
+  font-size: 12px;
+  text-align: center;
+  text-underline-offset: 2px;
+}

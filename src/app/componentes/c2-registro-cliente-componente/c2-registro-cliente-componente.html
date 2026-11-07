@@ -1,0 +1,90 @@
+<section aria-labelledby="titulo-registro" class="tarjeta-registro">
+  <!-- Título -->
+  <h1 id="titulo-registro">Registro</h1>
+
+  <!-- Formulario de registro -->
+  <form class="formulario-registro">
+    <!-- Nombres -->
+    <label for="registro-nombres">Nombres</label>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-icon fontSet="material-symbols-outlined" matIconPrefix>person</mat-icon>
+      <input autocomplete="given-name" id="registro-nombres" matInput name="nombres" placeholder="Ingresa tus nombres"/>
+    </mat-form-field>
+
+    <!-- Apellidos -->
+    <label for="registro-apellidos">Apellidos</label>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-icon fontSet="material-symbols-outlined" matIconPrefix>person</mat-icon>
+      <input autocomplete="family-name" id="registro-apellidos" matInput name="apellidos"
+             placeholder="Ingresa tus apellidos"/>
+    </mat-form-field>
+
+    <!-- DNI y teléfono -->
+    <div class="fila-documento-contacto">
+      <div class="campo">
+        <label for="registro-dni">DNI</label>
+        <mat-form-field subscriptSizing="dynamic">
+          <mat-icon fontSet="material-symbols-outlined" matIconPrefix>badge</mat-icon>
+          <input id="registro-dni" inputmode="numeric" matInput name="dni" placeholder="Ingresa tu DNI"/>
+        </mat-form-field>
+      </div>
+
+      <div class="campo">
+        <label for="registro-telefono">Teléfono</label>
+        <mat-form-field subscriptSizing="dynamic">
+          <mat-icon fontSet="material-symbols-outlined" matIconPrefix>call</mat-icon>
+          <span matTextPrefix>+51&nbsp;</span>
+          <input autocomplete="tel-national" id="registro-telefono" matInput name="telefono" placeholder="Tu número"
+                 type="tel"/>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Correo electrónico -->
+    <label for="registro-correo">Correo electrónico</label>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-icon fontSet="material-symbols-outlined" matIconPrefix>mail</mat-icon>
+      <input autocomplete="email" id="registro-correo" matInput name="correo"
+             placeholder="Ingresa tu correo electrónico"
+             type="email"/>
+    </mat-form-field>
+
+    <!-- Contraseña -->
+    <label for="registro-contrasena">Contraseña</label>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-icon fontSet="material-symbols-outlined" matIconPrefix>lock</mat-icon>
+      <input autocomplete="new-password" id="registro-contrasena" matInput name="contrasena"
+             placeholder="Ingresa tu contraseña"
+             [type]="ocultarContrasena() ? 'password' : 'text'"/>
+      <button matIconButton matSuffix type="button"
+              [attr.aria-label]="ocultarContrasena() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+              [attr.aria-pressed]="!ocultarContrasena()"
+              (click)="ocultarContrasena.set(!ocultarContrasena())">
+        <mat-icon fontSet="material-symbols-outlined">{{ ocultarContrasena() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <!-- Repetir contraseña -->
+    <label for="registro-confirmacion">Repetir contraseña</label>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-icon fontSet="material-symbols-outlined" matIconPrefix>lock</mat-icon>
+      <input autocomplete="new-password" id="registro-confirmacion" matInput name="confirmacion"
+             placeholder="Repite tu contraseña"
+             [type]="ocultarConfirmacion() ? 'password' : 'text'"/>
+      <button matIconButton matSuffix type="button"
+              [attr.aria-label]="ocultarConfirmacion() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+              [attr.aria-pressed]="!ocultarConfirmacion()"
+              (click)="ocultarConfirmacion.set(!ocultarConfirmacion())">
+        <mat-icon fontSet="material-symbols-outlined">{{ ocultarConfirmacion() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <!-- Botón de registro -->
+    <button (click)="abrirDialogo()" matButton="filled" type="button">Regístrate</button>
+    <!-- Volver al inicio de sesión -->
+    <a routerLink="/">¿Ya tienes una cuenta? Inicia sesión aquí</a>
+  </form>
+</section>
+
+<!-- Imagen de portada -->
+<img alt="" class="portada-registro" src="portada-sportfit.png"/>
