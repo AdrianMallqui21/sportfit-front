@@ -7,8 +7,8 @@ import {
 import {Routes} from '@angular/router';
 import {C2RegistroClienteComponente} from './componentes/c2-registro-cliente-componente/c2-registro-cliente-componente';
 import {
-  InicioSesionAdministradorComponente
-} from './componentes/inicio-sesion-administrador-componente/inicio-sesion-administrador-componente';
+  A1InicioSesionAdministradorComponente
+} from './componentes/a1-inicio-sesion-administrador-componente/a1-inicio-sesion-administrador-componente';
 import {C4HomeClienteComponente} from './componentes/c4-home-cliente-componente/c4-home-cliente-componente';
 import {
   A2PerfilAdministradorComponente
@@ -30,7 +30,7 @@ export const routes: Routes = [
 
   {path: '', component: C1InicioSesionClienteComponente},
   {path: 'registro', component: C2RegistroClienteComponente},
-  {path: 'administrador', component: InicioSesionAdministradorComponente},
+  {path: 'administrador', component: A1InicioSesionAdministradorComponente},
 
   {path: 'home', component: C4HomeClienteComponente},
   {path: 'perfil-administrador', component: A2PerfilAdministradorComponente},

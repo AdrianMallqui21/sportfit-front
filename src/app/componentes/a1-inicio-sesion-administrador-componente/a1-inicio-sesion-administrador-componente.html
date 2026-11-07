@@ -1,0 +1,57 @@
+<div class="formulario-inicio-administrador">
+  <!-- Barra de navegación -->
+  <nav aria-label="Tipo de acceso" class="tipos-acceso">
+    <a class="tipo-acceso" mat-button routerLink="/">
+      <mat-icon fontSet="material-symbols-outlined">person</mat-icon>
+      Usuario
+    </a>
+    <a aria-current="page" class="tipo-acceso tipo-acceso--activo" mat-button routerLink="/administrador">
+      <mat-icon fontSet="material-symbols-outlined">verified_user</mat-icon>
+      Administrador
+    </a>
+  </nav>
+
+  <!-- Título y descripción -->
+  <header class="encabezado-inicio-sesion">
+    <h1 class="titulo-inicio-sesion">Iniciar sesión</h1>
+    <p class="subtitulo-inicio-sesion">Disfruta del deporte al máximo</p>
+  </header>
+
+  <!-- Formulario de inicio de sesión -->
+  <form class="form-container">
+    <!-- Correo electrónico -->
+    <label for="correo-administrador">Correo electrónico</label>
+    <mat-form-field>
+      <mat-icon matIconPrefix fontSet="material-symbols-outlined">mail</mat-icon>
+      <input matInput id="correo-administrador" type="email" autocomplete="username" placeholder="Ingresa tu correo electrónico" />
+    </mat-form-field>
+
+    <!-- Contraseña -->
+    <label for="contrasena-administrador">Contraseña</label>
+    <mat-form-field>
+      <mat-icon matIconPrefix fontSet="material-symbols-outlined">lock</mat-icon>
+      <input matInput id="contrasena-administrador" autocomplete="current-password"
+             [type]="hide() ? 'password' : 'text'" placeholder="Ingresa tu contraseña" />
+      <button matIconButton matSuffix type="button" (click)="hide.set(!hide())"
+              [attr.aria-label]="hide() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+              [attr.aria-pressed]="!hide()">
+        <mat-icon fontSet="material-symbols-outlined">{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <!-- Recordar -->
+    <mat-checkbox class="recuerdame-checkboc">Recordarme</mat-checkbox>
+  </form>
+
+  <!-- Logotipo -->
+  <img src="loge-sportfit.png" alt="SportFit" />
+
+  <!-- Botón de acceso -->
+  <button matButton="filled" type="button">
+    Acceder
+    <mat-icon fontSet="material-symbols-outlined" iconPositionEnd>arrow_forward</mat-icon>
+  </button>
+</div>
+
+<!-- Imagen de portada -->
+<img src="portada-sportfit.png" alt="" />

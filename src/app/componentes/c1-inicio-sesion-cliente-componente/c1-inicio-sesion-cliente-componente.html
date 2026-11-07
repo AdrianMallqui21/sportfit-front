@@ -4,9 +4,11 @@
   <!--  -->
   <nav aria-label="Tipo de acceso" class="tipos-acceso">
     <a aria-current="page" class="tipo-acceso tipo-acceso--activo" mat-button routerLink="/">
+      <mat-icon fontSet="material-symbols-outlined">person</mat-icon>
       Usuario
     </a>
     <a [routerLink]="'/administrador'" class="tipo-acceso" mat-button>
+      <mat-icon fontSet="material-symbols-outlined">verified_user</mat-icon>
       Administrador
     </a>
   </nav>
@@ -20,20 +22,20 @@
   <!-- Formulario de inicio de sesión -->
   <form (ngSubmit)="onSubmit()" [formGroup]="loginCliente" class="form-container">
     <!-- Correo electronico -->
-    <p>Correo electrónico</p>
+    <label for="correo-cliente">Correo electrónico</label>
     <mat-form-field>
-      <mat-label>Enter your email</mat-label>
-      <input [formField]="email" matInput placeholder="correo@sportfit.com"/>
+      <mat-icon matIconPrefix fontSet="material-symbols-outlined">mail</mat-icon>
+      <input [formField]="email" matInput id="correo-cliente" placeholder="Ingresa tu correo electrónico"/>
       @for (error of email().errors(); track error) {
         <mat-error>{{ error.message }}</mat-error>
       }
     </mat-form-field>
 
     <!-- Contraseña -->
-    <p>Contraseña</p>
+    <label for="contrasena-cliente">Contraseña</label>
     <mat-form-field>
-      <mat-label>Ingresa tu contraseña</mat-label>
-      <input [type]="hide() ? 'password' : 'text'" matInput/>
+      <mat-icon matIconPrefix fontSet="material-symbols-outlined">lock</mat-icon>
+      <input [type]="hide() ? 'password' : 'text'" matInput id="contrasena-cliente" placeholder="Ingresa tu contraseña"/>
       <button
         (click)="clickEvent($event)"
         [attr.aria-label]="'Hide password'"
@@ -41,7 +43,7 @@
         matIconButton
         matSuffix
       >
-        <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        <mat-icon fontSet="material-symbols-outlined">{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
     </mat-form-field>
 

@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {email, form, FormField, required} from '@angular/forms/signals';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {MatError, MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
+import {MatError, MatFormField, MatInput, MatPrefix, MatSuffix} from '@angular/material/input';
 import {RouterLink} from '@angular/router';
 import {MatCheckbox} from '@angular/material/checkbox';
 
@@ -14,7 +14,7 @@ import {MatCheckbox} from '@angular/material/checkbox';
     ReactiveFormsModule,
     FormField,
     MatFormField,
-    MatLabel,
+    MatPrefix,
     MatInput,
     MatError,
     MatButton,

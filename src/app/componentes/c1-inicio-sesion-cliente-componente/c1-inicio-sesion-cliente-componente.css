@@ -76,7 +76,7 @@
   padding: 28px clamp(1rem, 4vw, 2rem) 0;
 }
 
-.form-container > p {
+.form-container > label {
   margin: 0 0 4px;
   font-size: 12px;
 }
@@ -140,10 +140,10 @@
 .formulario-inicio-cliente > a {
   justify-self: center;
   margin: 8px 12px 12px;
-  color: #666;
-  font-size: 11px;
+  color: #23875f;
+  font-size: 12px;
   text-align: center;
-  text-underline-offset: 2px;
+  text-decoration: none;
 }
 
 @media (max-width: 700px) {
@@ -155,4 +155,9 @@
   :host > img {
     max-height: 35dvh;
   }
+}
+
+.form-container mat-icon[matIconPrefix] {
+  color: #64706b;
+  font-size: 18px;
 }
