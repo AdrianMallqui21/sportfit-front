@@ -12,4 +12,5 @@ export class UsuarioModelo {
   fCreacion: string;
   fModificacion: string | null;
   idRol: number;
+  contrasenaHash: string;
 }

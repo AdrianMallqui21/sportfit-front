@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {CredencialesDTOModelo} from '../modelos/credenciales-dto-modelo';
 import {RespuestaDTOModelo} from '../modelos/respuesta-dto-modelo';
+import {UsuarioModelo} from '../modelos/usuario-modelo';
 
 @Service()
 export class AutorizacionServicio {
@@ -37,6 +38,18 @@ export class AutorizacionServicio {
 
         })
       )
+  }
+
+  registroCliente(usuario: UsuarioModelo): Observable<RespuestaDTOModelo> {
+    return this.http.post(this.url + '/auth/register', usuario, {observe: 'response'}).pipe(
+      map(response => {
+        const token = response.headers.get('Authorization');
+        if (token) {
+          localStorage.setItem('token', token.replace('Bearer ', ''));
+        }
+        return response.body as RespuestaDTOModelo;
+      })
+    );
   }
 
 
