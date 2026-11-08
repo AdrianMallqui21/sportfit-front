@@ -1,9 +1,10 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { ClienteModelo } from '../modelos/cliente-modelo';
-import { ReservaModelo } from '../modelos/solicitud-reserva-modelo';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
+import {ClienteModelo} from '../modelos/cliente-modelo';
+import {ReservaModelo} from '../modelos/solicitud-reserva-modelo';
+import {UsuarioModelo} from '../modelos/usuario-modelo';
 
 @Injectable({
   providedIn: 'root'
@@ -55,4 +56,9 @@ export class ClienteServicio {
   obtenerCantidadReservas(idUsuario: number): Observable<number> {
     return this.http.get<number>(`${this.url}/reservas-cantidad/usuario/${idUsuario}`);
   }
+
+  obtenerAdministradorCorreo(correo: string): Observable<UsuarioModelo> {
+    return this.http.get<UsuarioModelo>(this.url + '/administrador', {params: {correo}});
+  }
+
 }

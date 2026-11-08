@@ -8,6 +8,9 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {AutorizacionServicio} from '../../servicios/autorizacion-servicio';
 import {CredencialesDTOModelo} from '../../modelos/credenciales-dto-modelo';
 import {RespuestaDTOModelo} from '../../modelos/respuesta-dto-modelo';
+import {ClienteServicio} from '../../servicios/cliente-servicio';
+import {map, Observable} from 'rxjs';
+import {UsuarioModelo} from '../../modelos/usuario-modelo';
 
 @Component({
   selector: 'app-a1-inicio-sesion-administrador-componente',
@@ -33,6 +36,7 @@ export class A1InicioSesionAdministradorComponente {
   router: Router = inject(Router);
   // Logica de auth
   autorizacionServicio: AutorizacionServicio = inject(AutorizacionServicio);
+  clienteServicio: ClienteServicio = inject(ClienteServicio);
   protected loginAdministrador: FormGroup;
 
 
@@ -62,6 +66,12 @@ export class A1InicioSesionAdministradorComponente {
     console.log("Cargando formulario");
   }
 
+  cargarAdministrador(emailBuscado: string): Observable<UsuarioModelo> {
+    return this.clienteServicio.obtenerAdministradorCorreo(emailBuscado).pipe(
+      map(usuario => usuario)
+    )
+  }
+
   protected onSubmit() {
     if (this.loginAdministrador.valid) {
       const credenciales: CredencialesDTOModelo = new CredencialesDTOModelo();
@@ -76,7 +86,14 @@ export class A1InicioSesionAdministradorComponente {
             return;
           }
           localStorage.setItem('rol', 'ROLE_ADMINISTRADOR');
-          this.router.navigate(['/perfil-administrador']);
+          //PASAR
+          this.cargarAdministrador(credenciales.correo).subscribe({
+            next: (usuario) => {
+              console.log("Usuario enviado: ", usuario);
+              this.router.navigate(['/perfil-administrador'], {state: {usuario}});
+            },
+            error: () => alert('No se pudo obtener el ID del administrador')
+          });
         },
         error: (error) => {
           console.error('Error al iniciar sesión:', error);
@@ -88,6 +105,5 @@ export class A1InicioSesionAdministradorComponente {
       console.log("Formulario no valido");
     }
   }
-
 
 }
