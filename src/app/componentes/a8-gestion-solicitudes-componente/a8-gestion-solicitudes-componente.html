@@ -1,0 +1,375 @@
+<div class="pagina-gestion-solicitudes">
+  <!-- ENCABEZADO SUPERIOR -->
+  <header class="encabezado-superior">
+    <div class="espaciador"></div>
+    <img src="/imagenes/sportfit-logo.png" alt="SportFit" class="logotipo-sportfit" (error)="onLogoError($event)">
+  </header>
+
+  <!-- BANNER DE BIENVENIDA -->
+  <section class="banner-saludo">
+    <div class="icono-saludo-circulo">
+      <mat-icon>waving_hand</mat-icon>
+    </div>
+    <div class="divisor-vertical-banner"></div>
+    <div class="textos-saludo">
+      <h1 class="titulo-saludo">
+        Bienvenido de vuelta, <span class="nombre-admin">Tío Vílchez!</span>
+      </h1>
+      <p class="subtitulo-saludo">Aquí tienes un resumen de la actividad de tu centro deportivo</p>
+    </div>
+  </section>
+
+  <!-- BANNER DE AUTENTICACIÓN SI FALTA SESIÓN -->
+  @if (alertaAutenticacion()) {
+    <div class="alerta-autenticacion-banner">
+      <div class="icono-banner">
+        <mat-icon>lock</mat-icon>
+      </div>
+      <div class="textos-banner">
+        <strong>Se requiere sesión de Administrador</strong>
+        <span>Para consultar y gestionar las solicitudes de reserva necesitas haber iniciado sesión.</span>
+      </div>
+      <div class="acciones-banner">
+        <button mat-flat-button class="boton-login-rapido" (click)="iniciarSesionAdmin()" [disabled]="iniciandoSesionRapida()">
+          <mat-icon>login</mat-icon>
+          {{ iniciandoSesionRapida() ? 'Autenticando...' : 'Autenticar como Admin' }}
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- CUADRÍCULA PRINCIPAL: FILTROS + TABLA (IZQ) & DETALLE (DER) -->
+  <div class="grid-solicitudes-layout">
+    <!-- COLUMNA IZQUIERDA: VISTA a7 (Filtros de búsqueda y Solicitudes de reserva) -->
+    <div class="columna-solicitudes-tabla">
+      <!-- FILTRO DE BÚSQUEDA (VISTA a7) -->
+      <mat-card class="tarjeta-filtro-solicitudes" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title class="titulo-con-icono">
+            <mat-icon>search</mat-icon>
+            <span>Filtro de búsqueda</span>
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="contenido-filtro-contenedor">
+          <div class="filtros-campos-grid">
+            <!-- 1. Filtro Sedes -->
+            <div class="campo-filtro-col">
+              <label class="etiqueta-campo">Sedes</label>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-icon matPrefix>place</mat-icon>
+                <mat-select [(ngModel)]="filtroSede">
+                  <mat-option value="">Todas las sedes</mat-option>
+                  @for (sede of sedes(); track sede.idSede) {
+                    <mat-option [value]="sede.nombre">{{ sede.nombre }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- 2. Filtro Fecha -->
+            <div class="campo-filtro-col">
+              <label class="etiqueta-campo">Fecha</label>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-icon matPrefix>calendar_today</mat-icon>
+                <input matInput [matDatepicker]="pickerFecha" placeholder="Ingresa la fecha" [(ngModel)]="filtroFecha">
+                <mat-datepicker-toggle matIconSuffix [for]="pickerFecha"></mat-datepicker-toggle>
+                <mat-datepicker #pickerFecha></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <!-- 3. Filtro Horario -->
+            <div class="campo-filtro-col">
+              <label class="etiqueta-campo">Horario</label>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-icon matPrefix>calendar_today</mat-icon>
+                <mat-select [(ngModel)]="filtroHorario">
+                  @for (opc of opcionesHorario; track opc.valor) {
+                    <mat-option [value]="opc.valor">{{ opc.etiqueta }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- 4. Filtro Deporte -->
+            <div class="campo-filtro-col">
+              <label class="etiqueta-campo">Deporte</label>
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-select [(ngModel)]="filtroDeporte" placeholder="Ingrese el deporte">
+                  @for (opc of opcionesDeporte; track opc.valor) {
+                    <mat-option [value]="opc.valor">{{ opc.etiqueta }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- BOTONES DE ACCIÓN DEL FILTRO -->
+          <div class="filtros-botones-row">
+            <button mat-flat-button class="boton-buscar" (click)="aplicarFiltros()">
+              Buscar
+            </button>
+            <button mat-stroked-button class="boton-limpiar" (click)="limpiarFiltros()">
+              Limpiar
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- TABLA: SOLICITUDES DE RESERVA (VISTA a7) -->
+      <mat-card class="tarjeta-tabla-solicitudes" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title class="titulo-tabla">Solicitudes de reserva</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="contenedor-tabla-responsive">
+            <table mat-table [dataSource]="solicitudesFiltradas()" class="tabla-material-solicitudes">
+              <!-- Columna Sede -->
+              <ng-container matColumnDef="sede">
+                <th mat-header-cell *matHeaderCellDef>Sede</th>
+                <td mat-cell *matCellDef="let s">
+                  <span class="celda-icono-texto">
+                    <mat-icon class="icono-pequeno">place</mat-icon>
+                    {{ formatearSede(s) }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Columna Canchas / Deporte -->
+              <ng-container matColumnDef="canchasDeporte">
+                <th mat-header-cell *matHeaderCellDef>Canchas/ Deporte</th>
+                <td mat-cell *matCellDef="let s">
+                  <span class="celda-icono-texto">
+                    <mat-icon class="icono-pequeno">{{ obtenerIconoDeporte(s.sedeCancha?.cancha?.deporte) }}</mat-icon>
+                    {{ formatearCanchaDeporte(s) }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Columna Fecha -->
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                <td mat-cell *matCellDef="let s">
+                  <span class="celda-icono-texto">
+                    <mat-icon class="icono-pequeno">calendar_today</mat-icon>
+                    {{ formatearFecha(s.fReserva || s.fecha) }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Columna Horario -->
+              <ng-container matColumnDef="horario">
+                <th mat-header-cell *matHeaderCellDef>Horario</th>
+                <td mat-cell *matCellDef="let s">
+                  <span class="celda-icono-texto">
+                    <mat-icon class="icono-pequeno">schedule</mat-icon>
+                    {{ formatearHorario(s.hInicio, s.hFin) }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Columna Estado -->
+              <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef>Estado</th>
+                <td mat-cell *matCellDef="let s">
+                  <span class="badge-solicitado">
+                    Solicitado
+                  </span>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnasSolicitudes"></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: columnasSolicitudes"
+                [class.fila-seleccionada]="solicitudSeleccionada()?.idReserva === row.idReserva"
+                (click)="seleccionarSolicitud(row)"
+              ></tr>
+
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell celda-sin-datos" [attr.colspan]="columnasSolicitudes.length">
+                  @if (cargando()) {
+                    Cargando solicitudes de reserva...
+                  } @else {
+                    No hay solicitudes de reserva que coincidan con los filtros seleccionados.
+                  }
+                </td>
+              </tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- COLUMNA DERECHA: DETALLE SOLICITUD (VISTA a8) -->
+    <aside class="columna-detalle-solicitud">
+      @if (solicitudSeleccionada(); as sol) {
+        <mat-card class="tarjeta-detalle-solicitud" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title class="titulo-panel">Detalle solicitud</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content class="contenido-detalle-grid">
+            <div class="columnas-info-solicitud">
+              <!-- Detalles del cliente -->
+              <div class="bloque-info-detalle">
+                <h3 class="subtitulo-seccion-detalle">Detalles del cliente</h3>
+                <div class="item-campo-detalle-con-icono">
+                  <mat-icon class="icono-gris-detalle">person_outline</mat-icon>
+                  <div class="textos-campo-detalle">
+                    <span class="etiqueta-gris">Reservado por</span>
+                    <strong class="valor-negrita">
+                      {{ sol.usuario?.nombre || 'Carlita' }} {{ sol.usuario?.apellido || 'Campos' }}
+                    </strong>
+                  </div>
+                </div>
+
+                <div class="item-campo-detalle-con-icono">
+                  <mat-icon class="icono-gris-detalle">calendar_today</mat-icon>
+                  <div class="textos-campo-detalle">
+                    <span class="etiqueta-gris">Reservado el</span>
+                    <span class="valor-regular">{{ formatearFecha(sol.fReserva) }}</span>
+                  </div>
+                </div>
+
+                <div class="item-campo-detalle-con-icono">
+                  <mat-icon class="icono-gris-detalle">layers</mat-icon>
+                  <div class="textos-campo-detalle">
+                    <span class="etiqueta-gris">Total de reservas</span>
+                    <span class="valor-regular">{{ totalReservasCliente() }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Separador vertical -->
+              <div class="divisor-vertical"></div>
+
+              <!-- Detalles pago -->
+              <div class="bloque-info-detalle">
+                <h3 class="subtitulo-seccion-detalle">Detalles pago</h3>
+                <div class="item-campo-detalle fila-horizontal">
+                  <span class="etiqueta-gris">Método de pago</span>
+                  <strong class="valor-metodo">
+                    {{ detalleCompleto()?.pagos?.[0]?.metodo?.toUpperCase() || 'YAPE' }}
+                  </strong>
+                </div>
+
+                <div class="item-campo-detalle fila-horizontal">
+                  <span class="etiqueta-gris">{{ formatearNombreCancha(sol) }}</span>
+                  <span class="valor-regular">
+                    s/{{ (sol.sedeCancha?.precio || 42) | number:'1.2-2' }} x {{ calcularHoras(sol.hInicio, sol.hFin) }}h
+                  </span>
+                </div>
+
+                <div class="item-campo-detalle fila-horizontal">
+                  <span class="etiqueta-gris">Subtotal</span>
+                  <span class="valor-regular">
+                    s/{{ obtenerMontoTotal() | number:'1.2-2' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="linea-separadora-total"></div>
+
+            <!-- Total destacado -->
+            <div class="fila-total-destacado">
+              <span class="etiqueta-total">Total</span>
+              <span class="monto-total">
+                s/{{ obtenerMontoTotal() | number:'1.2-2' }}
+              </span>
+            </div>
+
+            <!-- Botones de Acción de la Solicitud (Vistas a8, a9, a10) -->
+            <div class="acciones-solicitud-botones">
+              <!-- Botón 1: Ver comprobante de pago -->
+              <button mat-stroked-button class="btn-ver-comprobante" (click)="abrirComprobante()">
+                Ver comprobante de pago
+              </button>
+
+              <!-- Botón 2: Aceptar solicitud (Vista a9) -->
+              <button mat-flat-button class="btn-aceptar-solicitud" (click)="aceptarSolicitud()">
+                Aceptar solicitud de reserva
+              </button>
+
+              <!-- Botón 3: Rechazar solicitud (Vista a10) -->
+              <button mat-stroked-button class="btn-rechazar-solicitud" (click)="rechazarSolicitud()">
+                Rechazar solicitud de reserva
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      } @else {
+        <mat-card class="tarjeta-vacia-solicitud" appearance="outlined">
+          <mat-card-content>
+            <p>Selecciona una solicitud de reserva de la tabla para ver su información y gestionar el pago.</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </aside>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- MODAL VISTA a8: Ver comprobante de pago                                  -->
+<!-- ========================================================================= -->
+@if (modalComprobanteAbierto) {
+  <div class="backdrop-modal" (click)="cerrarComprobante()">
+    <mat-card class="dialogo-modal-comprobante" appearance="outlined" (click)="$event.stopPropagation()">
+      <div class="cabecera-modal">
+        <h2 class="titulo-modal">Ver comprobante</h2>
+        <button mat-icon-button (click)="cerrarComprobante()" aria-label="Cerrar">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="cuerpo-modal-voucher">
+        <img
+          [src]="urlComprobanteActual()"
+          (error)="onVoucherError($event)"
+          alt="Comprobante de pago"
+          class="imagen-voucher-pago"
+        >
+      </div>
+    </mat-card>
+  </div>
+}
+
+<!-- ========================================================================= -->
+<!-- MODAL VISTA a9: Aprobación de solicitud                                   -->
+<!-- ========================================================================= -->
+@if (modalAprobadoAbierto) {
+  <div class="backdrop-modal" (click)="cerrarModalAprobado()">
+    <mat-card class="dialogo-confirmacion-modal" appearance="outlined" (click)="$event.stopPropagation()">
+      <h2 class="titulo-modal-confirmacion">Se aprobó la solicitud de reserva</h2>
+      <p class="descripcion-modal-confirmacion">
+        La solicitud de reserva fue aprobada correctamente. La reserva ahora figura como confirmada para la fecha y el horario solicitados.
+      </p>
+      <div class="pie-modal-confirmacion">
+        <button mat-flat-button class="boton-entendido-verde" (click)="cerrarModalAprobado()">
+          ENTENDIDO
+        </button>
+      </div>
+    </mat-card>
+  </div>
+}
+
+<!-- ========================================================================= -->
+<!-- MODAL VISTA a10: Rechazo de solicitud                                     -->
+<!-- ========================================================================= -->
+@if (modalRechazadoAbierto) {
+  <div class="backdrop-modal" (click)="cerrarModalRechazado()">
+    <mat-card class="dialogo-confirmacion-modal" appearance="outlined" (click)="$event.stopPropagation()">
+      <h2 class="titulo-modal-confirmacion">Se rechazó la solicitud de reserva</h2>
+      <p class="descripcion-modal-confirmacion">
+        La solicitud de reserva fue rechazada porque la información proporcionada está incompleta o contiene datos no válidos.
+      </p>
+      <div class="pie-modal-confirmacion">
+        <button mat-flat-button class="boton-entendido-verde" (click)="cerrarModalRechazado()">
+          ENTENDIDO
+        </button>
+      </div>
+    </mat-card>
+  </div>
+}

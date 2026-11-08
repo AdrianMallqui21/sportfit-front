@@ -1,2 +1,8 @@
-<router-outlet />
-
+<div class="layout-aplicacion" [class.con-barra]="mostrarBarraAdmin()">
+  @if (mostrarBarraAdmin()) {
+    <app-barra-lateral-administrador-componente />
+  }
+  <main class="contenido-principal" [class.contenido-con-barra]="mostrarBarraAdmin()">
+    <router-outlet />
+  </main>
+</div>

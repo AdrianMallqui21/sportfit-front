@@ -1,0 +1,640 @@
+:host {
+  display: block;
+  font-family: Roboto, Arial, sans-serif;
+  color: #1e293b;
+}
+
+.pagina-gestion-solicitudes {
+  min-height: 100vh;
+  padding: 24px 32px 48px;
+  background-color: #e8f1e9;
+  max-width: 1600px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* ENCABEZADO SUPERIOR */
+.encabezado-superior {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.espaciador {
+  flex: 1;
+}
+
+.logotipo-sportfit {
+  height: 38px;
+  object-fit: contain;
+}
+
+/* BANNER DE BIENVENIDA */
+.banner-saludo {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px 24px;
+  margin-bottom: 24px;
+}
+
+.icono-saludo-circulo {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background-color: #2bb36b;
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.icono-saludo-circulo mat-icon {
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+}
+
+.divisor-vertical-banner {
+  width: 1px;
+  height: 42px;
+  background-color: #cbd5e1;
+  margin: 0 4px;
+}
+
+.textos-saludo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.titulo-saludo {
+  font-size: 26px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.nombre-admin {
+  color: #2bb36b;
+}
+
+.subtitulo-saludo {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* BANNER DE AUTENTICACIÓN */
+.alerta-autenticacion-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background-color: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.icono-banner {
+  color: #d97706;
+  display: grid;
+  place-items: center;
+}
+
+.textos-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  color: #92400e;
+  font-size: 13px;
+}
+
+.textos-banner strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.boton-login-rapido {
+  background-color: #2bb36b !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* ============================================================== */
+/* CUADRÍCULA PRINCIPAL DE SOLICITUDES                            */
+/* ============================================================== */
+.grid-solicitudes-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(360px, 1.15fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.columna-solicitudes-tabla {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.tarjeta-filtro-solicitudes,
+.tarjeta-tabla-solicitudes,
+.tarjeta-detalle-solicitud,
+.tarjeta-vacia-solicitud {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  border-color: #e2e8f0 !important;
+}
+
+.titulo-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* FILTRO DE BÚSQUEDA (VISTA a7) */
+.contenido-filtro-contenedor {
+  padding-top: 8px !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filtros-campos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.campo-filtro-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+}
+
+.etiqueta-campo {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.campo-filtro-col mat-form-field {
+  width: 100%;
+  font-size: 13px;
+}
+
+/* Estilos compactos para inputs de Angular Material */
+.campo-filtro-col .mat-mdc-text-field-wrapper {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.campo-filtro-col .mat-mdc-form-field-infix {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  min-height: 44px !important;
+  font-size: 13px !important;
+}
+
+.campo-filtro-col mat-icon[matPrefix] {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  margin-right: 6px !important;
+  color: #64748b;
+}
+
+.filtros-botones-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.boton-buscar {
+  background-color: #2ebd6e !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  padding: 0 28px !important;
+  height: 38px !important;
+}
+
+.boton-limpiar {
+  background-color: #ffffff !important;
+  color: #2ebd6e !important;
+  border: 1px solid #2ebd6e !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  padding: 0 28px !important;
+  height: 38px !important;
+}
+
+/* TABLA DE SOLICITUDES (VISTA a7) */
+.titulo-tabla {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.contenedor-tabla-responsive {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.tabla-material-solicitudes {
+  width: 100%;
+}
+
+.tabla-material-solicitudes th {
+  color: #475569;
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 14px 12px;
+}
+
+.tabla-material-solicitudes td {
+  padding: 14px 12px;
+  vertical-align: middle;
+  font-size: 13px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.tabla-material-solicitudes tr[mat-row] {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.tabla-material-solicitudes tr[mat-row]:hover {
+  background-color: #f8fafc;
+}
+
+.tabla-material-solicitudes tr.fila-seleccionada {
+  background-color: #f0fdf4;
+}
+
+.celda-icono-texto {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icono-pequeno {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #64748b;
+}
+
+.badge-solicitado {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 6px;
+  background-color: #fff2ea;
+  color: #ff7a32;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.celda-sin-datos {
+  text-align: center;
+  padding: 32px !important;
+  color: #64748b;
+}
+
+/* ============================================================== */
+/* COLUMNA DERECHA: DETALLE DE SOLICITUD (VISTA a8)              */
+/* ============================================================== */
+.columna-detalle-solicitud {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tarjeta-detalle-solicitud {
+  padding: 12px 16px;
+}
+
+.titulo-panel {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.contenido-detalle-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 14px !important;
+}
+
+.columnas-info-solicitud {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.divisor-vertical {
+  width: 1px;
+  background-color: #e2e8f0;
+}
+
+.bloque-info-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.subtitulo-seccion-detalle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.item-campo-detalle-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icono-gris-detalle {
+  color: #64748b;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.textos-campo-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.item-campo-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  min-width: 0;
+}
+
+.item-campo-detalle.fila-horizontal {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.etiqueta-gris {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.valor-negrita {
+  color: #111827;
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.valor-regular {
+  color: #334155;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.valor-metodo {
+  color: #111827;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.linea-separadora-total {
+  height: 1px;
+  background-color: #e2e8f0;
+  margin: 10px 0 6px;
+}
+
+/* Fila de Total */
+.fila-total-destacado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0 10px;
+}
+
+.etiqueta-total {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.monto-total {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+/* BOTONES DE ACCIÓN (Vistas a8, a9, a10) */
+.acciones-solicitud-botones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.btn-ver-comprobante {
+  border: 1px solid #2bb36b !important;
+  color: #2bb36b !important;
+  height: 40px !important;
+  font-weight: 600 !important;
+  background-color: #ffffff !important;
+  border-radius: 8px !important;
+  width: 100%;
+}
+
+.btn-ver-comprobante:hover {
+  background-color: #f0fdf4 !important;
+}
+
+.btn-aceptar-solicitud {
+  background-color: #2bb36b !important;
+  color: #ffffff !important;
+  height: 42px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  width: 100%;
+}
+
+.btn-aceptar-solicitud:hover {
+  background-color: #269c5e !important;
+}
+
+.btn-rechazar-solicitud {
+  border: 1px solid #e53935 !important;
+  color: #e53935 !important;
+  height: 40px !important;
+  font-weight: 600 !important;
+  background-color: #ffffff !important;
+  border-radius: 8px !important;
+  width: 100%;
+}
+
+.btn-rechazar-solicitud:hover {
+  background-color: #fef2f2 !important;
+}
+
+.tarjeta-vacia-solicitud {
+  padding: 24px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+/* ============================================================== */
+/* MODALES (Vistas a8, a9, a10)                                   */
+/* ============================================================== */
+.backdrop-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  padding: 16px;
+}
+
+/* Modal 1: Comprobante */
+.dialogo-modal-comprobante {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  width: 100%;
+  max-width: 440px;
+  padding: 20px 24px 28px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15) !important;
+}
+
+.cabecera-modal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.titulo-modal {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.cuerpo-modal-voucher {
+  display: flex;
+  justify-content: center;
+}
+
+.imagen-voucher-pago {
+  max-width: 100%;
+  max-height: 480px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  object-fit: contain;
+}
+
+/* Modales 2 y 3: Confirmación de Aprobación y Rechazo */
+.dialogo-confirmacion-modal {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  width: 100%;
+  max-width: 460px;
+  padding: 32px 28px !important;
+  text-align: center;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15) !important;
+}
+
+.titulo-modal-confirmacion {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.descripcion-modal-confirmacion {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.pie-modal-confirmacion {
+  display: flex;
+  justify-content: center;
+}
+
+.boton-entendido-verde {
+  background-color: #2bb36b !important;
+  color: #ffffff !important;
+  height: 42px !important;
+  padding: 0 40px !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+}
+
+.boton-entendido-verde:hover {
+  background-color: #269c5e !important;
+}
+
+/* RESPONSIVIDAD */
+@media (max-width: 1320px) {
+  .filtros-campos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .grid-solicitudes-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .pagina-gestion-solicitudes {
+    padding: 16px;
+  }
+  .filtros-campos-grid {
+    grid-template-columns: 1fr;
+  }
+  .columnas-info-solicitud {
+    grid-template-columns: 1fr;
+  }
+  .divisor-vertical {
+    display: none;
+  }
+}

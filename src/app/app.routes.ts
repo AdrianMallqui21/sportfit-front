@@ -24,6 +24,21 @@ import {
 import {
   C1InicioSesionClienteComponente
 } from './componentes/c1-inicio-sesion-cliente-componente/c1-inicio-sesion-cliente-componente';
+import {
+  A14GestionClientesComponente
+} from './componentes/a14-gestion-clientes-componente/a14-gestion-clientes-componente';
+import {
+  A22GestionEspaciosComponente
+} from './componentes/a22-gestion-espacios-componente/a22-gestion-espacios-componente';
+import {
+  A8GestionSolicitudesComponente
+} from './componentes/a8-gestion-solicitudes-componente/a8-gestion-solicitudes-componente';
+import {
+  A33ReporteFinancieroComponente
+} from './componentes/a33-reporte-financiero-componente/a33-reporte-financiero-componente';
+import {
+  A37ReporteIncidenciasComponente
+} from './componentes/a37-reporte-incidencias-componente/a37-reporte-incidencias-componente';
 
 export const routes: Routes = [
   // Ruta de prueba de la vista A28.
@@ -38,5 +53,11 @@ export const routes: Routes = [
   {path: 'incidencias', component: A26ListadoIncidenciasAdministradorComponente},
   {path: 'reporte-deporte-sede', component: A28ReporteDeporteSedeComponente},
   {path: 'reporte-cancelacion', component: A30ReporteCancelacionesComponente},
-];
 
+  // Vistas de Anthony (HU04, HU14, HU13, HU07, HU18)
+  {path: 'clientes', component: A14GestionClientesComponente},
+  {path: 'espacios', component: A22GestionEspaciosComponente},
+  {path: 'solicitudes', component: A8GestionSolicitudesComponente},
+  {path: 'reporte-financiero', component: A33ReporteFinancieroComponente},
+  {path: 'reporte-incidencias', component: A37ReporteIncidenciasComponente},
+];

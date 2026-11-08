@@ -1,0 +1,424 @@
+<div class="pagina-gestion-espacios">
+  <!-- ENCABEZADO SUPERIOR -->
+  <header class="encabezado-superior">
+    <div class="espaciador"></div>
+    <img src="/imagenes/sportfit-logo.png" alt="SportFit" class="logotipo-sportfit" (error)="onLogoError($event)">
+  </header>
+
+  <!-- BANNER DE AUTENTICACIÓN SI FALTA SESIÓN -->
+  @if (alertaAutenticacion()) {
+    <div class="alerta-autenticacion-banner">
+      <div class="icono-banner">
+        <mat-icon>lock</mat-icon>
+      </div>
+      <div class="textos-banner">
+        <strong>Se requiere sesión de Administrador</strong>
+        <span>Para gestionar los espacios deportivos necesitas haber iniciado sesión como administrador.</span>
+      </div>
+      <div class="acciones-banner">
+        <button mat-flat-button class="boton-login-rapido" (click)="iniciarSesionAdmin()" [disabled]="iniciandoSesionRapida()">
+          <mat-icon>login</mat-icon>
+          {{ iniciandoSesionRapida() ? 'Autenticando...' : 'Autenticar como Admin' }}
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- CONTENEDOR PRINCIPAL (VISTA a22) -->
+  <div class="contenedor-principal-espacios">
+    <!-- TARJETA: FILTRO DE BÚSQUEDA (VISTA a22) -->
+    <mat-card class="tarjeta-filtro-espacios" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title class="titulo-con-icono">
+          <mat-icon>search</mat-icon>
+          <span>Filtro de búsqueda</span>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="contenido-filtro-contenedor">
+        <div class="filtros-campos-grid">
+          <!-- 1. Filtro Estado -->
+          <div class="campo-filtro-col">
+            <label class="etiqueta-campo">Estado</label>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-select [(ngModel)]="filtroEstado">
+                @for (opc of opcionesEstado; track opc.valor) {
+                  <mat-option [value]="opc.valor">{{ opc.etiqueta }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- 2. Filtro Sedes -->
+          <div class="campo-filtro-col">
+            <label class="etiqueta-campo">Sedes</label>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-icon matPrefix>place</mat-icon>
+              <mat-select [(ngModel)]="filtroSede">
+                <mat-option value="">Todas las sedes</mat-option>
+                @for (sede of sedes(); track sede.idSede) {
+                  <mat-option [value]="sede.idSede">{{ sede.nombre }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- 3. Filtro Deporte -->
+          <div class="campo-filtro-col">
+            <label class="etiqueta-campo">Deporte</label>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-select [(ngModel)]="filtroDeporte" placeholder="Ingrese el deporte">
+                @for (opc of opcionesDeporte; track opc.valor) {
+                  <mat-option [value]="opc.valor">{{ opc.etiqueta }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Botones de Acción del Filtro -->
+          <div class="campo-filtro-col botones-filtro-col">
+            <div class="filtros-botones-row">
+              <button mat-flat-button class="boton-buscar" (click)="aplicarFiltros()">
+                Buscar
+              </button>
+              <button mat-stroked-button class="boton-limpiar" (click)="limpiarFiltros()">
+                Limpiar
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- LISTADO DE CANCHAS / ESPACIOS (VISTA a22) -->
+    <div class="contenedor-lista-canchas">
+      @if (cargando()) {
+        <div class="mensaje-estado-canchas">
+          <p>Cargando espacios deportivos...</p>
+        </div>
+      } @else if (canchasFiltradas().length === 0) {
+        <div class="mensaje-estado-canchas">
+          <p>No se encontraron espacios deportivos que coincidan con los criterios seleccionados.</p>
+        </div>
+      } @else {
+        <div class="grilla-tarjetas-canchas">
+          @for (cancha of canchasFiltradas(); track cancha.idSedeCancha) {
+            <mat-card
+              class="tarjeta-cancha-item"
+              [class.tarjeta-cancha-desactivada]="!cancha.estado"
+              appearance="outlined"
+            >
+              <!-- Badge Desactivado en la esquina superior derecha -->
+              @if (!cancha.estado) {
+                <span class="badge-desactivado">Desactivado</span>
+              }
+
+              <div class="cuerpo-tarjeta-cancha">
+                <!-- Avatar cancha SVG circular -->
+                <div class="avatar-cancha" [class.avatar-activo]="cancha.estado" [class.avatar-inactivo]="!cancha.estado">
+                  <svg viewBox="0 0 48 34" class="svg-pitch-cancha" fill="none" stroke="currentColor" stroke-width="2">
+                    <!-- Rectángulo exterior de la cancha -->
+                    <rect x="2" y="2" width="44" height="30" rx="3" />
+                    <!-- Línea de medio campo -->
+                    <line x1="24" y1="2" x2="24" y2="32" />
+                    <!-- Círculo central -->
+                    <circle cx="24" cy="17" r="6" />
+                    <!-- Área izquierda -->
+                    <rect x="2" y="9" width="8" height="16" />
+                    <!-- Área derecha -->
+                    <rect x="38" y="9" width="8" height="16" />
+                  </svg>
+                </div>
+
+                <!-- Información del espacio -->
+                <div class="info-cancha-bloque">
+                  <h3 class="nombre-cancha-titulo">{{ cancha.nombre }}</h3>
+                  <p class="descripcion-cancha-texto">
+                    {{ cancha.cancha?.descripcion || 'Hierba sintética de última generación, iluminación LED' }}
+                  </p>
+
+                  <div class="detalles-cancha-fila">
+                    <span class="item-detalle-icono">
+                      <mat-icon>{{ obtenerIconoDeporte(cancha.cancha?.deporte) }}</mat-icon>
+                      <strong>{{ formatearDeporte(cancha.cancha?.deporte) }}</strong>
+                    </span>
+
+                    <span class="item-detalle-icono">
+                      <mat-icon>group</mat-icon>
+                      <span>{{ cancha.cancha?.aforo || 10 }} personas</span>
+                    </span>
+
+                    <span class="precio-cancha-destacado">
+                      S/ {{ (cancha.precio || 60) | number:'1.2-2' }}
+                    </span>
+
+                    <span class="sede-cancha-etiqueta">
+                      <mat-icon class="icono-mini">place</mat-icon>
+                      {{ cancha.sede?.nombre || 'Sede' }}
+                    </span>
+                  </div>
+
+                  <!-- Botones de Acción (Vista a22) -->
+                  <div class="acciones-cancha-fila">
+                    @if (cancha.estado) {
+                      <!-- Botón 1: Editar Cancha (Vista a23) -->
+                      <button
+                        mat-stroked-button
+                        class="btn-accion-editar"
+                        (click)="abrirModalEditar(cancha)"
+                      >
+                        <mat-icon>edit</mat-icon>
+                        Editar Cancha
+                      </button>
+
+                      <!-- Botón 2: Ver Reservas (ED67) -->
+                      <button
+                        mat-flat-button
+                        class="btn-accion-reservas"
+                        (click)="abrirModalReservas(cancha)"
+                      >
+                        Ver Reservas
+                      </button>
+
+                      <!-- Botón 3: Desactivar (Vista a24) -->
+                      <button
+                        mat-flat-button
+                        class="btn-accion-desactivar"
+                        (click)="abrirModalDesactivar(cancha)"
+                      >
+                        <mat-icon>power_settings_new</mat-icon>
+                        Desactivar
+                      </button>
+                    } @else {
+                      <!-- Desactivado: Botones deshabilitados y botón Reactivar -->
+                      <button mat-stroked-button class="btn-accion-editar disabled" disabled>
+                        <mat-icon>edit</mat-icon>
+                        Editar Cancha
+                      </button>
+
+                      <button mat-flat-button class="btn-accion-reservas disabled" disabled>
+                        Ver Reservas
+                      </button>
+
+                      <button
+                        mat-flat-button
+                        class="btn-accion-reactivar"
+                        (click)="reactivarCancha(cancha)"
+                      >
+                        <mat-icon>power_settings_new</mat-icon>
+                        Reactivar
+                      </button>
+                    }
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- MODAL VISTA a23: Gestión de edición de espacios deportivos                -->
+<!-- ========================================================================= -->
+@if (modalEditarAbierto) {
+  <div class="backdrop-modal" (click)="cerrarModalEditar()">
+    <mat-card class="dialogo-modal-editar" appearance="outlined" (click)="$event.stopPropagation()">
+      <div class="cabecera-modal-editar">
+        <div class="titulo-con-icono-modal">
+          <mat-icon>edit</mat-icon>
+          <h2>Editar información</h2>
+        </div>
+        <button mat-icon-button (click)="cerrarModalEditar()" aria-label="Cerrar">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <form [formGroup]="formEdicion" class="cuerpo-modal-editar" (submit)="$event.preventDefault(); guardarEdicion()">
+        <!-- Campo: Nombre -->
+        <div class="campo-editar-item">
+          <label class="etiqueta-campo-modal">Nombre de cancha</label>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-icon matPrefix>stadium</mat-icon>
+            <input matInput formControlName="nombre" placeholder="Nombre de cancha">
+          </mat-form-field>
+        </div>
+
+        <!-- Campo: Tipo de cancha -->
+        <div class="campo-editar-item">
+          <label class="etiqueta-campo-modal">Tipo de cancha</label>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-icon matPrefix>sports_soccer</mat-icon>
+            <mat-select formControlName="deporte">
+              @for (opc of opcionesDeporte; track opc.valor) {
+                @if (opc.valor !== '') {
+                  <mat-option [value]="opc.valor">{{ opc.etiqueta }}</mat-option>
+                }
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Campo: Foro (Aforo) -->
+        <div class="campo-editar-item">
+          <label class="etiqueta-campo-modal">Foro</label>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-icon matPrefix>group</mat-icon>
+            <mat-select formControlName="aforo">
+              @for (aforo of opcionesAforo; track aforo) {
+                <mat-option [value]="aforo">{{ aforo }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Campo: Precio -->
+        <div class="campo-editar-item">
+          <label class="etiqueta-campo-modal">Precio</label>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <span matPrefix class="prefijo-soles">S/ &nbsp;</span>
+            <input matInput type="number" formControlName="precio" placeholder="60.00" step="0.5">
+          </mat-form-field>
+        </div>
+
+        <!-- Campo: Imagen -->
+        <div class="campo-editar-item">
+          <label class="etiqueta-campo-modal">Imagen</label>
+          <div class="fila-cargar-imagen">
+            <button type="button" class="btn-cargar-imagen">
+              Cargar imagen
+            </button>
+          </div>
+        </div>
+
+        <!-- Botón: ACTUALIZAR -->
+        <div class="pie-modal-editar">
+          <button mat-flat-button class="btn-actualizar-espacio" type="submit" [disabled]="formEdicion.invalid">
+            ACTUALIZAR
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+}
+
+<!-- ========================================================================= -->
+<!-- MODAL VISTA a24: Gestión de desactivación de espacios deportivos          -->
+<!-- ========================================================================= -->
+@if (modalDesactivarAbierto) {
+  <div class="backdrop-modal" (click)="cerrarModalDesactivar()">
+    <mat-card class="dialogo-modal-desactivar" appearance="outlined" (click)="$event.stopPropagation()">
+      <div class="cabecera-modal-desactivar">
+        <div class="titulo-con-icono-modal">
+          <mat-icon class="icono-power">power_settings_new</mat-icon>
+          <h2>Desactivar</h2>
+        </div>
+        <button mat-icon-button (click)="cerrarModalDesactivar()" aria-label="Cerrar">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="cuerpo-modal-desactivar">
+        <p class="pregunta-desactivar">
+          ¿Estás seguro que deseas desactivar el estado del espacio deportivo?
+        </p>
+
+        <div class="botones-confirmar-desactivar">
+          <button mat-flat-button class="btn-cancelar-desactivacion" (click)="cerrarModalDesactivar()">
+            Cancelar
+          </button>
+          <button mat-flat-button class="btn-continuar-desactivacion" (click)="confirmarDesactivacion()">
+            Continuar
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+}
+
+<!-- ========================================================================= -->
+<!-- MODAL VISTA a25: Confirmación de cancelación de espacio deportivo         -->
+<!-- ========================================================================= -->
+@if (modalConfirmacionDesactivadoAbierto) {
+  <div class="backdrop-modal" (click)="cerrarModalConfirmacion()">
+    <mat-card class="dialogo-modal-desactivar" appearance="outlined" (click)="$event.stopPropagation()">
+      <div class="cabecera-modal-desactivar">
+        <div class="titulo-con-icono-modal">
+          <mat-icon class="icono-power">power_settings_new</mat-icon>
+          <h2>Desactivar</h2>
+        </div>
+        <button mat-icon-button (click)="cerrarModalConfirmacion()" aria-label="Cerrar">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="cuerpo-modal-desactivar">
+        <p class="texto-confirmado-desactivado">
+          Se desactivo la cancha correctamente
+        </p>
+
+        <div class="botones-confirmar-desactivar solo-centrado">
+          <button mat-flat-button class="btn-continuar-desactivacion" (click)="cerrarModalConfirmacion()">
+            Continuar
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+}
+
+<!-- ========================================================================= -->
+<!-- MODAL AUXILIAR: Listar reservas de la cancha (ED67)                      -->
+<!-- ========================================================================= -->
+@if (modalReservasAbierto) {
+  <div class="backdrop-modal" (click)="cerrarModalReservas()">
+    <mat-card class="dialogo-modal-reservas-cancha" appearance="outlined" (click)="$event.stopPropagation()">
+      <div class="cabecera-modal-editar">
+        <div class="titulo-con-icono-modal">
+          <mat-icon>event</mat-icon>
+          <h2>Reservas: {{ canchaSeleccionada()?.nombre }}</h2>
+        </div>
+        <button mat-icon-button (click)="cerrarModalReservas()" aria-label="Cerrar">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="cuerpo-modal-reservas">
+        @if (cargandoReservas()) {
+          <p class="estado-reservas">Cargando reservas asociadas...</p>
+        } @else if (reservasCancha().length === 0) {
+          <p class="estado-reservas">No existen reservas programadas para este espacio deportivo.</p>
+        } @else {
+          <div class="tabla-reservas-wrapper">
+            <table class="tabla-reservas-cancha">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Horario</th>
+                  <th>Cliente</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (res of reservasCancha(); track res.idReserva) {
+                  <tr>
+                    <td>{{ formatearFecha(res.fReserva) }}</td>
+                    <td>{{ res.hInicio?.slice(0, 5) }} - {{ res.hFin?.slice(0, 5) }}</td>
+                    <td>{{ res.usuario?.nombre }} {{ res.usuario?.apellido }}</td>
+                    <td>
+                      <span class="badge-estado-reserva" [class.badge-confirmada]="res.estado === 'confirmada'">
+                        {{ res.estado | uppercase }}
+                      </span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </mat-card>
+  </div>
+}

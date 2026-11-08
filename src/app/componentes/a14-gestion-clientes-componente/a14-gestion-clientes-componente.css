@@ -1,0 +1,678 @@
+:host {
+  display: block;
+  font-family: Roboto, Arial, sans-serif;
+  color: #1e293b;
+}
+
+.pagina-gestion-clientes {
+  min-height: 100vh;
+  padding: 24px 32px 48px;
+  background-color: #e8f1e9;
+  max-width: 1560px;
+  margin: 0 auto;
+}
+
+/* ENCABEZADO SUPERIOR CON LOGOTIPO */
+.encabezado-superior {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.espaciador {
+  flex: 1;
+}
+
+.logotipo-sportfit {
+  height: 38px;
+  object-fit: contain;
+}
+
+/* BANNER DE AUTENTICACIÓN */
+.alerta-autenticacion-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background-color: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.icono-banner {
+  color: #d97706;
+  display: grid;
+  place-items: center;
+}
+
+.textos-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  color: #92400e;
+  font-size: 13px;
+}
+
+.textos-banner strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.boton-login-rapido {
+  background-color: #2bb36b !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+}
+
+/* MENSAJE DE NOTIFICACIÓN TOAST */
+.mensaje-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* ============================================================== */
+/* SECCIÓN DE KPIS SUPERIORES                                     */
+/* ============================================================== */
+.seccion-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.tarjeta-kpi {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  border-color: #e2e8f0 !important;
+}
+
+.kpi-contenido {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 24px !important;
+}
+
+.circulo-icono {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.circulo-icono mat-icon {
+  font-size: 34px;
+  width: 34px;
+  height: 34px;
+}
+
+.kpi-azul { background-color: #dbeafe; color: #0284c7; }
+.kpi-verde { background-color: #dcfce7; color: #16a34a; }
+.kpi-naranja { background-color: #fef3c7; color: #d97706; }
+
+.kpi-datos {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-numero {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.kpi-numero-azul { color: #0284c7; }
+.kpi-numero-verde { color: #16a34a; }
+.kpi-numero-naranja { color: #d97706; }
+
+.kpi-etiqueta {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* ============================================================== */
+/* CUADRÍCULA PRINCIPAL                                           */
+/* ============================================================== */
+.grid-contenido-clientes {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.columna-principal {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tarjeta-filtros,
+.tarjeta-tabla,
+.tarjeta-detalle-usuario,
+.tarjeta-actividad,
+.tarjeta-vacia-detalle {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  border-color: #e2e8f0 !important;
+}
+
+.titulo-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* FILTRO DE BÚSQUEDA */
+.formulario-filtros-material {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.fila-filtros-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.boton-limpiar {
+  border-color: #39b985 !important;
+  color: #39b985 !important;
+  height: 48px !important;
+  padding: 0 24px !important;
+  font-weight: 600 !important;
+}
+
+.boton-limpiar:hover {
+  background-color: #f0fdf4 !important;
+}
+
+.boton-buscar {
+  background-color: #39b985 !important;
+  color: #ffffff !important;
+  height: 48px !important;
+  padding: 0 24px !important;
+  font-weight: 600 !important;
+}
+
+.boton-buscar:hover {
+  background-color: #2e9f71 !important;
+}
+
+/* TABLA DE CLIENTES */
+.contenedor-tabla-responsive {
+  overflow-x: auto;
+}
+
+.tabla-material-clientes {
+  width: 100%;
+}
+
+.tabla-material-clientes th {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.tabla-material-clientes td {
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+.tabla-material-clientes tr[mat-row] {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.tabla-material-clientes tr[mat-row]:hover {
+  background-color: #f8fafc;
+}
+
+.tabla-material-clientes tr.fila-seleccionada {
+  background-color: #f0fdf4;
+}
+
+.th-foto {
+  width: 60px;
+}
+
+.avatar-circular {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+  color: #64748b;
+  display: grid;
+  place-items: center;
+}
+
+.celda-icono-texto,
+.th-con-icono {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icono-pequeno {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #64748b;
+}
+
+.icono-encabezado {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #94a3b8;
+}
+
+.celda-sin-datos {
+  text-align: center;
+  padding: 32px !important;
+  color: #64748b;
+}
+
+.texto-error {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* ============================================================== */
+/* COLUMNA LATERAL: DETALLE DEL USUARIO                           */
+/* ============================================================== */
+.columna-lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bloque-perfil-cliente {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 16px 0 20px;
+}
+
+.avatar-perfil-grande {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background-color: #f1f5f9;
+  color: #475569;
+  display: grid;
+  place-items: center;
+}
+
+.avatar-perfil-grande mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+}
+
+.nombre-estado {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nombre-cliente {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.badge-estado {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.badge-activo { background-color: #dcfce7; color: #15803d; }
+.badge-inactivo { background-color: #fee2e2; color: #dc2626; }
+
+.badge-reserva-confirmado { background-color: #dcfce7; color: #15803d; }
+.badge-reserva-pendiente { background-color: #fef3c7; color: #d97706; }
+.badge-reserva-finalizado { background-color: #f1f5f9; color: #64748b; }
+.badge-reserva-cancelada { background-color: #fee2e2; color: #dc2626; }
+
+.lista-atributos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.item-atributo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 13px;
+}
+
+.atributo-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+}
+
+.atributo-etiqueta mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.atributo-valor {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.valor-correo {
+  font-size: 12px;
+  word-break: break-all;
+}
+
+/* BOTONES DE ACCIÓN */
+.acciones-perfil {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-editar-usuario {
+  background-color: #39b985 !important;
+  color: #ffffff !important;
+  height: 42px !important;
+  font-weight: 600 !important;
+}
+
+.btn-editar-usuario:hover {
+  background-color: #2e9f71 !important;
+}
+
+.btn-ver-reservas {
+  border-color: #39b985 !important;
+  color: #39b985 !important;
+  height: 42px !important;
+  font-weight: 600 !important;
+}
+
+.btn-ver-reservas:hover {
+  background-color: #f0fdf4 !important;
+}
+
+.btn-desactivar {
+  border-color: #ef4444 !important;
+  color: #ef4444 !important;
+  height: 42px !important;
+  font-weight: 600 !important;
+}
+
+.btn-desactivar:hover {
+  background-color: #fef2f2 !important;
+}
+
+/* ACTIVIDAD RECIENTE */
+.lista-actividades-recientes {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 12px;
+}
+
+.actividad-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icono-actividad {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+}
+
+.icono-verde { background-color: #dcfce7; color: #15803d; }
+.icono-rojo { background-color: #fee2e2; color: #dc2626; }
+
+.info-actividad {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.info-actividad strong {
+  font-size: 13px;
+  color: #1e293b;
+}
+
+.info-actividad span {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.sin-actividades {
+  color: #94a3b8;
+  font-size: 13px;
+  padding: 12px 0;
+}
+
+/* ============================================================== */
+/* MODALES / DIÁLOGOS (Vistas a15, a16, a17)                      */
+/* ============================================================== */
+.backdrop-dialogo {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  padding: 16px;
+}
+
+.dialogo-card {
+  background-color: #ffffff !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15) !important;
+}
+
+.dialogo-editar {
+  width: 100%;
+  max-width: 520px;
+}
+
+.dialogo-reservas {
+  width: 100%;
+  max-width: 860px;
+}
+
+.dialogo-desactivar {
+  width: 100%;
+  max-width: 440px;
+}
+
+.cabecera-dialogo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.formulario-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.grid-dos-columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.pie-dialogo {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.btn-guardar-dialogo {
+  background-color: #39b985 !important;
+  color: #ffffff !important;
+  height: 44px !important;
+  padding: 0 40px !important;
+  font-weight: 700 !important;
+}
+
+.btn-guardar-dialogo:hover {
+  background-color: #2e9f71 !important;
+}
+
+.btn-confirmar-desactivar {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+  height: 42px !important;
+  padding: 0 36px !important;
+  font-weight: 700 !important;
+}
+
+.btn-confirmar-desactivar:hover {
+  background-color: #b91c1c !important;
+}
+
+.banner-cliente-dialogo {
+  background-color: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.avatar-dialogo-circulo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #15803d;
+  display: grid;
+  place-items: center;
+}
+
+.datos-banner-dialogo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.nombre-badge-dialogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.grid-datos-dialogo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  font-size: 12px;
+  color: #475569;
+}
+
+.grid-datos-dialogo span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.subtitulo-reservas {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.tabla-reservas-dialogo {
+  width: 100%;
+}
+
+.tabla-reservas-dialogo th {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  background-color: #f8fafc;
+}
+
+.tabla-reservas-dialogo td {
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+.contenido-desactivar {
+  padding: 16px 24px 24px;
+  text-align: center;
+}
+
+.texto-confirmacion {
+  font-size: 14px;
+  color: #334155;
+  margin-bottom: 20px;
+}
+
+/* ============================================================== */
+/* RESPONSIVIDAD                                                  */
+/* ============================================================== */
+@media (max-width: 1100px) {
+  .grid-contenido-clientes {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .seccion-kpis,
+  .fila-filtros-grid {
+    grid-template-columns: 1fr;
+  }
+  .pagina-gestion-clientes {
+    padding: 16px;
+  }
+}

@@ -1,0 +1,560 @@
+<div class="pagina-gestion-clientes">
+  <!-- ENCABEZADO CON LOGOTIPO -->
+  <header class="encabezado-superior">
+    <div class="espaciador"></div>
+    <img src="/imagenes/sportfit-logo.png" alt="SportFit" class="logotipo-sportfit">
+  </header>
+
+  <!-- BANNER DE AUTENTICACIÓN SI FALTA SESIÓN -->
+  @if (alertaAutenticacion()) {
+    <div class="alerta-autenticacion-banner">
+      <div class="icono-banner">
+        <mat-icon>lock</mat-icon>
+      </div>
+      <div class="textos-banner">
+        <strong>Se requiere sesión de Administrador</strong>
+        <span>Para consultar y gestionar los clientes necesitas haber iniciado sesión como administrador.</span>
+      </div>
+      <div class="acciones-banner">
+        <button mat-flat-button class="boton-login-rapido" (click)="iniciarSesionAdmin()" [disabled]="iniciandoSesionRapida()">
+          <mat-icon>login</mat-icon>
+          {{ iniciandoSesionRapida() ? 'Autenticando...' : 'Autenticar como Admin' }}
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- MENSAJE DE RETROALIMENTACIÓN -->
+  @if (mensajeFeedback()) {
+    <div class="mensaje-toast" role="status">
+      <mat-icon>info</mat-icon>
+      <span>{{ mensajeFeedback() }}</span>
+    </div>
+  }
+
+  <!-- INDICADORES / KPIS SUPERIORES CON MAT-CARD -->
+  <section class="seccion-kpis" aria-label="Indicadores de clientes">
+    <mat-card class="tarjeta-kpi" appearance="outlined">
+      <mat-card-content class="kpi-contenido">
+        <div class="circulo-icono kpi-azul">
+          <mat-icon>group</mat-icon>
+        </div>
+        <div class="kpi-datos">
+          <span class="kpi-numero kpi-numero-azul">{{ totalRegistros() }}</span>
+          <span class="kpi-etiqueta">Todos los registros</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="tarjeta-kpi" appearance="outlined">
+      <mat-card-content class="kpi-contenido">
+        <div class="circulo-icono kpi-verde">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="kpi-datos">
+          <span class="kpi-numero kpi-numero-verde">{{ usuariosActivos() }}</span>
+          <span class="kpi-etiqueta">Usuarios activos</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="tarjeta-kpi" appearance="outlined">
+      <mat-card-content class="kpi-contenido">
+        <div class="circulo-icono kpi-naranja">
+          <mat-icon>person_add</mat-icon>
+        </div>
+        <div class="kpi-datos">
+          <span class="kpi-numero kpi-numero-naranja">{{ nuevosEsteMes() }}</span>
+          <span class="kpi-etiqueta">Nuevos este mes</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <!-- CUADRÍCULA PRINCIPAL: FILTROS + TABLA / DETALLE DERECHO -->
+  <div class="grid-contenido-clientes">
+    <!-- COLUMNA IZQUIERDA: FILTRO Y TABLA -->
+    <div class="columna-principal">
+      <!-- PANEL FILTRO DE BÚSQUEDA (Escenarios 2 - 7) -->
+      <mat-card class="tarjeta-filtros" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title class="titulo-con-icono">
+            <mat-icon>search</mat-icon>
+            <span>Filtro de búsqueda</span>
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <form class="formulario-filtros-material" (submit)="$event.preventDefault(); aplicarFiltros()">
+            <!-- Fila 1 de Filtros -->
+            <div class="fila-filtros-grid">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Nombre del cliente</mat-label>
+                <mat-icon matPrefix>person</mat-icon>
+                <input matInput placeholder="Ingrese el nombre" [(ngModel)]="filtroNombre" name="filtroNombre" (keyup.enter)="aplicarFiltros()">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>DNI</mat-label>
+                <mat-icon matPrefix>badge</mat-icon>
+                <input matInput placeholder="Ingrese el dni" [(ngModel)]="filtroDni" name="filtroDni" (keyup.enter)="aplicarFiltros()">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Teléfono</mat-label>
+                <mat-icon matPrefix>phone</mat-icon>
+                <input matInput placeholder="Ingrese el teléfono" [(ngModel)]="filtroTelefono" name="filtroTelefono" (keyup.enter)="aplicarFiltros()">
+              </mat-form-field>
+
+              <button mat-stroked-button type="button" class="boton-limpiar" (click)="limpiarFiltros()">
+                Limpiar
+              </button>
+            </div>
+
+            <!-- Fila 2 de Filtros -->
+            <div class="fila-filtros-grid">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Dominio de correo</mat-label>
+                <mat-icon matPrefix>mail</mat-icon>
+                <input matInput placeholder="Ingrese el correo" [(ngModel)]="filtroCorreo" name="filtroCorreo" (keyup.enter)="aplicarFiltros()">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Estado</mat-label>
+                <mat-select [(ngModel)]="filtroEstado" name="filtroEstado" (selectionChange)="aplicarFiltros()">
+                  <mat-option value="">Todos</mat-option>
+                  <mat-option value="true">Activos</mat-option>
+                  <mat-option value="false">Inactivos</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Cantidad de reservas</mat-label>
+                <input matInput type="number" min="0" placeholder="00" [(ngModel)]="filtroReservas" name="filtroReservas" (keyup.enter)="aplicarFiltros()">
+              </mat-form-field>
+
+              <button mat-flat-button color="primary" type="button" class="boton-buscar" (click)="aplicarFiltros()">
+                Buscar
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- TABLA DE CLIENTES (Vista a14) -->
+      <mat-card class="tarjeta-tabla" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>Últimos clientes registrados</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="contenedor-tabla-responsive">
+            <table mat-table [dataSource]="dataSource" matSort class="tabla-material-clientes">
+              <!-- Columna Foto -->
+              <ng-container matColumnDef="foto">
+                <th mat-header-cell *matHeaderCellDef class="th-foto">Foto</th>
+                <td mat-cell *matCellDef="let c">
+                  <div class="avatar-circular">
+                    <mat-icon>person</mat-icon>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Columna Nombres -->
+              <ng-container matColumnDef="nombres">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombres</th>
+                <td mat-cell *matCellDef="let c">
+                  <div class="celda-icono-texto">
+                    <mat-icon class="icono-pequeno">person_outline</mat-icon>
+                    <strong>{{ c.nombre }} {{ c.apellido }}</strong>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Columna Fecha Registro -->
+              <ng-container matColumnDef="fechaRegistro">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <span class="th-con-icono">
+                    <mat-icon class="icono-encabezado">calendar_today</mat-icon>
+                    Fecha registro
+                  </span>
+                </th>
+                <td mat-cell *matCellDef="let c">
+                  <span class="celda-icono-texto">
+                    <mat-icon class="icono-pequeno">calendar_month</mat-icon>
+                    {{ c.fCreacion || '—' }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Columna DNI -->
+              <ng-container matColumnDef="dni">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <span class="th-con-icono">
+                    <mat-icon class="icono-encabezado">badge</mat-icon>
+                    Dni
+                  </span>
+                </th>
+                <td mat-cell *matCellDef="let c">
+                  <span class="celda-icono-texto">
+                    <mat-icon class="icono-pequeno">badge</mat-icon>
+                    {{ c.dni }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Columna Cantidad de Reservas -->
+              <ng-container matColumnDef="cantidadReservas">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <span class="th-con-icono">
+                    <mat-icon class="icono-encabezado">layers</mat-icon>
+                    Cantidad de reservas
+                  </span>
+                </th>
+                <td mat-cell *matCellDef="let c">
+                  <span class="celda-icono-texto">
+                    <mat-icon class="icono-pequeno">layers</mat-icon>
+                    {{ c.cantidadReservas ?? 0 }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnasClientes"></tr>
+              <tr mat-row *matRowDef="let fila; columns: columnasClientes"
+                  [class.fila-seleccionada]="clienteSeleccionado()?.idUsuario === fila.idUsuario"
+                  (click)="seleccionarCliente(fila)"></tr>
+
+              <!-- Estado Vacío -->
+              <tr class="mat-row fila-vacia" *matNoDataRow>
+                <td class="mat-cell celda-sin-datos" [attr.colspan]="columnasClientes.length">
+                  @if (cargando()) {
+                    <p>Cargando clientes registrados...</p>
+                  } @else if (errorCarga()) {
+                    <p class="texto-error">{{ errorCarga() }}</p>
+                  } @else {
+                    <p>No se encontraron clientes registrados con los criterios solicitados.</p>
+                  }
+                </td>
+              </tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Seleccionar página"></mat-paginator>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- COLUMNA DERECHA: DETALLE DEL USUARIO -->
+    <aside class="columna-lateral">
+      @if (clienteSeleccionado(); as cliente) {
+        <mat-card class="tarjeta-detalle-usuario" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Detalle del usuario</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="bloque-perfil-cliente">
+              <div class="avatar-perfil-grande">
+                <mat-icon>account_circle</mat-icon>
+              </div>
+              <div class="nombre-estado">
+                <h3 class="nombre-cliente">{{ cliente.nombre }} {{ cliente.apellido }}</h3>
+                <span class="badge-estado" [class.badge-activo]="cliente.activo" [class.badge-inactivo]="!cliente.activo">
+                  {{ cliente.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="lista-atributos">
+              <div class="item-atributo">
+                <span class="atributo-etiqueta"><mat-icon>badge</mat-icon> DNI</span>
+                <span class="atributo-valor">{{ cliente.dni }}</span>
+              </div>
+
+              <div class="item-atributo">
+                <span class="atributo-etiqueta"><mat-icon>phone</mat-icon> Teléfono</span>
+                <span class="atributo-valor">{{ cliente.telefono }}</span>
+              </div>
+
+              <div class="item-atributo">
+                <span class="atributo-etiqueta"><mat-icon>mail</mat-icon> Correo</span>
+                <span class="atributo-valor valor-correo">{{ cliente.correo }}</span>
+              </div>
+
+              <div class="item-atributo">
+                <span class="atributo-etiqueta"><mat-icon>layers</mat-icon> Total de reservas</span>
+                <span class="atributo-valor">{{ cliente.cantidadReservas ?? 0 }}</span>
+              </div>
+
+              <div class="item-atributo">
+                <span class="atributo-etiqueta"><mat-icon>calendar_today</mat-icon> Fecha de registro</span>
+                <span class="atributo-valor">{{ cliente.fCreacion || '—' }}</span>
+              </div>
+            </div>
+
+            <!-- Botones de Acción (Escenario 8) -->
+            <div class="acciones-perfil">
+              <button mat-flat-button class="btn-editar-usuario" (click)="abrirModalEditar()">
+                <mat-icon>edit</mat-icon>
+                Editar usuario
+              </button>
+
+              <button mat-stroked-button class="btn-ver-reservas" (click)="abrirModalReservas()">
+                <mat-icon>calendar_month</mat-icon>
+                Ver reservas
+              </button>
+
+              <button mat-stroked-button class="btn-desactivar" (click)="abrirModalDesactivar()">
+                <mat-icon>person_off</mat-icon>
+                {{ cliente.activo ? 'Desactivar usuario' : 'Activar usuario' }}
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Panel Actividad reciente -->
+        <mat-card class="tarjeta-actividad" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title class="titulo-con-icono">
+              <mat-icon>schedule</mat-icon>
+              <span>Actividad reciente</span>
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            @if (reservasHistorial().length > 0) {
+              <div class="lista-actividades-recientes">
+                @for (res of reservasHistorial().slice(0, 3); track res.idReserva) {
+                  <div class="actividad-item">
+                    <div class="icono-actividad" [class.icono-verde]="res.estado.toLowerCase() !== 'cancelada'" [class.icono-rojo]="res.estado.toLowerCase() === 'cancelada'">
+                      <mat-icon>event</mat-icon>
+                    </div>
+                    <div class="info-actividad">
+                      <strong>{{ res.estado.toLowerCase() === 'cancelada' ? 'Canceló una reserva' : 'Reserva realizada' }}</strong>
+                      <span>{{ res.cancha || 'Cancha' }} - {{ res.fReserva }}, {{ res.hInicio }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <p class="sin-actividades">Sin actividad reciente registrada.</p>
+            }
+          </mat-card-content>
+        </mat-card>
+      } @else {
+        <mat-card appearance="outlined" class="tarjeta-vacia-detalle">
+          <mat-card-content>
+            <p>Selecciona un cliente de la lista para ver su información detallada.</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </aside>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- DIÁLOGO / MODAL VISTA a15: Gestión de información de clientes  -->
+<!-- ============================================================== -->
+@if (modalEditarAbierto) {
+  <div class="backdrop-dialogo" (click)="cerrarModalEditar()">
+    <mat-card class="dialogo-card dialogo-editar" appearance="outlined" (click)="$event.stopPropagation()">
+      <mat-card-header class="cabecera-dialogo">
+        <mat-card-title class="titulo-con-icono">
+          <mat-icon>edit</mat-icon>
+          <span>Editar información</span>
+        </mat-card-title>
+        <button mat-icon-button (click)="cerrarModalEditar()" aria-label="Cerrar">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="formEdicion" class="formulario-modal" (submit)="$event.preventDefault(); guardarEdicion()">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombres</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input matInput formControlName="nombre" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apellidos</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input matInput formControlName="apellido" required>
+          </mat-form-field>
+
+          <div class="grid-dos-columnas">
+            <mat-form-field appearance="outline">
+              <mat-label>DNI</mat-label>
+              <mat-icon matPrefix>badge</mat-icon>
+              <input matInput formControlName="dni" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Teléfono</mat-label>
+              <mat-icon matPrefix>phone</mat-icon>
+              <input matInput formControlName="telefono" required>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Correo electrónico</mat-label>
+            <mat-icon matPrefix>mail</mat-icon>
+            <input matInput type="email" formControlName="correo" required>
+          </mat-form-field>
+
+          <div class="pie-dialogo">
+            <button mat-flat-button class="btn-guardar-dialogo" type="submit" [disabled]="formEdicion.invalid">
+              ACTUALIZAR
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}
+
+<!-- ============================================================== -->
+<!-- DIÁLOGO / MODAL VISTA a16: Listado de reservas de clientes     -->
+<!-- ============================================================== -->
+@if (modalReservasAbierto) {
+  <div class="backdrop-dialogo" (click)="cerrarModalReservas()">
+    <mat-card class="dialogo-card dialogo-reservas" appearance="outlined" (click)="$event.stopPropagation()">
+      <mat-card-header class="cabecera-dialogo">
+        <div>
+          <mat-card-title class="titulo-con-icono">
+            <mat-icon>calendar_month</mat-icon>
+            <span>Reservas del cliente</span>
+          </mat-card-title>
+          <mat-card-subtitle>Consulta el historial de reservas del usuario seleccionado</mat-card-subtitle>
+        </div>
+        <button mat-icon-button (click)="cerrarModalReservas()" aria-label="Cerrar">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+
+      <mat-card-content>
+        @if (clienteSeleccionado(); as c) {
+          <div class="banner-cliente-dialogo">
+            <div class="avatar-dialogo-circulo">
+              <mat-icon>account_circle</mat-icon>
+            </div>
+            <div class="datos-banner-dialogo">
+              <div class="nombre-badge-dialogo">
+                <strong>{{ c.nombre }} {{ c.apellido }}</strong>
+                <span class="badge-estado" [class.badge-activo]="c.activo" [class.badge-inactivo]="!c.activo">
+                  {{ c.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </div>
+              <div class="grid-datos-dialogo">
+                <span><mat-icon class="icono-pequeno">badge</mat-icon> DNI: {{ c.dni }}</span>
+                <span><mat-icon class="icono-pequeno">mail</mat-icon> Correo: {{ c.correo }}</span>
+                <span><mat-icon class="icono-pequeno">phone</mat-icon> Teléfono: {{ c.telefono }}</span>
+                <span><mat-icon class="icono-pequeno">layers</mat-icon> Total de reservas: {{ c.cantidadReservas ?? 0 }}</span>
+              </div>
+            </div>
+          </div>
+        }
+
+        <h3 class="subtitulo-reservas">Historial de reservas</h3>
+
+        <div class="contenedor-tabla-responsive">
+          <table mat-table [dataSource]="reservasHistorial()" class="tabla-reservas-dialogo">
+            <ng-container matColumnDef="sede">
+              <th mat-header-cell *matHeaderCellDef>Sede</th>
+              <td mat-cell *matCellDef="let r">
+                <span class="celda-icono-texto">
+                  <mat-icon class="icono-pequeno">place</mat-icon>
+                  {{ r.sede || 'Sede Principal' }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cancha">
+              <th mat-header-cell *matHeaderCellDef>Cancha / Deporte</th>
+              <td mat-cell *matCellDef="let r">{{ r.deporte || 'Deporte' }} - {{ r.cancha || 'Cancha' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="fecha">
+              <th mat-header-cell *matHeaderCellDef>Fecha</th>
+              <td mat-cell *matCellDef="let r">
+                <span class="celda-icono-texto">
+                  <mat-icon class="icono-pequeno">calendar_today</mat-icon>
+                  {{ r.fReserva }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="horario">
+              <th mat-header-cell *matHeaderCellDef>Horario</th>
+              <td mat-cell *matCellDef="let r">
+                <span class="celda-icono-texto">
+                  <mat-icon class="icono-pequeno">schedule</mat-icon>
+                  {{ r.hInicio }} - {{ r.hFin }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef>Estado</th>
+              <td mat-cell *matCellDef="let r">
+                <span class="badge-estado badge-reserva-{{ r.estado.toLowerCase() }}">
+                  {{ r.estado }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="monto">
+              <th mat-header-cell *matHeaderCellDef>Monto</th>
+              <td mat-cell *matCellDef="let r">s/{{ (r.montoTotal || 0) | number:'1.2-2' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="accion">
+              <th mat-header-cell *matHeaderCellDef>Acción</th>
+              <td mat-cell *matCellDef="let r">
+                <button mat-icon-button title="Ver detalle" type="button">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnasReservas"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasReservas"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell celda-sin-datos" [attr.colspan]="columnasReservas.length">
+                El cliente no tiene reservas registradas en el sistema.
+              </td>
+            </tr>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}
+
+<!-- ============================================================== -->
+<!-- DIÁLOGO / MODAL VISTA a17: Desactivar cuenta de cliente        -->
+<!-- ============================================================== -->
+@if (modalDesactivarAbierto) {
+  <div class="backdrop-dialogo" (click)="cerrarModalDesactivar()">
+    <mat-card class="dialogo-card dialogo-desactivar" appearance="outlined" (click)="$event.stopPropagation()">
+      <mat-card-header class="cabecera-dialogo">
+        <mat-card-title class="titulo-con-icono">
+          <mat-icon color="warn">person_off</mat-icon>
+          <span>Desactivar usuario</span>
+        </mat-card-title>
+        <button mat-icon-button (click)="cerrarModalDesactivar()" aria-label="Cerrar">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+
+      <mat-card-content class="contenido-desactivar">
+        <p class="texto-confirmacion">¿Estás seguro que deseas cambiar el estado de la cuenta de este cliente?</p>
+        <div class="pie-dialogo">
+          <button mat-flat-button class="btn-confirmar-desactivar" (click)="confirmarDesactivar()">
+            DESACTIVAR
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}

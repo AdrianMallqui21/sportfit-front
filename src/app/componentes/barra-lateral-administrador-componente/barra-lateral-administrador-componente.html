@@ -1,0 +1,91 @@
+<aside class="barra-lateral-admin">
+  <!-- Botón de Notificaciones (Campana) en esquina superior -->
+  <button type="button" class="boton-campana" routerLink="/notificaciones" title="Notificaciones">
+    <mat-icon>notifications</mat-icon>
+  </button>
+
+  <!-- SECCIÓN PERFIL / AVATAR -->
+  <div class="bloque-perfil">
+    <div class="avatar-circular">
+      <mat-icon class="icono-avatar">account_circle</mat-icon>
+    </div>
+    <span class="etiqueta-rol">Administrador</span>
+  </div>
+
+  <!-- NAVEGACIÓN PRINCIPAL -->
+  <nav class="navegacion-admin" aria-label="Navegación principal">
+    <!-- 1. Perfil -->
+    <a class="nav-item" routerLink="/perfil-administrador" routerLinkActive="activo">
+      <mat-icon>person_outline</mat-icon>
+      <span>Perfil</span>
+    </a>
+
+    <!-- 2. Solicitudes / Resumen -->
+    <a class="nav-item" routerLink="/solicitudes" routerLinkActive="activo">
+      <mat-icon>home</mat-icon>
+      <span>Solicitudes</span>
+    </a>
+
+    <!-- 3. Clientes -->
+    <a class="nav-item" routerLink="/clientes" routerLinkActive="activo">
+      <mat-icon>people_outline</mat-icon>
+      <span>Clientes</span>
+    </a>
+
+    <!-- 4. Reservas -->
+    <a class="nav-item" routerLink="/solicitudes">
+      <mat-icon>layers</mat-icon>
+      <span>Reservas</span>
+    </a>
+
+    <!-- 5. Espacios -->
+    <a class="nav-item" routerLink="/espacios" routerLinkActive="activo">
+      <mat-icon>sports_soccer</mat-icon>
+      <span>Espacios</span>
+    </a>
+
+    <!-- 6. Reportes (Desplegable con submenú interactivo) -->
+    <div class="bloque-reportes">
+      <button type="button" class="nav-item nav-item-reportes" 
+              [class.activo]="enRutaReportes() || menuReportesAbierto()"
+              (click)="toggleMenuReportes()">
+        <div class="reportes-label-left">
+          <mat-icon>bar_chart</mat-icon>
+          <span>Reportes</span>
+        </div>
+        <mat-icon class="icono-flecha">{{ menuReportesAbierto() ? 'expand_less' : 'expand_more' }}</mat-icon>
+      </button>
+
+      <!-- Submenú de Reportes (Amarillo en acordeón) -->
+      @if (menuReportesAbierto()) {
+        <div class="submenu-reportes">
+          <a class="sub-item" routerLink="/reporte-deporte-sede" routerLinkActive="sub-item-activo">
+            <span>Reservas por deporte y Sede</span>
+          </a>
+          <a class="sub-item" routerLink="/reporte-cancelacion" routerLinkActive="sub-item-activo">
+            <span>Reservas Canceladas</span>
+          </a>
+          <a class="sub-item" routerLink="/reporte-financiero" routerLinkActive="sub-item-activo">
+            <span>Financiero por periodo</span>
+          </a>
+          <a class="sub-item" routerLink="/reporte-incidencias" routerLinkActive="sub-item-activo">
+            <span>Incidencias enviadas y atendidas</span>
+          </a>
+        </div>
+      }
+    </div>
+
+    <!-- 7. Incidencias -->
+    <a class="nav-item" routerLink="/incidencias" routerLinkActive="activo">
+      <mat-icon>settings</mat-icon>
+      <span>Incidencias</span>
+    </a>
+  </nav>
+
+  <!-- PIE DE LA BARRA LATERAL: CERRAR SESIÓN -->
+  <div class="footer-barra-lateral">
+    <button type="button" class="boton-cerrar-sesion" (click)="cerrarSesion()">
+      Cerrar sesión
+    </button>
+  </div>
+</aside>
