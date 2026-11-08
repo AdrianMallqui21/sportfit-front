@@ -8,9 +8,9 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {AutorizacionServicio} from '../../servicios/autorizacion-servicio';
 import {CredencialesDTOModelo} from '../../modelos/credenciales-dto-modelo';
 import {RespuestaDTOModelo} from '../../modelos/respuesta-dto-modelo';
-import {ClienteServicio} from '../../servicios/cliente-servicio';
 import {map, Observable} from 'rxjs';
 import {UsuarioModelo} from '../../modelos/usuario-modelo';
+import {AdministradorServicio} from '../../servicios/administrador-servicio';
 
 @Component({
   selector: 'app-a1-inicio-sesion-administrador-componente',
@@ -36,7 +36,7 @@ export class A1InicioSesionAdministradorComponente {
   router: Router = inject(Router);
   // Logica de auth
   autorizacionServicio: AutorizacionServicio = inject(AutorizacionServicio);
-  clienteServicio: ClienteServicio = inject(ClienteServicio);
+  administradorServicio: AdministradorServicio = inject(AdministradorServicio);
   protected loginAdministrador: FormGroup;
 
 
@@ -67,7 +67,7 @@ export class A1InicioSesionAdministradorComponente {
   }
 
   cargarAdministrador(emailBuscado: string): Observable<UsuarioModelo> {
-    return this.clienteServicio.obtenerAdministradorCorreo(emailBuscado).pipe(
+    return this.administradorServicio.obtenerAdministradorCorreo(emailBuscado, 2).pipe(
       map(usuario => usuario)
     )
   }
