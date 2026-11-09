@@ -1,166 +1,165 @@
-<div class="pagina-inicio-cliente">
-  <header class="encabezado-inicio-cliente">
-    <!-- Agregar el atributo src con la ruta real del logotipo. -->
-    <img class="logotipo" alt="SportFit">
-  </header>
+<app-barra-lateral>
+  <div class="home">
+    <header class="marca">
+      SportFit <mat-icon>directions_run</mat-icon>
+    </header>
 
-  <main class="contenido-inicio-cliente">
-    <div class="bienvenida">
-      <img alt="Icono-Saludo" src="">
-      <!--Agregar la referencia del TS-->
-      <h1>Bienvenido de vuelta {{ 'Adrian' }}.</h1>
-      <p>¡Encuentra tus mejores horarios!</p>
-      <!--Agregar la ruta de reservas-->
-      <a href="/">Reservar ahora</a>
-    </div>
-  
-    <div class="columnas-inicio-cliente">
-      <div class="columna-izquierda">
-        <div class="banners">
-          <div class="banner">
-            <!--Agregar la referencia del TS-->
-            <p>{{ '12' }}</p>
-            <p>Reservas proximas</p>
-          </div>
-          <div class="banner">
-            <!--Agregar la referencia del TS-->
-            <p>{{ '14' }}</p>
-            <p>Reservas realizadas</p>
-          </div>
-          <div class="banner">
-            <!--Agregar la referencia del TS-->
-            <p>{{ '18' }}</p>
-            <p>Reservas canceladas</p>
-          </div>
+    <mat-card class="bienvenida">
+      <mat-card-content>
+        <div class="icono-saludo">
+          <mat-icon>waving_hand</mat-icon>
         </div>
-  
-        <!--Tabla de proximas reservas  -->
-  
-        <div class="contenedor-tabla">
-          <h2>Próximas reservas</h2>
-          <table
-            [dataSource]="dataSource"
-            aria-label="Listado de reservas"
-            class="tabla-reservas"
-            mat-table
-          >
-            <ng-container matColumnDef="deporte">
-              <th *matHeaderCellDef mat-header-cell>Deporte</th>
-              <td *matCellDef="let reserva" mat-cell>
-                {{ reserva.deporte }}
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="sede">
-              <th *matHeaderCellDef mat-header-cell>Sede</th>
-              <td *matCellDef="let reserva" mat-cell>
-                {{ reserva.sede }}
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="fecha">
-              <th *matHeaderCellDef mat-header-cell>Fecha</th>
-              <td *matCellDef="let reserva" mat-cell>
-                {{ reserva.fecha }}
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="hora">
-              <th *matHeaderCellDef mat-header-cell>Hora</th>
-              <td *matCellDef="let reserva" mat-cell>
-                {{ reserva.hora }}
-              </td>
-            </ng-container>
-  
-            <tr
-              *matHeaderRowDef="displayedColumns"
-              class="encabezado-tabla"
-              mat-header-row
-            ></tr>
-  
-            <tr
-              *matRowDef="let row; columns: displayedColumns"
-              class="fila-reserva"
-              mat-row
-            ></tr>
-          </table>
-  
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                         aria-label="Select page of periodic elements"
-                         showFirstLastButtons>
-          </mat-paginator>
+        <div class="texto-saludo">
+          <h1>Bienvenido de vuelta, {{ nombre }}.</h1>
+          <h2>¡Encuentra tus mejores horarios!</h2>
         </div>
-      </div>
-  
-      <div class="columna-derecha">
-        <!--Tabla de reservas solicitadas -->
-        <div class="contenedor-tabla">
-          <h2>Solicitudes de reservas</h2>
-          <table
-            [dataSource]="dataSource"
-            aria-label="Listado de reservas"
-            class="tabla-reservas"
-            mat-table
-          >
-            <ng-container matColumnDef="deporte">
-              <th *matHeaderCellDef mat-header-cell>Deporte</th>
-              <td *matCellDef="let reserva" mat-cell>
-                {{ reserva.deporte }}
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="sede">
-              <th *matHeaderCellDef mat-header-cell>Sede</th>
-              <td *matCellDef="let reserva" mat-cell>
-                {{ reserva.sede }}
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="fecha">
-              <th *matHeaderCellDef mat-header-cell>Fecha</th>
-              <td *matCellDef="let reserva" mat-cell>
-                {{ reserva.fecha }}
-              </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="hora">
-              <th *matHeaderCellDef mat-header-cell>Hora</th>
-              <td *matCellDef="let reserva" mat-cell>
-                {{ reserva.hora }}
-              </td>
-            </ng-container>
-  
-            <tr
-              *matHeaderRowDef="displayedColumns"
-              class="encabezado-tabla"
-              mat-header-row
-            ></tr>
-  
-            <tr
-              *matRowDef="let row; columns: displayedColumns"
-              class="fila-reserva"
-              mat-row
-            ></tr>
-          </table>
+        <button mat-flat-button disabled>RESERVAR AHORA</button>
+      </mat-card-content>
+    </mat-card>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+    <div class="columnas">
+      <div class="columna">
+        <div class="estadisticas">
+          <mat-card>
+            <mat-card-content>
+              <strong>{{ proximas.length }}</strong>
+              <span>Reservas próximas</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content>
+              <strong>{{ realizadas }}</strong>
+              <span>Reservas realizadas</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content>
+              <strong>{{ canceladas }}</strong>
+              <span>Reservas canceladas</span>
+            </mat-card-content>
+          </mat-card>
         </div>
-  
-        <!-- Tendencia mensual de horas de actividad: estructura sin datos. -->
-        <div class="grafico-tendencia-mensual">
-          <h2 id="titulo-tendencia-mensual">Tendencia mensual de horas de actividad</h2>
-  
-          <figure class="contenedor-grafico" aria-labelledby="titulo-tendencia-mensual">
-            <div class="cuerpo-grafico">
-              <span class="etiqueta-eje-vertical">Horas</span>
-  
-              <div class="area-grafico">
-                <!-- Aquí se incorporará el gráfico cuando se implemente su lógica. -->
-              </div>
+
+        <mat-card class="tabla-card tabla-proximas">
+          <mat-card-header>
+            <mat-card-title>Próximas reservas</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="tabla-scroll">
+              <table mat-table [dataSource]="proximas">
+                <ng-container matColumnDef="cancha">
+                  <th mat-header-cell *matHeaderCellDef>Cancha</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ nombreCancha(reserva.idSedeCancha) }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="sede">
+                  <th mat-header-cell *matHeaderCellDef>Sede</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ nombreSede(reserva.idSedeCancha) }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="fecha">
+                  <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ reserva.fReserva | date:'dd/MM/yyyy' }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="hora">
+                  <th mat-header-cell *matHeaderCellDef>Hora</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ hora(reserva) }}
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+              </table>
             </div>
-  
-            <figcaption class="etiqueta-eje-horizontal">Meses</figcaption>
-          </figure>
-        </div>
+            <p class="sin-datos" *ngIf="proximas.length === 0">
+              No tienes reservas próximas.
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="columna">
+        <mat-card class="tabla-card tabla-solicitudes">
+          <mat-card-header>
+            <mat-card-title>Solicitudes de reserva</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="tabla-scroll">
+              <table mat-table [dataSource]="solicitadas">
+                <ng-container matColumnDef="cancha">
+                  <th mat-header-cell *matHeaderCellDef>Cancha</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ nombreCancha(reserva.idSedeCancha) }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="sede">
+                  <th mat-header-cell *matHeaderCellDef>Sede</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ nombreSede(reserva.idSedeCancha) }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="fecha">
+                  <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ reserva.fReserva | date:'dd/MM/yyyy' }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="hora">
+                  <th mat-header-cell *matHeaderCellDef>Hora</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ hora(reserva) }}
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+              </table>
+            </div>
+            <p class="sin-datos" *ngIf="solicitadas.length === 0">
+              No tienes solicitudes pendientes.
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="grafico-card">
+          <mat-card-header>
+            <mat-card-title>
+              Tendencia mensual de horas de actividad
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <svg viewBox="0 0 520 210"
+                 role="img"
+                 aria-label="Horas de reservas completadas en los últimos seis meses">
+              <line x1="42" y1="155" x2="500" y2="155" class="eje"/>
+              <line x1="42" y1="35" x2="42" y2="155" class="eje"/>
+              <line x1="42" y1="95" x2="500" y2="95" class="guia"/>
+              <line x1="42" y1="35" x2="500" y2="35" class="guia"/>
+              <polyline [attr.points]="puntosGrafico" class="linea"/>
+              <circle *ngFor="let punto of puntos"
+                      [attr.cx]="punto.x"
+                      [attr.cy]="punto.y"
+                      r="4"
+                      class="punto"/>
+              <text *ngFor="let mes of meses; let i = index"
+                    [attr.x]="42 + i * 86"
+                    y="181"
+                    class="mes">{{ mes }}</text>
+              <text x="260" y="205" class="etiqueta">Meses</text>
+              <text x="14" y="90" class="etiqueta"
+                    transform="rotate(-90 14 90)">Horas</text>
+            </svg>
+            <p class="sin-datos" *ngIf="!tieneActividad">
+              Sin horas completadas en los últimos seis meses.
+            </p>
+          </mat-card-content>
+        </mat-card>
       </div>
     </div>
-  </main>
-</div>
+  </div>
+</app-barra-lateral>

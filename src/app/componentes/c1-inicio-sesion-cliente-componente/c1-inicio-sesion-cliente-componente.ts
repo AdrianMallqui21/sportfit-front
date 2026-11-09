@@ -29,7 +29,7 @@ import {RespuestaDTOModelo} from '../../modelos/respuesta-dto-modelo';
 export class C1InicioSesionClienteComponente {
   hide = signal(true);
   correo: string = '';
-  contrsena: string = '';
+  contrasena: string = '';
   router: Router = inject(Router);
   // Logica de auth
   autorizacionServicio: AutorizacionServicio = inject(AutorizacionServicio);
@@ -76,7 +76,11 @@ export class C1InicioSesionClienteComponente {
             alert('Este acceso es solo para clientes. Usa la opción Administrador.');
             return;
           }
+          //Guardamos estos datos para usarlos en otras vistas
           localStorage.setItem('rol', 'ROLE_CLIENTE');
+          localStorage.setItem('correo', credenciales.correo);
+          //Identifica que el rol de cliente es 1
+          localStorage.setItem('idRol', '1')
           this.router.navigate(['/home']);
         },
         error: (error) => {
@@ -89,6 +93,4 @@ export class C1InicioSesionClienteComponente {
       console.log("Formulario no valido");
     }
   }
-
-
 }

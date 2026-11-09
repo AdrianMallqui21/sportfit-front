@@ -1,0 +1,33 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Barra lateral -->
+  <mat-sidenav mode="side" opened class="menu-lateral">
+    <div class="menu-interior">
+      <div class="perfil">
+        <button mat-icon-button routerLink="/cuenta" class="campana">
+          <mat-icon>notifications</mat-icon>
+        </button>
+        <div class="avatar">
+          <mat-icon>account_circle</mat-icon>
+        </div>
+        <p class="nombre">{{nombre}}</p>
+      </div>
+
+      <div class="menu-botones">
+        <button mat-button routerLink="/home" routerLinkActive="activo"><mat-icon>home</mat-icon>Home</button>
+        <button mat-button routerLink="/nueva-reserva" routerLinkActive="activo"><mat-icon>add_circle_outline</mat-icon>Nueva reserva</button>
+        <button mat-button routerLink="/mis-reservas" routerLinkActive="activo"><mat-icon>layers</mat-icon>Mis reservas</button>
+        <button mat-button routerLink="/perfil-cliente" routerLinkActive="activo"><mat-icon>person_outline</mat-icon>Cuenta</button>
+        <button mat-button routerLink="/cuenta" routerLinkActive="activo"><mat-icon>build</mat-icon>Incidentes</button>
+      </div>
+
+      <div class="menu-footer">
+        <button mat-button disabled>Cerrar sesión</button>
+      </div>
+    </div>
+  </mat-sidenav>
+
+  <!-- Contenido principal -->
+  <mat-sidenav-content>
+    <div class="contenido"><ng-content></ng-content></div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

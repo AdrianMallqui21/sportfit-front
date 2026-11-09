@@ -1,0 +1,111 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.menu-lateral {
+  width: 230px;
+  background-color: white;
+  border-radius: 0;
+  border-right: 1px solid #dddddd;
+}
+
+.menu-interior {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 25px 10px;
+  margin-bottom: 25px;
+}
+
+.campana {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #e9b600;
+  background-color: #fff8d9;
+  border: 1px solid #f5d34e;
+}
+
+.avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 115px;
+  height: 115px;
+  margin-top: 15px;
+  border-radius: 50%;
+  background-color: #eeeeee;
+}
+
+.avatar mat-icon {
+  font-size: 100px;
+  width: 100px;
+  height: 100px;
+  color: #aaaaaa;
+}
+
+.nombre {
+  color: #e9b600;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+.menu-botones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 12px;
+}
+
+.menu-botones button {
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: flex-start;
+  color: #888888;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.menu-botones mat-icon {
+  color: #999999;
+  margin-right: 12px;
+}
+
+.menu-botones button:hover {
+  background-color: #eeeeee;
+}
+
+.menu-footer {
+  margin-top: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.menu-footer button {
+  font-size: 14px;
+}
+
+.contenido {
+  background-color: #eaf4e5;
+  min-height: 100vh;
+  padding: 25px;
+  box-sizing: border-box;
+}
+
+.menu-botones button.activo,
+.menu-botones button.activo:hover {
+  background-color: #f5d328;
+  color: #222222;
+}
+
+.menu-botones button.activo mat-icon {
+  color: #222222;
+}

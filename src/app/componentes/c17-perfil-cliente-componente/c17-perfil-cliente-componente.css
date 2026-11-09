@@ -1,0 +1,148 @@
+
+/* Contenedor principal del perfil */
+.perfil-pagina {
+  margin-left: 200px;
+  width: calc(100% - 200px);
+  min-height: 100vh;
+  background-color: #eaf4e9;
+  padding: 25px 35px;
+  box-sizing: border-box;
+}
+
+/* Logo SportFit */
+.encabezado {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.encabezado h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2eb785;
+  margin: 0;
+}
+
+.encabezado mat-icon {
+  color: #2eb785;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+/* Distribución del contenido */
+.perfil-contenido {
+  display: flex;
+  align-items: flex-start;
+  gap: 25px;
+}
+
+/* Tarjeta del formulario */
+.perfil-card {
+  width: 100%;
+  max-width: 560px;
+  background-color: white;
+  border-radius: 14px;
+  padding: 28px 30px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* Título */
+.titulo {
+  color: #2eb785;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+/* Subtítulo */
+.subtitulo {
+  color: #e0a900;
+  font-size: 13px;
+  margin-top: 5px;
+  margin-bottom: 28px;
+}
+
+/* Formulario reactivo */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-container mat-form-field {
+  width: 100%;
+
+  --mdc-filled-text-field-container-color: #f5f8f5;
+  --mdc-filled-text-field-focus-active-indicator-color: #2eb785;
+  --mdc-filled-text-field-focus-label-text-color: #23996d;
+}
+
+/* DNI y teléfono en una misma fila */
+.fila-formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* Botón actualizar */
+.acciones {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.boton-actualizar {
+  background-color: #2eb785 !important;
+  color: white !important;
+  width: 190px;
+  height: 44px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.boton-actualizar:hover:not(:disabled) {
+  background-color: #239b70 !important;
+}
+
+.boton-actualizar:disabled {
+  opacity: 0.55;
+}
+
+/* Mensajes */
+.mensaje-cargando {
+  color: #777;
+  font-size: 13px;
+  text-align: center;
+}
+
+.mensaje-error {
+  color: #d32f2f;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Diseño adaptable */
+@media (max-width: 768px) {
+  .perfil-pagina {
+    padding: 18px;
+  }
+
+  .perfil-card {
+    max-width: 100%;
+    padding: 22px 18px;
+  }
+
+  .fila-formulario {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .titulo {
+    font-size: 24px;
+  }
+}
