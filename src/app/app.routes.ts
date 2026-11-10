@@ -25,6 +25,6 @@ export const routes: Routes = [
   { path: 'home', component: C4HomeClienteComponente },
   { path: 'nueva-reserva', component: C8NuevaReservaClienteComponente },
   { path: 'mis-reservas', component: C13MisReservasClienteComponente },
-  { path: 'perfil-cliente', component: C17PerfilClienteComponente },
+  { path: 'perfil-cliente', component: C17PerfilClienteComponente }
 ];
 

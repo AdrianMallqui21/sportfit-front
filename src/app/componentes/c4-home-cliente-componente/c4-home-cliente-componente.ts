@@ -19,7 +19,7 @@ import { ReservaHome, SedeCanchaHome, SedeHome, TipoCanchaHome, } from '../../mo
     BarraLateral,
   ],
   templateUrl: './c4-home-cliente-componente.html',
-  styleUrl: './c4-home-cliente-componente.css',
+  styleUrl: './c4-home-cliente-componente.css'
 })
 export class C4HomeClienteComponente {
   //injectamos al servicio que contiene la llamada a las apis

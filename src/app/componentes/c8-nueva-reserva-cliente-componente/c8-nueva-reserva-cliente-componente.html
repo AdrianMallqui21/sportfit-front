@@ -1,4 +1,179 @@
 <app-barra-lateral>
-  <p>Trabajar Nicole</p>
-</app-barra-lateral>
+  <main
+    class="reserva-screen"
+    style="--mat-sys-primary: #40b983; --mat-sys-on-primary: #ffffff"
+  >
+    <header class="topbar">
+      <img src="/loge-sportfit.png" alt="SportFit" class="brand-logo">
+    </header>
 
+    <section class="page-heading">
+      <h1>Nueva Reserva</h1>
+    </section>
+
+    <div class="reservation-layout">
+      <aside class="booking-column">
+        <mat-card class="booking-card filters-card">
+          <h2>Filtros</h2>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+            <mat-label>Fecha</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [value]="fechaSeleccionada"
+              (dateChange)="cambiarFecha($event.value)"
+              placeholder="Seleccionar fecha">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+            <mat-label>Deporte</mat-label>
+            <mat-select [(value)]="deporteSeleccionado">
+              <mat-option value="">Seleccionar deporte</mat-option>
+              <mat-option value="futbol">Fútbol</mat-option>
+              <mat-option value="voley">Vóley</mat-option>
+              <mat-option value="tenis">Tenis</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
+            <mat-label>Sede</mat-label>
+            <mat-select [(value)]="sedeSeleccionada">
+              <mat-option value="">Seleccionar sede</mat-option>
+              <mat-option value="san-miguel">San Miguel</mat-option>
+              <mat-option value="surco">Santiago de Surco</mat-option>
+              <mat-option value="lince">Lince</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button
+            matButton="outlined"
+            type="button"
+            class="details-button"
+            (click)="verDetallesCancha()">
+            Ver detalles de cancha
+          </button>
+
+          <button
+            matButton="filled"
+            type="button"
+            class="search-button"
+            (click)="buscarDisponibilidad()">
+            Buscar disponibilidad
+          </button>
+        </mat-card>
+
+        <mat-card class="booking-card reservation-card">
+          <h2>Datos de Reserva</h2>
+
+          <div class="reservation-row">
+            <span>Fecha</span>
+            <div class="value-box">{{ formatearFecha(fechaSeleccionada) }}</div>
+          </div>
+
+          <div class="reservation-row">
+            <span>Hora</span>
+            <div class="time-values">
+              <div class="value-box">{{ horaInicioSeleccionada || 'Inicio' }}</div>
+              <mat-icon aria-hidden="true">arrow_forward</mat-icon>
+              <div class="value-box">{{ horaFinSeleccionada || 'Fin' }}</div>
+            </div>
+          </div>
+
+          <div class="price-box">
+            <span>Precio</span>
+            <span class="currency">S/</span>
+            <strong>
+              {{ precioSeleccionado === null ? '—' : (precioSeleccionado | number:'1.2-2') }}
+            </strong>
+          </div>
+
+          <button
+            matButton="filled"
+            type="button"
+            class="request-button"
+            [disabled]="!canchaSeleccionada"
+            (click)="solicitarReserva()">
+            Solicitar reserva
+          </button>
+        </mat-card>
+      </aside>
+
+      <section class="schedule-column" aria-label="Disponibilidad de canchas">
+        <nav class="date-navigation" aria-label="Elegir fecha">
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="Día anterior"
+            (click)="desplazarDia(-1)">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+
+          <button type="button" class="date-option" (click)="seleccionarFechaRapida(-1)">
+            {{ formatearFecha(fechaAnterior) }}
+          </button>
+
+          <button type="button" class="date-option date-option--selected">
+            {{ formatearFecha(fechaSeleccionada) }}
+          </button>
+
+          <button type="button" class="date-option" (click)="seleccionarFechaRapida(1)">
+            {{ formatearFecha(fechaSiguiente) }}
+          </button>
+
+          <button
+            mat-icon-button
+            type="button"
+            aria-label="Día siguiente"
+            (click)="desplazarDia(1)">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </nav>
+
+        <mat-card class="schedule-card">
+          <div class="table-scroll">
+            <table mat-table [dataSource]="dataSource" class="availability-table">
+              <ng-container matColumnDef="cancha">
+                <th mat-header-cell *matHeaderCellDef>Id Cancha</th>
+                <td mat-cell *matCellDef="let cancha">{{ cancha.id }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="precio">
+                <th mat-header-cell *matHeaderCellDef>Precio/h</th>
+                <td mat-cell *matCellDef="let cancha">S/{{ cancha.precioHora }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="aforo">
+                <th mat-header-cell *matHeaderCellDef>Aforo</th>
+                <td mat-cell *matCellDef="let cancha">{{ cancha.aforo }}</td>
+              </ng-container>
+
+              <ng-container *ngFor="let horario of horarios" [matColumnDef]="horario.id">
+                <th mat-header-cell *matHeaderCellDef>{{ horario.etiqueta }}</th>
+                <td
+                  mat-cell
+                  *matCellDef="let cancha"
+                  [style.background-color]="colorDisponibilidad(cancha, horario.indice)"
+                  [style.cursor]="estaOcupado(cancha, horario.indice) ? 'not-allowed' : 'pointer'"
+                  [attr.aria-label]="cancha.id + ', ' + horario.etiqueta"
+                  (click)="seleccionarHorario(cancha, horario.indice)">
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+        </mat-card>
+
+        <div class="legend">
+          <span><i class="available-dot"></i>Disponible</span>
+          <span><i class="occupied-dot"></i>No disponible</span>
+          <span><i class="selected-dot"></i>Seleccionado</span>
+        </div>
+      </section>
+    </div>
+  </main>
+</app-barra-lateral>
