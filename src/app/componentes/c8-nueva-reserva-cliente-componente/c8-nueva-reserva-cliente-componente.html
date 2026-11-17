@@ -23,6 +23,7 @@
               [matDatepicker]="picker"
               [value]="fechaSeleccionada"
               (dateChange)="cambiarFecha($event.value)"
+              [min]="fechaMinima"
               placeholder="Seleccionar fecha">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -30,21 +31,17 @@
 
           <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
             <mat-label>Deporte</mat-label>
-            <mat-select [(value)]="deporteSeleccionado">
-              <mat-option value="">Seleccionar deporte</mat-option>
-              <mat-option value="futbol">Fútbol</mat-option>
-              <mat-option value="voley">Vóley</mat-option>
-              <mat-option value="tenis">Tenis</mat-option>
+            <mat-select [(value)]="tipoCanchaSeleccionada">
+              <mat-option [value]="0">Seleccionar deporte</mat-option>
+              <mat-option *ngFor="let tipo of tiposCancha" [value]="tipo.idTipoCancha">{{ tipo.deporte }}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filter-field">
             <mat-label>Sede</mat-label>
             <mat-select [(value)]="sedeSeleccionada">
-              <mat-option value="">Seleccionar sede</mat-option>
-              <mat-option value="san-miguel">San Miguel</mat-option>
-              <mat-option value="surco">Santiago de Surco</mat-option>
-              <mat-option value="lince">Lince</mat-option>
+              <mat-option [value]="0">Seleccionar sede</mat-option>
+              <mat-option *ngFor="let sede of sedes" [value]="sede.idSede">{{ sede.nombre }}</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -63,6 +60,9 @@
             (click)="buscarDisponibilidad()">
             Buscar disponibilidad
           </button>
+          @if (mensajeError) {
+            <p class="mensaje-error">{{ mensajeError }}</p>
+          }
         </mat-card>
 
         <mat-card class="booking-card reservation-card">
@@ -94,7 +94,7 @@
             matButton="filled"
             type="button"
             class="request-button"
-            [disabled]="!canchaSeleccionada"
+            [disabled]="horasSeleccionadas.length === 0"
             (click)="solicitarReserva()">
             Solicitar reserva
           </button>
@@ -107,11 +107,12 @@
             mat-icon-button
             type="button"
             aria-label="Día anterior"
+            [disabled]="!puedeRetroceder"
             (click)="desplazarDia(-1)">
             <mat-icon>chevron_left</mat-icon>
           </button>
 
-          <button type="button" class="date-option" (click)="seleccionarFechaRapida(-1)">
+          <button type="button" class="date-option" [disabled]="!puedeRetroceder" (click)="seleccionarFechaRapida(-1) ">
             {{ formatearFecha(fechaAnterior) }}
           </button>
 
@@ -137,7 +138,7 @@
             <table mat-table [dataSource]="dataSource" class="availability-table">
               <ng-container matColumnDef="cancha">
                 <th mat-header-cell *matHeaderCellDef>Id Cancha</th>
-                <td mat-cell *matCellDef="let cancha">{{ cancha.id }}</td>
+                <td mat-cell *matCellDef="let cancha">{{ cancha.idSedeCancha }}</td>
               </ng-container>
 
               <ng-container matColumnDef="precio">
@@ -157,7 +158,7 @@
                   *matCellDef="let cancha"
                   [style.background-color]="colorDisponibilidad(cancha, horario.indice)"
                   [style.cursor]="estaOcupado(cancha, horario.indice) ? 'not-allowed' : 'pointer'"
-                  [attr.aria-label]="cancha.id + ', ' + horario.etiqueta"
+                  [attr.aria-label]="cancha.idSedeCancha + ', ' + horario.etiqueta"
                   (click)="seleccionarHorario(cancha, horario.indice)">
                 </td>
               </ng-container>
