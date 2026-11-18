@@ -1,0 +1,13 @@
+:host { display: block; padding: 26px 30px; background: #fff; color: #202020; font-family: Arial, Helvetica, sans-serif; }
+.detalle { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+h2 { margin: 0 0 8px; font-size: 16px; }
+.descripcion { margin: 0 0 14px; font-size: 12px; color: #777; }
+.dato { display: flex; align-items: center; gap: 8px; margin: 8px 0; font-size: 14px; }
+.detalle-imagen { display: flex; justify-content: center; align-items: center; min-height: 140px; border-left: 1px solid #ddd; }
+.detalle-imagen img { max-width: 100%; max-height: 180px; }
+.boton-regresar {
+  grid-column: 1 / -1; justify-self: center;
+  --mat-button-filled-container-color: #35b983;
+  --mat-button-filled-label-text-color: #fff;
+  padding-inline: 40px;
+}
