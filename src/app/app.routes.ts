@@ -47,6 +47,9 @@ export const routes: Routes = [
   {path: 'registro', component: C2RegistroClienteComponente},
   {path: 'administrador', component: A1InicioSesionAdministradorComponente},
 
+  //Bprrar esto luego
+  {path: 'dialogo', component: A26ListadoIncidenciasAdministradorComponente},
+
   {path: 'home', component: C4HomeClienteComponente},
   {path: 'perfil-administrador', component: A2PerfilAdministradorComponente},
   {path: 'notificaciones', component: A11NotificacionesAdministradorComponente},

@@ -1,0 +1,31 @@
+<!-- Confirmación de actualización de contraseña -->
+<div class="dialogo-confirmacion">
+
+  <!-- Ícono de operación exitosa -->
+  <div class="icono-confirmacion">
+    <mat-icon>task_alt</mat-icon>
+  </div>
+
+  <!-- Título del mensaje -->
+  <h2 mat-dialog-title>¡Perfil actualizado!</h2>
+
+  <!-- Descripción de la confirmación -->
+  <mat-dialog-content>
+    <p>
+      Tus datos personales se guardaron correctamente
+    </p>
+  </mat-dialog-content>
+
+  <!-- Botón para cerrar el diálogo -->
+  <mat-dialog-actions align="center">
+    <button
+      (click)="cerrar()"
+      class="boton-entendido"
+      mat-flat-button
+      type="button"
+    >
+      ENTENDIDO
+    </button>
+  </mat-dialog-actions>
+
+</div>

@@ -13,4 +13,17 @@ export class AdministradorServicio {
     return this.http.get<UsuarioModelo>(this.url + '/obtener-usuario', {params: {correo, idRol}});
   }
 
+  actualizarAdministrador(admin: UsuarioModelo): Observable<UsuarioModelo> {
+    return this.http.put<UsuarioModelo>(`${this.url}/usuario-actualizar`, admin);
+  }
+
+  actualizarContraseña(contrasena: string, idAdmin: number): Observable<UsuarioModelo> {
+    return this.http.put<UsuarioModelo>(`${this.url}/usuario/administrador-password/{idAdmin}`, {
+      params: {
+        idAdmin,
+        contrasena
+      }
+    });
+  }
+
 }

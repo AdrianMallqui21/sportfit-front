@@ -2,40 +2,42 @@
   <header class="encabezado-perfil-administrador">
     <h1>Perfil del administrador</h1>
     <!-- Agregar el atributo src con la ruta real del logotipo. -->
-    <img alt="SportFit" class="logotipo">
+    <img alt="SportFit" class="logotipo" src="loge-sportfit.png">
   </header>
 
   <main class="contenido-perfil-administrador">
     <div class="columna-identidad">
-      <mat-card class="fotografia-admin" appearance="outlined">
+      <mat-card appearance="outlined" class="fotografia-admin">
         <mat-card-content>
           <!-- Agregar el atributo src con la fotografía del administrador. -->
-          <img class="imagen-administrador" alt="Fotografía del administrador">
-
-          <!-- Luego conectar el nombre y estado con el backend. -->
-          <h2 class="nombre-administrador">—</h2>
-          <p class="rol">Administrador</p>
-          <span class="estado-admin">—</span>
+          <img alt="Fotografía del administrador" class="imagen-administrador">
+          <h2 class="nombre-administrador">{{ usuario.nombre }}</h2>
+          <p class="rol">{{ rol }}</p>
+          @if (usuario.activo) {
+            <span class="estado-admin">Activo</span>
+          } @else {
+            <span class="estado-admin">Inactivo</span>
+          }
         </mat-card-content>
 
         <mat-card-actions>
-          <button mat-stroked-button class="boton-cambiar-fotografia" type="button">
+          <button class="boton-cambiar-fotografia" mat-stroked-button type="button">
             Cambiar fotografía
           </button>
         </mat-card-actions>
       </mat-card>
 
-      <mat-card class="banners-admin" appearance="outlined">
+      <!-- Fecha y dispositivos activos -->
+      <mat-card appearance="outlined" class="banners-admin">
         <mat-card-content>
-          <section class="tiempo" aria-labelledby="titulo-miembro-desde">
+          <section aria-labelledby="titulo-miembro-desde" class="tiempo">
             <h2 id="titulo-miembro-desde">Miembro desde</h2>
-            <!-- Luego conectar la fecha de registro con el backend. -->
-            <p class="fecha-registro">—</p>
+            <p class="fecha-registro">{{ usuario.fCreacion | date:'yyyy' }}</p>
           </section>
 
-          <section class="dispositivos" aria-labelledby="titulo-dispositivos">
+          <section aria-labelledby="titulo-dispositivos" class="dispositivos">
             <!-- Indicador fijo conservado de tu estructura inicial. -->
-            <h2 id="titulo-dispositivos">1 dispositivo</h2>
+            <h2 id="titulo-dispositivos">{{ sesioneActivas + " Dispositivo" }}</h2>
             <p class="estado-dispositivo">Activo</p>
           </section>
         </mat-card-content>
@@ -43,7 +45,7 @@
     </div>
 
     <div class="columna-informacion">
-      <mat-card class="informacion-admin" appearance="outlined">
+      <mat-card appearance="outlined" class="informacion-admin">
         <mat-card-header>
           <div class="encabezado-informacion">
             <h2 id="titulo-informacion-personal">Información personal</h2>
@@ -53,82 +55,82 @@
 
         <mat-card-content>
           <!-- Cada dd recibirá el dato correspondiente cuando se conecte el backend. -->
-          <dl class="datos-personales" aria-labelledby="titulo-informacion-personal">
+          <dl aria-labelledby="titulo-informacion-personal" class="datos-personales">
             <div class="dato-personal">
               <dt>Nombres</dt>
-              <dd class="nombres-administrador">—</dd>
+              <dd class="nombres-administrador">{{ usuario.nombre }}</dd>
             </div>
 
             <div class="dato-personal">
               <dt>Apellidos</dt>
-              <dd class="apellidos-administrador">—</dd>
+              <dd class="apellidos-administrador">{{ usuario.apellido }}</dd>
             </div>
 
             <div class="dato-personal">
               <dt>DNI</dt>
-              <dd class="dni-administrador">—</dd>
+              <dd class="dni-administrador">{{ usuario.dni }}</dd>
             </div>
 
             <div class="dato-personal">
               <dt>Teléfono</dt>
-              <dd class="telefono-administrador">—</dd>
+              <dd class="telefono-administrador">{{ usuario.telefono }}</dd>
             </div>
 
             <div class="dato-personal">
               <dt>Correo</dt>
-              <dd class="correo-administrador">—</dd>
+              <dd class="correo-administrador">{{ usuario.correo }}</dd>
             </div>
 
             <div class="dato-personal">
               <dt>Rol</dt>
-              <dd class="rol-administrador">Administrador</dd>
+              <dd class="rol-administrador">{{ rol }}</dd>
             </div>
           </dl>
         </mat-card-content>
 
         <mat-card-actions>
           <!-- Pendiente: abrir el formulario de edición. -->
-          <button mat-stroked-button class="boton-editar-informacion" type="button">
+          <button (click)="abrirDialogoEditar()" class="boton-editar-informacion" mat-stroked-button type="button">
             Editar información
           </button>
         </mat-card-actions>
       </mat-card>
 
-      <mat-card class="seguridad-admin" appearance="outlined">
+
+      <mat-card appearance="outlined" class="seguridad-admin">
         <mat-card-header>
           <h2 id="titulo-seguridad-cuenta">Seguridad de la cuenta</h2>
         </mat-card-header>
 
         <mat-card-content>
-          <dl class="datos-seguridad" aria-labelledby="titulo-seguridad-cuenta">
+          <dl aria-labelledby="titulo-seguridad-cuenta" class="datos-seguridad">
             <div class="dato-seguridad">
               <dt>Contraseña</dt>
-              <!-- Indicador visual de contraseña protegida; no contiene la contraseña real. -->
               <dd class="contrasena-protegida">
-                <span aria-label="Contraseña protegida">************</span>
+                <span aria-label="Contraseña protegida">{{ usuario.contrasenaHash }}</span>
               </dd>
             </div>
 
             <div class="dato-seguridad">
               <dt>Último acceso</dt>
-              <dd class="ultimo-acceso">—</dd>
+              <dd class="ultimo-acceso">{{ ultimoAcceso | date:'dd/MM/yyyy HH:mm:ss' }}</dd>
             </div>
 
             <div class="dato-seguridad">
               <dt>Sesiones activas</dt>
-              <dd class="sesiones-activas">—</dd>
+              <dd class="sesiones-activas">{{ sesioneActivas + " Dispositivo" }}</dd>
             </div>
 
             <div class="dato-seguridad">
               <dt>Correo verificado</dt>
-              <dd class="correo-verificado">—</dd>
+              <dd class="correo-verificado">{{ usuario.correo }}</dd>
             </div>
           </dl>
         </mat-card-content>
 
         <mat-card-actions>
           <!-- Pendiente: abrir el formulario de cambio de contraseña. -->
-          <button mat-stroked-button class="boton-cambiar-contrasena" type="button">
+          <button class="boton-cambiar-contrasena" mat-stroked-button type="button">
             Cambiar contraseña
           </button>
         </mat-card-actions>
