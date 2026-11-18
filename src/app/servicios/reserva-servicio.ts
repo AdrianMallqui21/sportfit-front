@@ -4,8 +4,11 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ReservaHome } from '../modelos/home-cliente-modelo';
 import {
+  CancelacionSolicitud,
   CanchaReserva,
+  FiltroMisReservas,
   HorarioOcupado,
+  MiReserva,
   SedeReserva,
   SolicitudReserva,
   TipoCanchaReserva,
@@ -65,5 +68,26 @@ export class ReservaServicio {
   solicitarReserva(solicitud: SolicitudReserva): Observable<ReservaHome> {
     console.log('[ReservaServicio] Enviando solicitud de reserva:', solicitud);
     return this.http.post<ReservaHome>(this.url + '/reserva/solicitar', solicitud, this.opciones());
+  }
+
+  // Trae las reservas de un cliente. Solo se envían los filtros que tengan valor (filtros concatenados).
+  listarMisReservas(idUsuario: number, filtros: FiltroMisReservas): Observable<MiReserva[]> {
+    // Se quitan los filtros vacíos para que no viajen como parámetros
+    const params: Record<string, string | number> = {};
+    Object.entries(filtros).forEach(([clave, valor]) => {
+      if (valor !== undefined && valor !== null && valor !== '') params[clave] = valor;
+    });
+    console.log('[ReservaServicio] Consultando mis reservas:', params);
+    return this.http.get<MiReserva[]>(this.url + '/reservas-filtro/usuario/' + idUsuario, {
+      ...this.opciones(),
+      params,
+    });
+  }
+
+  // Cancela una reserva confirmada: registra la cancelación y el back cambia el estado a 'cancelada'
+  // y notifica al cliente y al administrador de la sede.
+  cancelarReserva(cancelacion: CancelacionSolicitud): Observable<unknown> {
+    console.log('[ReservaServicio] Cancelando la reserva', cancelacion.idReserva);
+    return this.http.post(this.url + '/cancelacion', cancelacion, this.opciones());
   }
 }

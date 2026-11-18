@@ -90,3 +90,37 @@ export interface PagoDialogoResultado {
   metodo: string;
   urlComprobante: string;
 }
+
+// ---- Mis reservas ----
+
+// Una fila de la tabla "Mis reservas": GET /api/reservas-filtro/usuario/{idUsuario}
+export interface MiReserva {
+  idReserva: number;
+  idSede: number;
+  idTipoCancha: number;
+  deporte: string;
+  idSedeCancha: number;
+  sedeNombre: string;
+  fReserva: string;          // 'yyyy-MM-dd'
+  hInicio: string;           // 'HH:mm:ss'
+  hFin: string;
+  montoTotal: number | null;
+  metodo: string | null;
+  estado: string;            // solicitada, confirmada, rechazada, cancelada o completada
+}
+
+// Filtros opcionales de Mis reservas: solo se envían los que tengan valor.
+export interface FiltroMisReservas {
+  idSede?: number;
+  idTipoCancha?: number;
+  estado?: string;
+  fecha?: string; // 'yyyy-MM-dd'
+  horaInicio?: string; // 'HH:mm', hora exacta de inicio
+  horaFin?: string; // 'HH:mm', hora exacta de fin
+}
+
+// Lo que se envía a POST /api/cancelacion
+export interface CancelacionSolicitud {
+  idReserva: number;
+  tipoCancelacion: string;   // motivo (máximo 25 caracteres)
+}
