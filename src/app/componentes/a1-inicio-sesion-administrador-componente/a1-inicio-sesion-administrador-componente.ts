@@ -89,6 +89,7 @@ export class A1InicioSesionAdministradorComponente {
           //PASAR
           this.cargarAdministrador(credenciales.correo).subscribe({
             next: (usuario) => {
+            localStorage.setItem('correoAdministrador', usuario.correo);
               console.log("Usuario enviado: ", usuario);
               this.router.navigate(['/perfil-administrador'], {state: {usuario}});
             },
