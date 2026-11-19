@@ -1,0 +1,14 @@
+<div class="dialogo-confirmacion-contenedor">
+  <h2 class="titulo-modal-confirmacion">{{ data.titulo }}</h2>
+  <p class="descripcion-modal-confirmacion">{{ data.descripcion }}</p>
+  <div class="pie-modal-confirmacion">
+    <button
+      mat-flat-button
+      type="button"
+      [class.boton-entendido-verde]="data.tipo === 'aprobada'"
+      [class.boton-entendido-rojo]="data.tipo === 'rechazada'"
+      [mat-dialog-close]="true">
+      ENTENDIDO
+    </button>
+  </div>
+</div>

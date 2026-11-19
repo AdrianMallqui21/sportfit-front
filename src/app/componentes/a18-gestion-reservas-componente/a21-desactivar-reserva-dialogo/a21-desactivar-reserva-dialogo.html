@@ -1,0 +1,26 @@
+<div class="dialogo-confirmacion">
+  <div class="cabecera-dialogo">
+    <div class="titulo-con-icono">
+      <mat-icon>edit</mat-icon>
+      <h3>Desactivar Reserva</h3>
+    </div>
+    <button mat-icon-button type="button" [mat-dialog-close]="false" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="cuerpo-confirmacion">
+    <p class="texto-confirmacion">¿Estás seguro que deseas cancelar la reserva?</p>
+
+    @if (errorMsg()) {
+      <p class="texto-error">{{ errorMsg() }}</p>
+    }
+
+    <div class="acciones-confirmacion">
+      <button mat-flat-button type="button" class="boton-rojo" [mat-dialog-close]="false" [disabled]="procesando()">No</button>
+      <button mat-flat-button type="button" class="boton-verde" (click)="confirmarCancelacion()" [disabled]="procesando()">
+        {{ procesando() ? '...' : 'Si' }}
+      </button>
+    </div>
+  </mat-dialog-content>
+</div>

@@ -1,0 +1,17 @@
+<div class="dialogo-comprobante-contenedor">
+  <div class="cabecera-modal">
+    <h2 class="titulo-modal">Ver comprobante</h2>
+    <button mat-icon-button type="button" [mat-dialog-close]="false" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="cuerpo-modal-voucher">
+    <img
+      [src]="data.urlComprobante"
+      (error)="onVoucherError($event)"
+      alt="Comprobante de pago"
+      class="imagen-voucher-pago"
+    >
+  </mat-dialog-content>
+</div>

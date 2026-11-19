@@ -1,0 +1,73 @@
+.dialogo-confirmacion {
+  padding: 20px 24px 22px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.cabecera-dialogo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.titulo-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1e293b;
+}
+
+.titulo-con-icono h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.cuerpo-confirmacion {
+  padding: 4px 0 0 !important;
+}
+
+.texto-confirmacion {
+  font-size: 14.5px;
+  color: #334155;
+  margin: 8px 0 14px;
+  line-height: 1.5;
+}
+
+.resumen-cambio {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  font-size: 12.5px;
+  color: #166534;
+}
+
+.acciones-confirmacion {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.boton-rojo {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  min-width: 115px;
+  height: 40px;
+}
+
+.boton-verde {
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  min-width: 115px;
+  height: 40px;
+}
