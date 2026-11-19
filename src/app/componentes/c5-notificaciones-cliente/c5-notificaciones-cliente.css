@@ -1,0 +1,100 @@
+:host { display: block; min-width: 0; }
+* { box-sizing: border-box; }
+
+.notificaciones-pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: calc(100dvh - 50px);
+  overflow: hidden;
+  background: #eaf4e5;
+}
+
+.encabezado { display: flex; justify-content: flex-end; align-items: center; height: 40px; flex-shrink: 0; }
+.brand-logo { width: 145px; max-height: 40px; object-fit: contain; }
+
+.notificaciones-contenido {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(270px, 1fr);
+  gap: 18px;
+  flex: 1;
+  min-height: 0;
+}
+
+.columna-izquierda { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 18px; min-height: 0; }
+
+.bienvenida-card, .lista-card, .detalle-card {
+  background: #fff;
+  border: 1px solid #dce3dc;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.bienvenida-card { display: flex; flex-direction: row; align-items: center; gap: 22px; padding: 22px; }
+.icono-bienvenida { width: 58px; height: 58px; font-size: 35px; line-height: 58px; text-align: center; color: #23b3a3; flex-shrink: 0; }
+.bienvenida-card h1 { margin: 0; color: #39b887; font-size: clamp(18px, 2vw, 29px); line-height: 1.2; }
+
+.lista-card { display: flex; flex-direction: column; gap: 14px; padding: 20px; min-height: 0; overflow-y: auto; }
+.notificacion-item.mat-mdc-button {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 90px;
+  padding: 14px;
+  border: 1px solid #dce0e3;
+  border-radius: 11px;
+  background: #f1f3f5;
+  text-align: left;
+  white-space: normal;
+}
+.notificacion-item.seleccionada { border-color: #9ccfba; background: #eaf6ef; }
+.notificacion-item.leida { opacity: .75; }
+.item-contenido { display: block; width: 100%; }
+.item-contenido strong { display: block; color: #222; font-size: 13px; margin-bottom: 10px; }
+.item-mensaje { display: flex; align-items: center; gap: 12px; color: #888; font-size: 12px; line-height: 1.4; }
+.item-mensaje > span { min-width: 0; flex: 1; }
+.item-mensaje mat-icon { flex-shrink: 0; width: 28px; height: 28px; font-size: 24px; }
+.icono-azul { color: #289cff; }
+.icono-amarillo { color: #edbb00; }
+.icono-rojo { color: #ef5350; }
+.punto-nuevo { display: inline-block; width: 7px; height: 7px; margin-left: 6px; border-radius: 50%; background: #39b887; }
+
+.detalle-card { display: flex; flex-direction: column; min-width: 0; min-height: 0; padding: 20px; }
+.detalle-contenido { flex: 1; min-height: 0; overflow-y: auto; }
+.detalle-contenido h3 { margin: 0 0 18px; font-size: 13px; font-weight: 700; }
+.detalle-contenido p { margin: 0 0 26px; color: #888; font-size: 13px; }
+.detalle-contenido .descripcion { white-space: pre-line; line-height: 1.6; }
+.detalle-contenido .etiqueta { margin-bottom: 6px; font-size: 11px; }
+
+.fecha-detalle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 28px; }
+.fecha-detalle > div { display: grid; grid-template-columns: 20px 1fr; gap: 6px; align-items: center; }
+.fecha-detalle mat-icon { grid-row: span 2; color: #999; font-size: 18px; width: 18px; height: 18px; }
+.fecha-detalle span { color: #999; font-size: 11px; }
+.fecha-detalle strong { font-size: 12px; font-weight: 500; }
+
+.acciones-detalle { display: grid; gap: 12px; padding-top: 12px; }
+.boton-leida { background: #39b887 !important; color: #fff !important; }
+.boton-eliminar { border-color: #ef5350 !important; color: #ef5350 !important; }
+.mensaje-estado { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 10px; color: #888; text-align: center; font-size: 13px; }
+
+.dialogo-eliminar { padding: 24px; }
+.dialogo-eliminar h2 { margin: 0 0 14px; font-size: 18px; }
+.dialogo-eliminar p { color: #666; font-size: 13px; }
+.dialogo-acciones { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+.boton-confirmar { background: #ef5350 !important; color: #fff !important; }
+
+@media (max-width: 900px) {
+  .notificaciones-pagina { overflow-y: auto; padding-bottom: 20px; }
+  .notificaciones-contenido { grid-template-columns: minmax(0, 1fr); flex: none; }
+  .columna-izquierda { display: flex; flex-direction: column; }
+  .lista-card { max-height: 420px; }
+  .detalle-card { min-height: 350px; }
+}
+
+@media (max-width: 600px) {
+  .bienvenida-card { padding: 14px; gap: 12px; }
+  .bienvenida-card h1 { font-size: 18px; }
+  .icono-bienvenida { width: 42px; height: 42px; font-size: 27px; line-height: 42px; }
+  .lista-card, .detalle-card { padding: 14px; }
+  .fecha-detalle { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,388 @@
+/* Página principal */
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.incidentes-pagina {
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100dvh - 50px);
+  min-height: 0;
+  padding: 12px 18px 14px;
+
+  display: grid;
+  grid-template-rows: 38px minmax(0, 1fr);
+  gap: 12px;
+
+  overflow: hidden;
+  background-color: #eaf4e5;
+}
+
+
+/* Encabezado SPORTFIT */
+.encabezado {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 38px;
+  margin-bottom: 30px;
+  padding-right: 10px;
+}
+
+/* Logo SPORTFIT */
+.brand-logo {
+  display: block;
+  width: clamp(112px, 11vw, 150px);
+  max-height: 38px;
+  object-fit: contain;
+}
+
+/* Distribución de las dos columnas */
+.incidentes-contenido {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 16px;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* FORMULARIO IZQUIERDO */
+.reporte-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.titulo {
+  margin: 0 0 5px;
+  color: #2eb785;
+  font-size: 27px;
+  font-weight: bold;
+}
+
+.subtitulo {
+  color: #e1a900;
+  font-size: 12px;
+  margin-bottom: 25px;
+}
+
+.reporte-card mat-card-content {
+  padding: 0;
+}
+
+/* Formulario reactivo */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 440px;
+}
+
+.form-container mat-form-field {
+  width: 100%;
+  --mdc-outlined-text-field-outline-color: #d8dfe0;
+  --mdc-outlined-text-field-focus-outline-color: #2eb785;
+}
+
+.campo-descripcion textarea {
+  min-height: 165px;
+  resize: vertical;
+}
+
+.texto-ayuda {
+  color: #2eb785;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* Botón enviar */
+.acciones {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 25px;
+}
+
+.boton-enviar {
+  background-color: #39b887 !important;
+  color: white !important;
+  min-width: 170px;
+  height: 42px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.boton-enviar:hover:not(:disabled) {
+  background-color: #279a70 !important;
+}
+
+.boton-enviar:disabled {
+  opacity: 0.55;
+}
+
+/* HISTORIAL DERECHO */
+.historial {
+  width: 100%;
+  min-width: 0;
+}
+
+.titulo-historial {
+  text-align: center;
+  color: #2eb785;
+  font-size: 23px;
+  font-weight: 600;
+  margin: 0 0 22px;
+}
+
+/* Tarjeta de filtros */
+.filtros-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 12px;
+  box-shadow: none;
+  border: 1px solid #dedede;
+}
+
+.filtros-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.filtros-titulo mat-icon {
+  color: #333;
+}
+
+.filtros-contenido {
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) minmax(125px, 1fr) auto;
+  align-items: start;
+  gap: 10px;
+}
+
+.filtros-contenido mat-form-field {
+  width: 100%;
+  --mdc-outlined-text-field-outline-color: #d8dfe0;
+  --mdc-outlined-text-field-focus-outline-color: #2eb785;
+}
+
+/* Botones de búsqueda */
+.acciones-filtro {
+  display: flex;
+  gap: 8px;
+  padding-top: 5px;
+}
+
+.boton-limpiar,
+.boton-buscar {
+  color: white !important;
+  border-radius: 5px;
+  height: 44px;
+  min-width: 75px;
+  font-size: 12px;
+}
+
+.boton-limpiar {
+  background-color: #f2c924 !important;
+}
+
+.boton-buscar {
+  background-color: #38b887 !important;
+}
+
+/* Contenedor del historial */
+.historial-card {
+  background-color: white;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+  box-shadow: none;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 620px;
+  overflow-y: auto;
+}
+
+/* Tarjeta de cada incidencia */
+.incidencia-item {
+  background-color: #f7f9fc;
+  border: 1px solid #e1e5e9;
+  border-radius: 7px;
+  padding: 12px;
+  box-shadow: none;
+}
+
+.incidencia-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.incidencia-tipo {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.tipo-tecnico {
+  color: #1681f5;
+}
+
+.tipo-instalaciones {
+  color: #ff9800;
+}
+
+.tipo-preguntas {
+  color: #a536f5;
+}
+
+/* Estado de incidencia */
+.incidencia-estado {
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 15px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.estado-pendiente {
+  color: #d6a600;
+  background-color: #fff9df;
+  border-color: #f0d66f;
+}
+
+.estado-atendido {
+  color: #21a579;
+  background-color: #e2f9ef;
+  border-color: #8dd8b8;
+}
+
+/* Información de la incidencia */
+.incidencia-asunto {
+  color: #333;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.incidencia-descripcion {
+  color: #8a8a8a;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 8px;
+  overflow-wrap: anywhere;
+}
+
+.incidencia-fecha {
+  font-size: 10px;
+  color: #999;
+  text-align: right;
+  margin: 5px 0 0;
+}
+
+/* Respuesta del administrador */
+.respuesta-admin {
+  border-top: 1px solid #dddddd;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.respuesta-titulo {
+  font-size: 12px;
+  font-weight: 600;
+  color: #e34c4c;
+  margin: 0 0 6px;
+}
+
+.respuesta-texto {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.5;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Mensajes */
+.mensaje-cargando,
+.mensaje-vacio {
+  text-align: center;
+  color: #888;
+  padding: 20px;
+  font-size: 13px;
+}
+
+.mensaje-error {
+  color: #d32f2f;
+  font-size: 13px;
+  text-align: center;
+}
+
+.sin-incidencias {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 35px 15px;
+  color: #999;
+  font-size: 13px;
+}
+
+.sin-incidencias mat-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+}
+
+/* Responsive */
+@media (max-width: 1050px) {
+  .incidentes-contenido {
+    grid-template-columns: 1fr;
+  }
+
+  .reporte-card,
+  .historial {
+    width: 100%;
+  }
+
+  .form-container {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .incidentes-pagina {
+    padding: 12px 0;
+  }
+
+  .reporte-card {
+    padding: 18px;
+  }
+
+  .titulo {
+    font-size: 23px;
+  }
+
+  .titulo-historial {
+    font-size: 21px;
+  }
+
+  .filtros-contenido {
+    grid-template-columns: 1fr;
+  }
+
+  .acciones-filtro {
+    justify-content: flex-end;
+  }
+
+  .historial-card {
+    max-height: none;
+  }
+}

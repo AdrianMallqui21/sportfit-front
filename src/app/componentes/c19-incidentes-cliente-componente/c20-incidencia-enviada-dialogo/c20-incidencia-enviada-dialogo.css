@@ -1,0 +1,42 @@
+.fondo-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.18);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.ventana-modal {
+  width: 100%;
+  max-width: 360px;
+  background-color: white;
+  padding: 28px 24px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+.ventana-modal h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 18px;
+  color: #222;
+}
+
+.ventana-modal p {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.boton-entendido {
+  background-color: #39b887 !important;
+  color: white !important;
+  min-width: 120px;
+  height: 40px;
+  border-radius: 5px;
+}

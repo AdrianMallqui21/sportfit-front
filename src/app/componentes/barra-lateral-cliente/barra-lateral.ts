@@ -45,7 +45,7 @@ export class BarraLateral {
   }
 
   router = inject(Router);
-  //Quitamos las credenciales
+  //Quitamos las credencialess
   cerrarSesion() {
     localStorage.removeItem('token');
     localStorage.removeItem('correo');
