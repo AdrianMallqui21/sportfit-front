@@ -30,6 +30,9 @@ import {
 import {
   A26ListadoIncidenciasAdministradorComponente
 } from './componentes/a26-listado-incidencias-administrador-componente/a26-listado-incidencias-administrador-componente';
+import {
+  A11NotificacionesAdministradorComponente
+} from './componentes/a11-notificaciones-administrador-componente/a11-notificaciones-administrador-componente';
 
 export const routes: Routes = [
   // Ruta de prueba de la vista A28.
@@ -39,7 +42,7 @@ export const routes: Routes = [
   {path: 'administrador', component: A1InicioSesionAdministradorComponente},
 
   //Bprrar esto luego
-  {path: 'dialogo', component: A26ListadoIncidenciasAdministradorComponente},
+  {path: 'dialogo', component: A11NotificacionesAdministradorComponente},
 
   {path: 'home', component: C4HomeClienteComponente},
   {path: 'perfil-administrador', component: A2PerfilAdministradorComponente},
