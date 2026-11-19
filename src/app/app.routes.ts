@@ -1,4 +1,5 @@
 import {Routes} from '@angular/router';
+import {AuthGuard} from './guards/auth-guard';
 import {C2RegistroClienteComponente} from './componentes/c2-registro-cliente-componente/c2-registro-cliente-componente';
 import {
   A1InicioSesionAdministradorComponente
@@ -38,26 +39,26 @@ import {
 } from './componentes/a18-gestion-reservas-componente/a18-gestion-reservas-componente';
 
 export const routes: Routes = [
-  // Ruta de prueba de la vista A28.
-
+  // Rutas públicas de acceso y registro
   {path: '', component: C1InicioSesionClienteComponente},
   {path: 'registro', component: C2RegistroClienteComponente},
   {path: 'administrador', component: A1InicioSesionAdministradorComponente},
 
-  //Bprrar esto luego
-  {path: 'dialogo', component: A11NotificacionesAdministradorComponente},
+  // Rutas protegidas para Cliente
+  {path: 'home', component: C4HomeClienteComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_CLIENTE']}},
 
-  {path: 'home', component: C4HomeClienteComponente},
-  {path: 'perfil-administrador', component: A2PerfilAdministradorComponente},
+  // Rutas protegidas para Administrador
+  {path: 'dialogo', component: A11NotificacionesAdministradorComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMINISTRADOR']}},
+  {path: 'perfil-administrador', component: A2PerfilAdministradorComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMINISTRADOR']}},
 
   // Vistas de Anthony (HU04, HU05, HU14, HU13, HU07, HU18)
-  {path: 'clientes', component: A14GestionClientesComponente},
-  {path: 'reservas', component: A18GestionReservasComponente},
-  {path: 'espacios', component: A22GestionEspaciosComponente},
-  {path: 'solicitudes', component: A8GestionSolicitudesComponente},
-  {path: 'reporte-financiero', component: A33ReporteFinancieroComponente},
-  {path: 'reporte-incidencias', component: A37ReporteIncidenciasComponente},
+  {path: 'clientes', component: A14GestionClientesComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMINISTRADOR']}},
+  {path: 'reservas', component: A18GestionReservasComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMINISTRADOR']}},
+  {path: 'espacios', component: A22GestionEspaciosComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMINISTRADOR']}},
+  {path: 'solicitudes', component: A8GestionSolicitudesComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMINISTRADOR']}},
+  {path: 'reporte-financiero', component: A33ReporteFinancieroComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMINISTRADOR']}},
+  {path: 'reporte-incidencias', component: A37ReporteIncidenciasComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMINISTRADOR']}},
 
-  {path: 'incidencias', component: A26ListadoIncidenciasAdministradorComponente},
-  {path: 'notificaciones', component: A11NotificacionesAdministradorComponente},
+  {path: 'incidencias', component: A26ListadoIncidenciasAdministradorComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMINISTRADOR']}},
+  {path: 'notificaciones', component: A11NotificacionesAdministradorComponente, canActivate: [AuthGuard], data: {roles: ['ROLE_ADMINISTRADOR']}},
 ];
