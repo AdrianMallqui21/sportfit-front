@@ -7,7 +7,8 @@ import {Router, RouterLink} from '@angular/router';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {AutorizacionServicio} from '../../servicios/autorizacion-servicio';
 import {CredencialesDTOModelo} from '../../modelos/credenciales-dto-modelo';
-import {RespuestaDTOModelo} from '../../modelos/respuesta-dto-modelo';
+import { RespuestaDTOModelo } from '../../modelos/respuesta-dto-modelo';
+import { LoginService } from '../../servicios/login-service';
 
 @Component({
   selector: 'app-a1-inicio-sesion-administrador-componente',
@@ -32,9 +33,8 @@ export class A1InicioSesionAdministradorComponente {
   contrsena: string = '';
   router: Router = inject(Router);
   // Logica de auth
-  autorizacionServicio: AutorizacionServicio = inject(AutorizacionServicio);
+  loginService: LoginService = inject(LoginService);
   protected loginAdministrador: FormGroup;
-
 
   private readonly fb = inject(FormBuilder);
 
@@ -42,7 +42,7 @@ export class A1InicioSesionAdministradorComponente {
     this.loginAdministrador = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-    })
+    });
   }
 
   clickEvent(event: MouseEvent) {
@@ -51,15 +51,11 @@ export class A1InicioSesionAdministradorComponente {
   }
 
   ngOnInit() {
-    if (localStorage.getItem('token') != null) {
-      localStorage.clear();
-      console.log("Token e items eliminados")
-    }
-    this.loadForm()
+    this.loadForm();
   }
 
   loadForm(): void {
-    console.log("Cargando formulario");
+    console.log('Cargando formulario');
   }
 
   protected onSubmit() {
@@ -67,7 +63,7 @@ export class A1InicioSesionAdministradorComponente {
       const credenciales: CredencialesDTOModelo = new CredencialesDTOModelo();
       credenciales.correo = this.loginAdministrador.value.email;
       credenciales.password = this.loginAdministrador.value.password;
-      this.autorizacionServicio.accederCliente(credenciales).subscribe({
+      this.loginService.login(credenciales).subscribe({
         next: (data: RespuestaDTOModelo) => {
           if (!data.roles?.includes('ROLE_ADMINISTRADOR')) {
             localStorage.removeItem('token');
@@ -81,13 +77,11 @@ export class A1InicioSesionAdministradorComponente {
         error: (error) => {
           console.error('Error al iniciar sesión:', error);
           alert('No se pudo iniciar sesión');
-        }
+        },
       });
     } else {
-      alert("Formulario no valido!")
-      console.log("Formulario no valido");
+      alert('Formulario no valido!');
+      console.log('Formulario no valido');
     }
   }
-
-
 }

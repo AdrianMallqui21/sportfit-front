@@ -1,5 +1,8 @@
 
-/* Contenedor principal del perfil */
+/* =========================================
+   CONTENEDOR PRINCIPAL
+========================================= */
+
 .perfil-pagina {
   margin-left: 200px;
   width: calc(100% - 200px);
@@ -7,9 +10,14 @@
   background-color: #eaf4e9;
   padding: 25px 35px;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
-/* Logo SportFit */
+
+/* =========================================
+   ENCABEZADO SPORTFIT
+========================================= */
+
 .encabezado {
   display: flex;
   justify-content: flex-end;
@@ -32,25 +40,37 @@
   height: 28px;
 }
 
-/* Distribución del contenido */
+
+/* =========================================
+   DISTRIBUCIÓN PRINCIPAL
+========================================= */
+
 .perfil-contenido {
-  display: flex;
-  align-items: flex-start;
-  gap: 25px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+  gap: 20px;
+  align-items: start;
+  width: 100%;
 }
 
-/* Tarjeta del formulario */
+
+/* =========================================
+   TARJETA DEL FORMULARIO
+========================================= */
+
 .perfil-card {
   width: 100%;
-  max-width: 560px;
+  min-height: 520px;
   background-color: white;
   border-radius: 14px;
-  padding: 28px 30px;
+  padding: 25px 28px;
   box-sizing: border-box;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
+
 /* Título */
+
 .titulo {
   color: #2eb785;
   font-size: 28px;
@@ -58,7 +78,9 @@
   margin-bottom: 6px;
 }
 
+
 /* Subtítulo */
+
 .subtitulo {
   color: #e0a900;
   font-size: 13px;
@@ -66,7 +88,11 @@
   margin-bottom: 28px;
 }
 
-/* Formulario reactivo */
+
+/* =========================================
+   FORMULARIO ANGULAR MATERIAL
+========================================= */
+
 .form-container {
   display: flex;
   flex-direction: column;
@@ -81,14 +107,30 @@
   --mdc-filled-text-field-focus-label-text-color: #23996d;
 }
 
-/* DNI y teléfono en una misma fila */
+/* Iconos de los campos */
+
+.form-container mat-icon[matPrefix] {
+  color: #607d8b;
+  margin-right: 8px;
+  font-size: 19px;
+  width: 19px;
+  height: 19px;
+}
+
+
+/* DNI y teléfono */
+
 .fila-formulario {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 15px;
 }
 
-/* Botón actualizar */
+
+/* =========================================
+   BOTÓN ACTUALIZAR
+========================================= */
+
 .acciones {
   display: flex;
   justify-content: center;
@@ -113,11 +155,304 @@
   opacity: 0.55;
 }
 
-/* Mensajes */
+
+/* =========================================
+   COLUMNA DERECHA
+========================================= */
+
+.perfil-derecha {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+
+/* =========================================
+   RESUMEN DEL CLIENTE
+========================================= */
+
+.resumen-card {
+  position: relative;
+  width: 100%;
+  min-height: 235px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 25px 22px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+
+/* Estado del usuario */
+
+.estado-usuario {
+  position: absolute;
+  top: 15px;
+  right: 18px;
+  background-color: #dff4e9;
+  color: #2eb785;
+  font-size: 11px;
+  padding: 5px 17px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.estado-inactivo {
+  background-color: #fde5e5;
+  color: #d32f2f;
+}
+
+
+/* Distribución de información y fotografía */
+
+.resumen-contenido {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 175px;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+  margin-top: 10px;
+}
+
+
+/* =========================================
+   INFORMACIÓN DEL CLIENTE
+========================================= */
+
+.informacion-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nombre-cliente {
+  color: #2eb785;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.tipo-cliente {
+  color: #999;
+  font-size: 11px;
+  margin: -8px 0 10px;
+}
+
+
+/* Filas de información */
+
+.dato-cliente {
+  display: grid;
+  grid-template-columns: 18px 105px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #999;
+}
+
+.dato-cliente mat-icon {
+  color: #555;
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+}
+
+.dato-cliente span {
+  color: #999;
+}
+
+.dato-cliente strong {
+  color: #333;
+  font-size: 12px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================
+   FOTOGRAFÍA DEL CLIENTE
+========================================= */
+
+.foto-cliente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.foto-cliente img {
+  width: 145px;
+  height: 145px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f2f2f2;
+}
+
+.foto-predeterminada {
+  width: 145px;
+  height: 145px;
+  font-size: 145px;
+  color: #bdbdbd;
+}
+
+
+/* Botón cambiar fotografía */
+
+.boton-foto {
+  background-color: #ffcc19 !important;
+  color: white !important;
+  font-size: 11px;
+  font-weight: 600;
+  height: 38px;
+  border-radius: 6px;
+}
+
+.boton-foto:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   ACTIVIDAD RECIENTE
+========================================= */
+
+.actividad-card {
+  width: 100%;
+  min-height: 170px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px 22px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+
+/* Encabezado */
+
+.actividad-encabezado {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.actividad-encabezado mat-icon {
+  color: #555;
+  font-size: 19px;
+  width: 19px;
+  height: 19px;
+}
+
+.actividad-encabezado h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+
+/* =========================================
+   ELEMENTOS DE ACTIVIDAD
+========================================= */
+
+.actividad-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+
+/* Icono circular */
+
+.actividad-icono {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actividad-icono mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #555;
+}
+
+
+/* Colores por estado */
+
+.actividad-verde {
+  background-color: #a8e9ae;
+}
+
+.actividad-roja {
+  background-color: #f4aaaa;
+}
+
+.actividad-amarilla {
+  background-color: #ffe49a;
+}
+
+
+/* Información de actividad */
+
+.actividad-detalle {
+  min-width: 0;
+}
+
+.actividad-titulo {
+  color: #333;
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0 0 4px;
+}
+
+.actividad-descripcion {
+  color: #999;
+  font-size: 10px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+
+/* Sin actividad */
+
+.actividad-vacia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  color: #999;
+}
+
+.actividad-vacia mat-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.actividad-vacia p {
+  font-size: 12px;
+}
+
+
+/* =========================================
+   MENSAJES
+========================================= */
+
 .mensaje-cargando {
   color: #777;
   font-size: 13px;
   text-align: center;
+  padding: 10px;
 }
 
 .mensaje-error {
@@ -126,23 +461,131 @@
   text-align: center;
 }
 
-/* Diseño adaptable */
-@media (max-width: 768px) {
+
+/* =========================================
+   RESPONSIVE: TABLETS
+========================================= */
+
+@media (max-width: 1100px) {
+
   .perfil-pagina {
-    padding: 18px;
+    padding: 22px;
+  }
+
+  .perfil-contenido {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 15px;
   }
 
   .perfil-card {
-    max-width: 100%;
     padding: 22px 18px;
   }
 
-  .fila-formulario {
+  .resumen-card {
+    padding: 22px 15px;
+  }
+
+  .resumen-contenido {
+    grid-template-columns: minmax(0, 1fr) 130px;
+    gap: 10px;
+  }
+
+  .foto-cliente img,
+  .foto-predeterminada {
+    width: 115px;
+    height: 115px;
+  }
+
+  .foto-predeterminada {
+    font-size: 115px;
+  }
+
+  .dato-cliente {
+    grid-template-columns: 18px 85px minmax(0, 1fr);
+    gap: 5px;
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE: PANTALLAS PEQUEÑAS
+========================================= */
+
+@media (max-width: 850px) {
+
+  .perfil-contenido {
     grid-template-columns: 1fr;
-    gap: 12px;
+  }
+
+  .perfil-card {
+    min-height: auto;
+  }
+
+  .perfil-derecha {
+    gap: 15px;
+  }
+
+  .resumen-card {
+    min-height: 230px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+  .perfil-pagina {padding: 15px;}
+
+  .encabezado {
+    margin-bottom: 20px;
+  }
+
+  .encabezado h2 {
+    font-size: 21px;
+  }
+
+  .perfil-card {
+    padding: 22px 18px;
   }
 
   .titulo {
     font-size: 24px;
   }
+
+  .fila-formulario {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .resumen-contenido {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .informacion-cliente {
+    padding-top: 15px;
+  }
+
+  .foto-cliente {
+    padding: 10px 0;
+  }
+
+  .foto-cliente img,
+  .foto-predeterminada {
+    width: 120px;
+    height: 120px;
+  }
+
+  .foto-predeterminada {
+    font-size: 120px;
+  }
+
+  .dato-cliente {
+    grid-template-columns: 20px 110px minmax(0, 1fr);
+  }
+
+  .actividad-card {
+    padding: 18px 15px;
+  }
+
 }

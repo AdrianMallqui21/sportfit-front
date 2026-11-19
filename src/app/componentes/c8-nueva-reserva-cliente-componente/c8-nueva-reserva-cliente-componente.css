@@ -7,7 +7,7 @@
   --verde: #37b984;
   --amarillo: #f2ca25;
   --fondo: #eaf4e5;
-  --borde: #d4d4d4;
+  --borde: #ffffff;
   --texto-secundario: #888;
 
   box-sizing: border-box;
@@ -386,4 +386,7 @@
   .legend {
     font-size: 11px;
   }
+
+  .mensaje-error { color: #d32f2f; font-size: 13px; margin: 8px 0 0; text-align: center; }
+  .date-option:disabled { opacity: 0.4; cursor: not-allowed; }
 }

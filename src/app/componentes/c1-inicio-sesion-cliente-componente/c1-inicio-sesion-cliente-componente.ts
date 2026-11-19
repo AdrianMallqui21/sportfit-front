@@ -7,7 +7,8 @@ import {Router, RouterLink} from '@angular/router';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {AutorizacionServicio} from '../../servicios/autorizacion-servicio';
 import {CredencialesDTOModelo} from '../../modelos/credenciales-dto-modelo';
-import {RespuestaDTOModelo} from '../../modelos/respuesta-dto-modelo';
+import { RespuestaDTOModelo } from '../../modelos/respuesta-dto-modelo';
+import { LoginService } from '../../servicios/login-service';
 
 @Component({
   selector: 'app-c1-inicio-sesion-cliente-componente',
@@ -31,10 +32,9 @@ export class C1InicioSesionClienteComponente {
   correo: string = '';
   contrasena: string = '';
   router: Router = inject(Router);
-  // Logica de auth
-  autorizacionServicio: AutorizacionServicio = inject(AutorizacionServicio);
+  //lOGICA SECURITY INTERSECTO
+  loginService: LoginService = inject(LoginService);
   protected loginCliente: FormGroup;
-
 
   private readonly fb = inject(FormBuilder);
 
@@ -42,7 +42,7 @@ export class C1InicioSesionClienteComponente {
     this.loginCliente = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-    })
+    });
   }
 
   clickEvent(event: MouseEvent) {
@@ -51,15 +51,11 @@ export class C1InicioSesionClienteComponente {
   }
 
   ngOnInit() {
-    if (localStorage.getItem('token') != null) {
-      localStorage.clear();
-      console.log("Token e items eliminados")
-    }
-    this.loadForm()
+    this.loadForm();
   }
 
   loadForm(): void {
-    console.log("Cargando formulario");
+    console.log('Cargando formulario');
   }
 
   protected onSubmit() {
@@ -68,7 +64,7 @@ export class C1InicioSesionClienteComponente {
       credenciales.correo = this.loginCliente.value.email;
       credenciales.password = this.loginCliente.value.password;
       let respuestaDTO: RespuestaDTOModelo = new RespuestaDTOModelo();
-      this.autorizacionServicio.accederCliente(credenciales).subscribe({
+      this.loginService.login(credenciales).subscribe({
         next: (data: RespuestaDTOModelo) => {
           if (!data.roles?.includes('ROLE_CLIENTE')) {
             localStorage.removeItem('token');
@@ -80,17 +76,17 @@ export class C1InicioSesionClienteComponente {
           localStorage.setItem('rol', 'ROLE_CLIENTE');
           localStorage.setItem('correo', credenciales.correo);
           //Identifica que el rol de cliente es 1
-          localStorage.setItem('idRol', '1')
+          localStorage.setItem('idRol', '1');
           this.router.navigate(['/home']);
         },
         error: (error) => {
           console.error('Error al iniciar sesión:', error);
           alert('No se pudo iniciar sesión');
-        }
+        },
       });
     } else {
-      alert("Formulario no valido!")
-      console.log("Formulario no valido");
+      alert('Formulario no valido!');
+      console.log('Formulario no valido');
     }
   }
 }

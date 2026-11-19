@@ -1,0 +1,19 @@
+<div class="detalle">
+  <div class="detalle-info">
+    <h2>{{ datos.nombre }}</h2>
+    <p class="descripcion">{{ datos.descripcion }}</p>
+    <p class="dato"><mat-icon fontSet="material-symbols-outlined">sports</mat-icon>{{ datos.deporte }}</p>
+    <p class="dato"><mat-icon fontSet="material-symbols-outlined">group</mat-icon>{{ datos.aforo }} personas</p>
+    <p class="dato">S/ {{ datos.precio | number:'1.2-2' }} x hora</p>
+  </div>
+
+  <div class="detalle-imagen">
+    @if (datos.imagen) {
+      <img [src]="datos.imagen" [alt]="datos.nombre">
+    } @else {
+      <mat-icon fontSet="material-symbols-outlined">image</mat-icon>
+    }
+  </div>
+
+  <button mat-dialog-close matButton="filled" type="button" class="boton-regresar">REGRESAR</button>
+</div>

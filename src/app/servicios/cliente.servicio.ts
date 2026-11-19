@@ -14,27 +14,17 @@ export class ClienteServicio {
 
   constructor() {}
 
-  private opciones() {
-    const token = localStorage.getItem('token') || '';
-    return {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + token,
-      }),
-    };
-  }
-
   // Obtener usuario autenticado: cliente o administrador
   obtenerUsuario(correo: string, idRol: number): Observable<UsuarioModelo> {
     return this.httpClient.get<UsuarioModelo>(
       this.url + '/obtener-usuario?correo=' + encodeURIComponent(correo) + '&idRol=' + idRol,
-      this.opciones(),
     );
   }
 
   // ED55 Actualizar usuario
   actualizarPerfil(usuario: UsuarioModelo): Observable<UsuarioModelo> {
     return this.httpClient.put<UsuarioModelo>(
-      this.url + '/usuario-actualizar', usuario, this.opciones(),
+      this.url + '/usuario-actualizar', usuario,
     );
   }
 
@@ -42,7 +32,6 @@ export class ClienteServicio {
   obtenerReservas(idUsuario: number): Observable<ReservaHome[]> {
     return this.httpClient.get<ReservaHome[]>(
       this.url + '/reserva/usuario/' + idUsuario,
-      this.opciones(),
     );
   }
 
@@ -50,7 +39,6 @@ export class ClienteServicio {
   obtenerProximas(idUsuario: number): Observable<ReservaHome[]> {
     return this.httpClient.get<ReservaHome[]>(
       this.url + '/reservas-proximas/usuario/' + idUsuario,
-      this.opciones(),
     );
   }
 
@@ -58,22 +46,21 @@ export class ClienteServicio {
   obtenerSolicitadas(idUsuario: number): Observable<ReservaHome[]> {
     return this.httpClient.get<ReservaHome[]>(
       this.url + '/reservas-solicitadas/usuario/' + idUsuario,
-      this.opciones(),
     );
   }
 
   // Obtener canchas no establecido como endpoint en el backend están desactivadas muy mal la verdad
   obtenerCanchas(): Observable<SedeCanchaHome[]> {
-    return this.httpClient.get<SedeCanchaHome[]>(this.url + '/canchas', this.opciones());
+    return this.httpClient.get<SedeCanchaHome[]>(this.url + '/canchas',);
   }
 
   // Obtener sedes
   obtenerSedes(): Observable<SedeHome[]> {
-    return this.httpClient.get<SedeHome[]>(this.url + '/sedes', this.opciones());
+    return this.httpClient.get<SedeHome[]>(this.url + '/sedes',);
   }
 
   // Obtener tipos de cancha
   obtenerTiposCancha(): Observable<TipoCanchaHome[]> {
-    return this.httpClient.get<TipoCanchaHome[]>(this.url + '/tipoCanchas', this.opciones());
+    return this.httpClient.get<TipoCanchaHome[]>(this.url + '/tipoCanchas',);
   }
 }

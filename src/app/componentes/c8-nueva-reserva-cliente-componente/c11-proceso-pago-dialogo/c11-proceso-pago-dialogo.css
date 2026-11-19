@@ -1,0 +1,18 @@
+:host { display: block; padding: 24px 28px; background: #fff; color: #202020; font-family: Arial, Helvetica, sans-serif; }
+h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 18px; }
+h3 { margin: 0 0 12px; font-size: 14px; }
+.pago-columnas { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; }
+.columna-detalle { border-right: 1px solid #ddd; padding-right: 16px; }
+dl { margin: 0; }
+dt { margin-top: 10px; font-size: 12px; color: #777; }
+dd { margin: 2px 0 0; font-size: 14px; }
+.linea { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
+.linea small { display: block; color: #777; }
+.total { padding-top: 8px; border-top: 1px solid #ccc; font-weight: 700; }
+.campo { width: 100%; margin-top: 12px; }
+.qr { display: block; width: 140px; height: 140px; margin: 12px auto 0; }
+.acciones { display: flex; justify-content: flex-end; gap: 12px; margin-top: 18px; }
+.boton-principal {
+  --mat-button-filled-container-color: #35b983;
+  --mat-button-filled-label-text-color: #fff;
+}

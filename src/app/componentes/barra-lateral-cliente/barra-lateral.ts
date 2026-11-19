@@ -3,8 +3,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import {ClienteServicio} from '../../servicios/cliente.servicio';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { ClienteServicio } from '../../servicios/cliente.servicio';
 
 @Component({
   imports: [
@@ -42,5 +42,16 @@ export class BarraLateral {
         this.detector.markForCheck();
       },
     });
+  }
+
+  router = inject(Router);
+  //Quitamos las credenciales
+  cerrarSesion() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('correo');
+    localStorage.removeItem('rol');
+    localStorage.removeItem('idRol');
+
+    this.router.navigate(['/']);
   }
 }
