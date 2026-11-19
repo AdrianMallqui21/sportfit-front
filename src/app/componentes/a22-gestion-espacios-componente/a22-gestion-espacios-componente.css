@@ -104,7 +104,7 @@
 
 .filtros-campos-grid {
   display: grid;
-  grid-template-columns: 180px 1.25fr 1.25fr auto;
+  grid-template-columns: 170px 1.2fr 1.2fr auto;
   gap: 16px;
   align-items: flex-end;
 }
@@ -118,31 +118,48 @@
 
 .etiqueta-campo {
   font-size: 13px;
-  font-weight: 600;
-  color: #475569;
+  font-weight: 500;
+  color: #1e293b;
 }
 
-.campo-filtro-col mat-form-field {
+.filtro-pill-caja {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f4f6f9;
+  border: 1px solid #eef2f6;
+  border-radius: 10px;
+  padding: 0 12px;
+  height: 40px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.filtro-pill-caja:focus-within {
+  border-color: #2ebd6e;
+  background-color: #ffffff;
+}
+
+.filtro-pill-caja .icono-pill {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.filtro-pill-caja select {
+  border: none;
+  background: transparent;
+  outline: none;
   width: 100%;
-  font-size: 14px;
-}
-
-.campo-filtro-col .mat-mdc-text-field-wrapper {
-  padding-left: 12px !important;
-  padding-right: 12px !important;
-  border-radius: 8px !important;
-}
-
-.campo-filtro-col mat-icon[matPrefix] {
-  font-size: 18px !important;
-  width: 18px !important;
-  height: 18px !important;
-  margin-right: 6px !important;
-  color: #64748b;
+  font-size: 13px;
+  color: #475569;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .botones-filtro-col {
-  margin-bottom: 2px;
+  margin-bottom: 0;
 }
 
 .filtros-botones-row {
@@ -182,6 +199,72 @@
   padding: 24px;
 }
 
+.cabecera-lista-espacios {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.titulo-lista-espacios {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.titulo-lista-espacios h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.subtitulo-conteo {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.resumen-pills-espacios {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.pill-resumen {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pill-activo {
+  background-color: #ecfdf5;
+  color: #15803d;
+}
+
+.pill-inactivo {
+  background-color: #f1f5f9;
+  color: #64748b;
+}
+
+.punto-verde,
+.punto-gris {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.punto-verde { background-color: #22c55e; }
+.punto-gris { background-color: #94a3b8; }
+
 .mensaje-estado-canchas {
   text-align: center;
   padding: 48px 16px;
@@ -190,9 +273,15 @@
 }
 
 .grilla-tarjetas-canchas {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 1080px) {
+  .grilla-tarjetas-canchas {
+    grid-template-columns: 1fr;
+  }
 }
 
 .tarjeta-cancha-item {
@@ -200,7 +289,7 @@
   background-color: #ffffff !important;
   border-radius: 16px !important;
   border: 1px solid #e2e8f0 !important;
-  padding: 20px 24px !important;
+  padding: 20px 22px !important;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -213,16 +302,24 @@
   border-color: #e2e8f0 !important;
 }
 
-.badge-desactivado {
+.badge-estado-cancha {
   position: absolute;
-  top: 20px;
-  right: 24px;
+  top: 16px;
+  right: 18px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 14px;
+}
+
+.badge-activo {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badge-desactivado {
   background-color: #f1f5f9;
   color: #64748b;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 14px;
-  border-radius: 14px;
 }
 
 .cuerpo-tarjeta-cancha {

@@ -1,0 +1,798 @@
+.pagina-gestion-reservas {
+  background-color: #eaf4e5;
+  min-height: 100vh;
+  padding: 20px 28px 36px;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ENCABEZADO */
+.encabezado-superior {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.espaciador {
+  flex: 1;
+}
+
+.logotipo-sportfit {
+  height: 36px;
+  object-fit: contain;
+}
+
+/* BANNER DE AUTENTICACIÓN */
+.alerta-autenticacion-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background-color: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.icono-banner {
+  color: #d97706;
+  display: grid;
+  place-items: center;
+}
+
+.textos-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  color: #92400e;
+  font-size: 13px;
+}
+
+.textos-banner strong {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.boton-login-rapido {
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+}
+
+/* TOAST */
+.mensaje-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+
+/* LAYOUT DOS COLUMNAS */
+.layout-dos-columnas {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+.columna-izquierda {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+/* KPIs SUPERIORES */
+.seccion-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.tarjeta-kpi {
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.kpi-contenido {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px !important;
+}
+
+.circulo-icono {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.circulo-icono mat-icon {
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+.kpi-azul {
+  background-color: #dbeafe;
+  color: #0284c7;
+}
+
+.kpi-verde {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.kpi-amarillo {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.kpi-datos {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-numero {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.kpi-numero-azul { color: #0284c7; }
+.kpi-numero-verde { color: #2eb875; }
+.kpi-numero-amarillo { color: #eab308; }
+
+.kpi-etiqueta {
+  font-size: 12.5px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+/* FILTRO DE BÚSQUEDA */
+.tarjeta-filtro,
+.tarjeta-tabla,
+.tarjeta-detalle-reserva,
+.tarjeta-detalle-vacia {
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.titulo-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #1e293b;
+}
+
+.formulario-filtros {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fila-filtros-4col {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  align-items: end;
+}
+
+.fila-filtros-inferior {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.campo-deporte {
+  width: 220px;
+  max-width: 100%;
+}
+
+.campo-filtro-suave {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.campo-filtro-suave label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.input-suave-caja {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f4f6f9;
+  border-radius: 8px;
+  padding: 0 12px;
+  height: 40px;
+  border: 1px solid #eef2f6;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.input-suave-caja:focus-within {
+  border-color: #2eb875;
+  background-color: #ffffff;
+}
+
+.input-suave-caja mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.input-suave-caja input,
+.input-suave-caja select {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-size: 13px;
+  color: #334155;
+  font-family: inherit;
+}
+
+.input-suave-caja input::placeholder {
+  color: #94a3b8;
+}
+
+.input-suave-fecha {
+  padding-right: 4px;
+}
+
+.acciones-filtros {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.boton-buscar {
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  padding: 0 24px !important;
+  height: 40px;
+}
+
+.boton-limpiar {
+  border-color: #2eb875 !important;
+  color: #2eb875 !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  padding: 0 20px !important;
+  height: 40px;
+}
+
+/* TABLA DE RESERVAS */
+.contenedor-tabla-responsive {
+  overflow-x: auto;
+  margin-top: 8px;
+}
+
+.tabla-material-reservas {
+  width: 100%;
+  background: #ffffff;
+}
+
+.tabla-material-reservas th {
+  color: #475569;
+  font-weight: 700;
+  font-size: 12.5px;
+  background: #f8fafc;
+}
+
+.tabla-material-reservas tr.mat-mdc-row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.tabla-material-reservas tr.mat-mdc-row:hover {
+  background-color: #f1f5f9;
+}
+
+.tabla-material-reservas tr.fila-seleccionada {
+  background-color: #ecfdf5 !important;
+}
+
+.celda-icono {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #1e293b;
+}
+
+.icono-celda {
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+  color: #475569;
+}
+
+.badge-estado {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.badge-confirmado {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badge-pendiente {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.badge-cancelada {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge-finalizado {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.celda-sin-datos {
+  text-align: center;
+  padding: 24px !important;
+  color: #64748b;
+}
+
+.texto-error {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* PANEL DERECHO: DETALLE */
+.columna-derecha {
+  position: sticky;
+  top: 20px;
+}
+
+.bloque-cancha-resumen {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.imagen-cancha-wrapper {
+  width: 110px;
+  height: 82px;
+  border-radius: 10px;
+  background-color: #f0fdf4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid #dcfce7;
+  flex-shrink: 0;
+}
+
+.imagen-cancha {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.icono-cancha-grande {
+  font-size: 46px;
+  width: 46px;
+  height: 46px;
+  color: #2eb875;
+}
+
+.titulo-cancha-estado h3 {
+  margin: 0 0 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.bloque-detalles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 16px 0;
+}
+
+.columna-detalle h4 {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.item-detalle {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.item-detalle mat-icon {
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.item-detalle > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.detalle-label {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.detalle-valor {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.acciones-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.boton-editar-reserva {
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  height: 42px;
+}
+
+.boton-cancelar-reserva {
+  border-color: #ef4444 !important;
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  height: 42px;
+}
+
+.tarjeta-detalle-vacia {
+  padding: 24px;
+  text-align: center;
+  color: #64748b;
+}
+
+/* MODALES (a19, a20, a21) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-backdrop-alto {
+  z-index: 1100;
+}
+
+.modal-editar-reserva {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 960px;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 22px 26px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header,
+.modal-confirmacion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.modal-titulo-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1e293b;
+}
+
+.modal-titulo-con-icono h2,
+.modal-titulo-con-icono h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.boton-cerrar-x {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.boton-cerrar-x:hover {
+  background-color: #f1f5f9;
+}
+
+.alerta-error-modal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.modal-cuerpo-edicion {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+/* CALENDARIO SEMANAL (Vista a19) */
+.seccion-calendario {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px;
+  background: #ffffff;
+}
+
+.calendario-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.subtitulo-modal {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.leyenda-calendario {
+  display: flex;
+  gap: 12px;
+  font-size: 11.5px;
+  color: #475569;
+}
+
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-confirmada { background-color: #2eb875; }
+.dot-pendiente { background-color: #f5be18; }
+.dot-disponible { background-color: #ffffff; border: 1px solid #94a3b8; }
+
+.tabla-calendario-wrapper {
+  overflow-x: auto;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.tabla-calendario {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.tabla-calendario th {
+  background: #f8fafc;
+  color: #334155;
+  padding: 6px 4px;
+  border-bottom: 1px solid #e2e8f0;
+  font-weight: 700;
+  text-align: center;
+  position: sticky;
+  top: 0;
+}
+
+.tabla-calendario td {
+  border: 1px solid #f1f5f9;
+  height: 34px;
+  min-width: 62px;
+  padding: 2px;
+  vertical-align: middle;
+}
+
+.celda-hora-eje {
+  font-weight: 600;
+  color: #64748b;
+  text-align: center;
+  background: #f8fafc;
+  width: 48px;
+}
+
+.celda-slot.slot-disponible {
+  cursor: pointer;
+  background-color: #ffffff;
+}
+
+.celda-slot.slot-disponible:hover {
+  background-color: #ecfdf5;
+}
+
+.celda-slot.slot-confirmada {
+  background-color: #2eb875;
+  color: #ffffff;
+}
+
+.celda-slot.slot-pendiente {
+  background-color: #f5be18;
+  color: #1e293b;
+}
+
+.celda-slot.slot-actual {
+  outline: 2px solid #0f172a;
+  outline-offset: -2px;
+  cursor: pointer;
+}
+
+.slot-etiqueta {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 4px;
+  line-height: 1.15;
+}
+
+.slot-etiqueta span {
+  font-weight: 700;
+  font-size: 10px;
+}
+
+.slot-etiqueta small {
+  font-size: 9px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 64px;
+}
+
+/* CAMPOS DERECHA MODAL a19 */
+.seccion-campos-edicion {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo-full {
+  width: 100%;
+}
+
+.fila-horas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.boton-actualizar-modal {
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  height: 44px;
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* MODALES DE CONFIRMACIÓN (a20, a21) */
+.modal-confirmacion {
+  background: #ffffff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 420px;
+  padding: 22px 24px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.modal-confirmacion-texto {
+  font-size: 14.5px;
+  color: #334155;
+  margin: 14px 0 22px;
+  line-height: 1.5;
+}
+
+.modal-confirmacion-acciones {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.boton-rojo {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  min-width: 110px;
+}
+
+.boton-verde {
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  min-width: 110px;
+}
+
+@media (max-width: 1100px) {
+  .layout-dos-columnas {
+    grid-template-columns: 1fr;
+  }
+
+  .fila-filtros {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .acciones-filtros {
+    grid-column: 1 / -1;
+  }
+
+  .modal-cuerpo-edicion {
+    grid-template-columns: 1fr;
+  }
+}

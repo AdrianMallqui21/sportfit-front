@@ -1,0 +1,366 @@
+﻿<div class="pagina-gestion-reservas">
+  <!-- ENCABEZADO CON LOGOTIPO -->
+  <header class="encabezado-superior">
+    <div class="espaciador"></div>
+    <img src="/loge-sportfit.png" alt="SportFit" class="logotipo-sportfit" onerror="this.style.display='none'">
+  </header>
+
+  <!-- BANNER DE AUTENTICACIÓN SI FALTA SESIÓN -->
+  @if (alertaAutenticacion()) {
+    <div class="alerta-autenticacion-banner">
+      <div class="icono-banner">
+        <mat-icon>lock</mat-icon>
+      </div>
+      <div class="textos-banner">
+        <strong>Se requiere sesión de Administrador</strong>
+        <span>Para consultar, editar y cancelar reservas necesitas haber iniciado sesión como administrador.</span>
+      </div>
+      <div class="acciones-banner">
+        <button mat-flat-button class="boton-login-rapido" (click)="iniciarSesionAdmin()" [disabled]="iniciandoSesionRapida()">
+          <mat-icon>login</mat-icon>
+          {{ iniciandoSesionRapida() ? 'Autenticando...' : 'Autenticar como Admin' }}
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- MENSAJE TOAST -->
+  @if (mensajeFeedback()) {
+    <div class="mensaje-toast" role="status">
+      <mat-icon>info</mat-icon>
+      <span>{{ mensajeFeedback() }}</span>
+    </div>
+  }
+
+  <!-- CONTENIDO PRINCIPAL DE 2 COLUMNAS (VISTA a18) -->
+  <div class="layout-dos-columnas">
+    <!-- COLUMNA IZQUIERDA: KPIs + FILTROS + TABLA -->
+    <div class="columna-izquierda">
+      <!-- 3 TARJETAS KPI SUPERIORES -->
+      <section class="seccion-kpis" aria-label="Indicadores de reservas">
+        <mat-card class="tarjeta-kpi" appearance="outlined">
+          <mat-card-content class="kpi-contenido">
+            <div class="circulo-icono kpi-azul">
+              <mat-icon>event_note</mat-icon>
+            </div>
+            <div class="kpi-datos">
+              <span class="kpi-numero kpi-numero-azul">{{ totalReservas() }}</span>
+              <span class="kpi-etiqueta">Todas las reservas</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="tarjeta-kpi" appearance="outlined">
+          <mat-card-content class="kpi-contenido">
+            <div class="circulo-icono kpi-verde">
+              <mat-icon>check_circle_outline</mat-icon>
+            </div>
+            <div class="kpi-datos">
+              <span class="kpi-numero kpi-numero-verde">{{ reservasActivas() }}</span>
+              <span class="kpi-etiqueta">Reservas activas</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="tarjeta-kpi" appearance="outlined">
+          <mat-card-content class="kpi-contenido">
+            <div class="circulo-icono kpi-amarillo">
+              <mat-icon>calendar_today</mat-icon>
+            </div>
+            <div class="kpi-datos">
+              <span class="kpi-numero kpi-numero-amarillo">{{ reservasMes() }}</span>
+              <span class="kpi-etiqueta">Nuevas este mes</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </section>
+
+      <!-- FILTRO DE BÚSQUEDA (Vista a18 / Escenario 2 / ED61) -->
+      <mat-card class="tarjeta-filtro" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title class="titulo-con-icono">
+            <mat-icon>search</mat-icon>
+            <span>Filtro de búsqueda</span>
+          </mat-card-title>
+        </mat-card-header>
+
+                <mat-card-content>
+          <form class="formulario-filtros" (ngSubmit)="aplicarFiltros()">
+            <!-- Fila 1: Estado, Sedes, Fecha (Material Datepicker + manual), Horario -->
+            <div class="fila-filtros-4col">
+              <div class="campo-filtro-suave">
+                <label>Estado</label>
+                <div class="input-suave-caja">
+                  <select [(ngModel)]="filtroEstado" name="filtroEstado">
+                    <option value="">Todos</option>
+                    <option value="confirmada">Confirmado</option>
+                    <option value="solicitada">Pendiente</option>
+                    <option value="cancelada">Cancelada</option>
+                    <option value="completada">Finalizado</option>
+                    <option value="rechazada">Rechazada</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="campo-filtro-suave">
+                <label>Sedes</label>
+                <div class="input-suave-caja">
+                  <mat-icon>location_on</mat-icon>
+                  <select [(ngModel)]="filtroSede" name="filtroSede">
+                    <option [ngValue]="null">Todas las sedes</option>
+                    @for (s of sedes(); track s.idSede) {
+                      <option [ngValue]="s.idSede">{{ s.nombre }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+
+              <div class="campo-filtro-suave">
+                <label>Fecha</label>
+                <div class="input-suave-caja input-suave-fecha">
+                  <mat-icon>calendar_today</mat-icon>
+                  <input matInput
+                         [matDatepicker]="pickerFiltro"
+                         placeholder="Ingresa la fecha"
+                         [(ngModel)]="filtroFecha"
+                         name="filtroFecha"
+                         (keyup.enter)="aplicarFiltros()">
+                  <mat-datepicker-toggle [for]="pickerFiltro"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerFiltro></mat-datepicker>
+                </div>
+              </div>
+
+              <div class="campo-filtro-suave">
+                <label>Horario</label>
+                <div class="input-suave-caja">
+                  <mat-icon>calendar_today</mat-icon>
+                  <select [(ngModel)]="filtroHorario" name="filtroHorario">
+                    <option value="">Ingrese horario</option>
+                    <option value="manana">Mañana (06:00 - 12:00)</option>
+                    <option value="tarde">Tarde (12:00 - 18:00)</option>
+                    <option value="noche">Noche (18:00 - 23:00)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fila 2: Deporte a la izquierda + Buscar y Limpiar a la derecha -->
+            <div class="fila-filtros-inferior">
+              <div class="campo-filtro-suave campo-deporte">
+                <label>Deporte</label>
+                <div class="input-suave-caja">
+                  <select [(ngModel)]="filtroDeporte" name="filtroDeporte">
+                    <option [ngValue]="null">Ingrese el deporte</option>
+                    @for (t of tiposCancha(); track t.idTipoCancha) {
+                      <option [ngValue]="t.idTipoCancha">{{ t.deporte }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+
+              <div class="acciones-filtros">
+                <button mat-flat-button type="submit" class="boton-buscar">Buscar</button>
+                <button mat-stroked-button type="button" class="boton-limpiar" (click)="limpiarFiltros()">Limpiar</button>
+              </div>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- TABLA DE RESERVAS (Vista a18) -->
+      <mat-card class="tarjeta-tabla" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>Reservas</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="contenedor-tabla-responsive">
+            <table mat-table [dataSource]="dataSource" matSort class="tabla-material-reservas">
+              <!-- Columna Sede -->
+              <ng-container matColumnDef="sede">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Sedes</th>
+                <td mat-cell *matCellDef="let r">
+                  <div class="celda-icono">
+                    <mat-icon class="icono-celda">location_on</mat-icon>
+                    <span>{{ obtenerNombreSede(r) }}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Columna Cancha / Deporte -->
+              <ng-container matColumnDef="cancha">
+                <th mat-header-cell *matHeaderCellDef>Canchas/ Deporte</th>
+                <td mat-cell *matCellDef="let r">
+                  <div class="celda-icono">
+                    <mat-icon class="icono-celda">sports_soccer</mat-icon>
+                    <span>{{ obtenerNombreCanchaDeporte(r) }}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Columna Fecha -->
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="fReserva">Fecha</th>
+                <td mat-cell *matCellDef="let r">
+                  <div class="celda-icono">
+                    <mat-icon class="icono-celda">calendar_today</mat-icon>
+                    <span>{{ formatearFechaCorta(r.fReserva) }}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Columna Horario -->
+              <ng-container matColumnDef="horario">
+                <th mat-header-cell *matHeaderCellDef>Horario</th>
+                <td mat-cell *matCellDef="let r">
+                  <div class="celda-icono">
+                    <mat-icon class="icono-celda">schedule</mat-icon>
+                    <span>{{ formatearHora(r.hInicio) }} - {{ formatearHora(r.hFin) }}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Columna Estado -->
+              <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="estado">Estado</th>
+                <td mat-cell *matCellDef="let r">
+                  <span class="badge-estado" [ngClass]="claseEstado(r.estado)">
+                    {{ etiquetaEstado(r.estado) }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnasReservas"></tr>
+              <tr mat-row *matRowDef="let fila; columns: columnasReservas"
+                  [class.fila-seleccionada]="reservaSeleccionada()?.idReserva === fila.idReserva"
+                  (click)="seleccionarReserva(fila)"></tr>
+
+              <!-- Estado Vacío -->
+              <tr class="mat-row fila-vacia" *matNoDataRow>
+                <td class="mat-cell celda-sin-datos" [attr.colspan]="columnasReservas.length">
+                  @if (cargando()) {
+                    <p>Cargando reservas registradas...</p>
+                  } @else if (errorCarga()) {
+                    <p class="texto-error">{{ errorCarga() }}</p>
+                  } @else {
+                    <p>No se encontraron reservas con los criterios seleccionados.</p>
+                  }
+                </td>
+              </tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Seleccionar página"></mat-paginator>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- COLUMNA DERECHA: DETALLES DE LA RESERVA (Vista a18) -->
+    <aside class="columna-derecha">
+      @if (reservaSeleccionada(); as res) {
+        <mat-card class="tarjeta-detalle-reserva" appearance="outlined">
+          <mat-card-header>
+            <mat-card-title>Reservas</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="bloque-cancha-resumen">
+              <div class="imagen-cancha-wrapper">
+                @if (obtenerImagenCancha(res)) {
+                  <img [src]="obtenerImagenCancha(res)" [alt]="obtenerNombreCanchaDeporte(res)" class="imagen-cancha" onerror="this.style.display='none'">
+                } @else {
+                  <mat-icon class="icono-cancha-grande">stadium</mat-icon>
+                }
+              </div>
+              <div class="titulo-cancha-estado">
+                <h3>{{ obtenerNombreCanchaDeporte(res) }}</h3>
+                <p style="margin: 0 0 6px; font-size: 12px; color: #64748b;">{{ obtenerNombreSede(res) }}</p>
+                <span class="badge-estado" [ngClass]="claseEstado(res.estado)">
+                  {{ etiquetaEstado(res.estado) }}
+                </span>
+              </div>
+            </div>
+
+            <div class="bloque-detalles-grid">
+              <div class="columna-detalle">
+                <h4>Detalles de la reserva</h4>
+                <div class="item-detalle">
+                  <mat-icon>calendar_today</mat-icon>
+                  <div>
+                    <span class="detalle-label">Fecha de reserva</span>
+                    <span class="detalle-valor">{{ formatearFechaCorta(res.fReserva) }}</span>
+                  </div>
+                </div>
+                <div class="item-detalle">
+                  <mat-icon>schedule</mat-icon>
+                  <div>
+                    <span class="detalle-label">Hora de inicio</span>
+                    <span class="detalle-valor">{{ formatearHora(res.hInicio) }}</span>
+                  </div>
+                </div>
+                <div class="item-detalle">
+                  <mat-icon>schedule</mat-icon>
+                  <div>
+                    <span class="detalle-label">Hora de fin</span>
+                    <span class="detalle-valor">{{ formatearHora(res.hFin) }}</span>
+                  </div>
+                </div>
+                <div class="item-detalle">
+                  <mat-icon>payments</mat-icon>
+                  <div>
+                    <span class="detalle-label">Precio</span>
+                    <span class="detalle-valor">S/ {{ obtenerPrecio(res) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="columna-detalle">
+                <h4>Detalles del cliente</h4>
+                <div class="item-detalle">
+                  <mat-icon>person_outline</mat-icon>
+                  <div>
+                    <span class="detalle-label">Reservado por</span>
+                    <span class="detalle-valor">{{ obtenerNombreCliente(res) }}</span>
+                  </div>
+                </div>
+                @if (obtenerCorreoCliente(res)) {
+                  <div class="item-detalle">
+                    <mat-icon>mail_outline</mat-icon>
+                    <div>
+                      <span class="detalle-label">Correo</span>
+                      <span class="detalle-valor">{{ obtenerCorreoCliente(res) }}</span>
+                    </div>
+                  </div>
+                }
+                <div class="item-detalle">
+                  <mat-icon>event_available</mat-icon>
+                  <div>
+                    <span class="detalle-label">Reservado el</span>
+                    <span class="detalle-valor">{{ formatearFechaCorta(res.fCreacion || res.fReserva) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="acciones-detalle">
+              <button mat-flat-button type="button" class="boton-editar-reserva" (click)="abrirModalEditar()">
+                <mat-icon>edit</mat-icon>
+                Editar reserva
+              </button>
+              <button mat-stroked-button type="button" class="boton-cancelar-reserva" (click)="abrirModalCancelar()">
+                <mat-icon>person_off</mat-icon>
+                Cancelar reserva
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      } @else {
+        <mat-card class="tarjeta-detalle-vacia" appearance="outlined">
+          <mat-card-content>
+            <p>Selecciona una reserva de la lista para ver su información detallada.</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </aside>
+  </div>
+</div>
+

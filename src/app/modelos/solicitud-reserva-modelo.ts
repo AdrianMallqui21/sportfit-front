@@ -6,6 +6,8 @@ export class ReservaModelo {
   hInicio: string;
   hFin: string;
   estado: string;
+  fCreacion?: string;
+  modificadoPor?: string;
   sede?: string;
   deporte?: string;
   cancha?: string;
@@ -17,6 +19,22 @@ export class ReservaModelo {
     correo?: string;
   };
   sedeCancha?: SedeCanchaModelo | any;
+}
+
+export class BannerReservasModelo {
+  reservasMes: number;
+  deportePopular: string;
+  SedePopular?: string;
+  sedePopular?: string;
+}
+
+export class ReservaHorarioModelo {
+  idReserva: number;
+  idSedeCancha: number;
+  precio: number;
+  aforo: number;
+  horaInicio: string;
+  horaFin: string;
 }
 
 export class PagoDetalleModelo {

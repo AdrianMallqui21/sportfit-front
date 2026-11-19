@@ -20,6 +20,8 @@ export class SedeCanchaModelo {
   estado: boolean;
   precio: number;
   imgCancha?: string;
+  idSedeSede?: number;
+  idTipoCancha?: number;
   sede?: SedeModelo;
   cancha?: TipoCanchaModelo;
 }

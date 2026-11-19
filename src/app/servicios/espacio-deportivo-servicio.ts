@@ -55,6 +55,6 @@ export class EspacioDeportivoServicio {
   }
 
   listarTiposCancha(): Observable<TipoCanchaModelo[]> {
-    return this.http.get<TipoCanchaModelo[]>(`${this.url}/tipo-canchas`);
+    return this.http.get<TipoCanchaModelo[]>(`${this.url}/tipoCanchas`);
   }
 }

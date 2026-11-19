@@ -189,35 +189,85 @@
 
 .etiqueta-campo {
   font-size: 13px;
-  font-weight: 600;
-  color: #334155;
+  font-weight: 500;
+  color: #1e293b;
   white-space: nowrap;
 }
 
-.campo-filtro-col mat-form-field {
+.filtro-pill-caja {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f4f6f9;
+  border: 1px solid #eef2f6;
+  border-radius: 10px;
+  padding: 0 12px;
+  height: 40px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.filtro-pill-caja:focus-within {
+  border-color: #2ebd6e;
+  background-color: #ffffff;
+}
+
+.filtro-pill-caja .icono-pill {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.filtro-pill-caja select,
+.filtro-pill-caja input {
+  border: none;
+  background: transparent;
+  outline: none;
   width: 100%;
   font-size: 13px;
+  color: #475569;
+  font-family: inherit;
+  min-width: 0;
 }
 
-/* Estilos compactos para inputs de Angular Material */
-.campo-filtro-col .mat-mdc-text-field-wrapper {
-  padding-left: 8px !important;
-  padding-right: 8px !important;
+.filtro-pill-caja select {
+  cursor: pointer;
 }
 
-.campo-filtro-col .mat-mdc-form-field-infix {
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  min-height: 44px !important;
-  font-size: 13px !important;
+.filtro-fecha-caja {
+  padding-left: 6px;
+  padding-right: 8px;
 }
 
-.campo-filtro-col mat-icon[matPrefix] {
-  font-size: 18px !important;
-  width: 18px !important;
-  height: 18px !important;
-  margin-right: 6px !important;
-  color: #64748b;
+.toggle-fecha-icono {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-fecha-icono ::ng-deep .mat-mdc-icon-button {
+  width: 28px !important;
+  height: 28px !important;
+  padding: 2px !important;
+  display: grid;
+  place-items: center;
+}
+
+.btn-flecha-fecha {
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: #1e293b;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-flecha-fecha mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 .filtros-botones-row {
@@ -276,6 +326,10 @@
   vertical-align: middle;
   font-size: 13px;
   border-bottom: 1px solid #f1f5f9;
+}
+
+.celda-nowrap {
+  white-space: nowrap;
 }
 
 .tabla-material-solicitudes tr[mat-row] {

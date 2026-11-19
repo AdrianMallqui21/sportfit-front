@@ -1,21 +1,20 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { SedeCanchaModelo, SedeModelo, TipoCanchaModelo } from '../../modelos/espacio-deportivo-modelo';
-import { ReservaModelo } from '../../modelos/solicitud-reserva-modelo';
 import { EspacioDeportivoServicio } from '../../servicios/espacio-deportivo-servicio';
 import { AutorizacionServicio } from '../../servicios/autorizacion-servicio';
 import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
+import { A23EditarEspacioDialogo } from './a23-editar-espacio-dialogo/a23-editar-espacio-dialogo';
+import { A24DesactivarEspacioDialogo } from './a24-desactivar-espacio-dialogo/a24-desactivar-espacio-dialogo';
+import { A25ReservasEspacioDialogo } from './a25-reservas-espacio-dialogo/a25-reservas-espacio-dialogo';
 
 @Component({
   selector: 'app-a22-gestion-espacios-componente',
@@ -23,15 +22,11 @@ import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     RouterModule,
     MatCardModule,
     MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
     MatIconModule,
-    MatTableModule
+    MatDialogModule
   ],
   templateUrl: './a22-gestion-espacios-componente.html',
   styleUrl: './a22-gestion-espacios-componente.css'
@@ -39,12 +34,13 @@ import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
 export class A22GestionEspaciosComponente implements OnInit {
   private readonly espacioServicio = inject(EspacioDeportivoServicio);
   private readonly authServicio = inject(AutorizacionServicio);
-  private readonly fb = inject(FormBuilder);
+  private readonly dialog = inject(MatDialog);
 
   // Estados de datos
   canchas = signal<SedeCanchaModelo[]>([]);
   canchasFiltradas = signal<SedeCanchaModelo[]>([]);
   sedes = signal<SedeModelo[]>([]);
+  tiposCancha = signal<TipoCanchaModelo[]>([]);
   cargando = signal<boolean>(false);
   alertaAutenticacion = signal<boolean>(false);
   iniciandoSesionRapida = signal<boolean>(false);
@@ -71,42 +67,35 @@ export class A22GestionEspaciosComponente implements OnInit {
 
   readonly opcionesAforo = [4, 8, 10, 12, 14, 16, 18, 22];
 
-  // Modales
-  modalEditarAbierto = false;                // Vista a23
-  modalDesactivarAbierto = false;            // Vista a24
-  modalConfirmacionDesactivadoAbierto = false; // Vista a25
-  modalReservasAbierto = false;              // Ver Reservas (ED67)
-
-  // Espacio seleccionado
-  canchaSeleccionada = signal<SedeCanchaModelo | null>(null);
-  reservasCancha = signal<ReservaModelo[]>([]);
-  cargandoReservas = signal<boolean>(false);
-
-  // Formulario Reactivo para Edición (Vista a23 - Estándar del profesor)
-  formEdicion: FormGroup;
-
-  constructor() {
-    this.formEdicion = this.fb.group({
-      nombre: ['', [Validators.required, Validators.minLength(3)]],
-      deporte: ['FUTBOL', Validators.required],
-      aforo: [10, [Validators.required, Validators.min(2)]],
-      precio: [60, [Validators.required, Validators.min(10)]],
-      imgCancha: ['']
-    });
-  }
+  totalActivos = computed(() => this.canchasFiltradas().filter(c => c.estado).length);
+  totalDesactivados = computed(() => this.canchasFiltradas().filter(c => !c.estado).length);
 
   ngOnInit(): void {
     if (!localStorage.getItem('token')) {
       this.alertaAutenticacion.set(true);
     }
     this.cargarSedes();
+    this.cargarTiposCancha();
     this.cargarCanchas();
   }
 
   cargarSedes(): void {
     this.espacioServicio.listarSedes().subscribe({
-      next: (data) => this.sedes.set(data || []),
+      next: (data) => {
+        this.sedes.set(data || []);
+        this.rehidratarCanchas();
+      },
       error: () => this.sedes.set([])
+    });
+  }
+
+  cargarTiposCancha(): void {
+    this.espacioServicio.listarTiposCancha().subscribe({
+      next: (data) => {
+        this.tiposCancha.set(data || []);
+        this.rehidratarCanchas();
+      },
+      error: () => this.tiposCancha.set([])
     });
   }
 
@@ -114,9 +103,9 @@ export class A22GestionEspaciosComponente implements OnInit {
     this.cargando.set(true);
     this.espacioServicio.list().subscribe({
       next: (data) => {
-        const lista = data || [];
+        const lista = (data || []).map(c => this.enriquecerCancha(c));
         this.canchas.set(lista);
-        this.canchasFiltradas.set(lista);
+        this.aplicarFiltros();
         this.alertaAutenticacion.set(false);
         this.cargando.set(false);
       },
@@ -129,6 +118,29 @@ export class A22GestionEspaciosComponente implements OnInit {
     });
   }
 
+  private rehidratarCanchas(): void {
+    if (this.canchas().length === 0) return;
+    const lista = this.canchas().map(c => this.enriquecerCancha(c));
+    this.canchas.set(lista);
+    this.aplicarFiltros();
+  }
+
+  private enriquecerCancha(c: SedeCanchaModelo): SedeCanchaModelo {
+    const idSede = c.idSedeSede ?? c.sede?.idSede;
+    const idTipo = c.idTipoCancha ?? c.cancha?.idTipoCancha;
+
+    const sedeObj = this.sedes().find(s => s.idSede === idSede) || c.sede;
+    const tipoObj = this.tiposCancha().find(t => t.idTipoCancha === idTipo) || c.cancha;
+
+    return {
+      ...c,
+      idSedeSede: idSede,
+      idTipoCancha: idTipo,
+      sede: sedeObj,
+      cancha: tipoObj
+    };
+  }
+
   // --- FILTROS DE BÚSQUEDA ---
   aplicarFiltros(): void {
     let lista = this.canchas();
@@ -139,17 +151,17 @@ export class A22GestionEspaciosComponente implements OnInit {
       lista = lista.filter(c => c.estado === estadoBool);
     }
 
-    // 2. Filtro Sede
-    if (this.filtroSede) {
+    // 2. Filtro Sede (soporta DTO plano idSedeSede o sede.idSede)
+    if (this.filtroSede !== '' && this.filtroSede !== null && this.filtroSede !== undefined) {
       const idSedeNum = Number(this.filtroSede);
-      lista = lista.filter(c => c.sede?.idSede === idSedeNum);
+      lista = lista.filter(c => (c.idSedeSede ?? c.sede?.idSede) === idSedeNum);
     }
 
-    // 3. Filtro Deporte
+    // 3. Filtro Deporte (normaliza tildes y variantes BASKET/BASQUET)
     if (this.filtroDeporte) {
-      const buscado = this.filtroDeporte.toUpperCase();
+      const buscado = this.normalizarDeporte(this.filtroDeporte);
       lista = lista.filter(c => {
-        const dep = (c.cancha?.deporte || '').toUpperCase();
+        const dep = this.normalizarDeporte(c.cancha?.deporte || '');
         if (buscado === 'BASKET' || buscado === 'BASQUET') {
           return dep === 'BASKET' || dep === 'BASQUET';
         }
@@ -160,6 +172,14 @@ export class A22GestionEspaciosComponente implements OnInit {
     this.canchasFiltradas.set(lista);
   }
 
+  private normalizarDeporte(texto: string): string {
+    return texto
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toUpperCase()
+      .trim();
+  }
+
   limpiarFiltros(): void {
     this.filtroEstado = '';
     this.filtroSede = '';
@@ -167,123 +187,49 @@ export class A22GestionEspaciosComponente implements OnInit {
     this.canchasFiltradas.set(this.canchas());
   }
 
-  // --- VISTA a23: EDICIÓN DE ESPACIOS (Formulario Reactivo) ---
+  // --- VISTA a23: EDICIÓN DE ESPACIOS (MatDialog) ---
   abrirModalEditar(cancha: SedeCanchaModelo): void {
-    this.canchaSeleccionada.set(cancha);
-    const depActual = cancha.cancha?.deporte?.toUpperCase() || 'FUTBOL';
-    const deporteForm = (depActual === 'BASQUET') ? 'BASKET' : depActual;
-
-    this.formEdicion.patchValue({
-      nombre: cancha.nombre || '',
-      deporte: deporteForm,
-      aforo: cancha.cancha?.aforo || 10,
-      precio: cancha.precio ? Number(cancha.precio) : 60,
-      imgCancha: cancha.imgCancha || 'https://sportfit.com/imagenes/cancha-default.png'
-    });
-    this.modalEditarAbierto = true;
-  }
-
-  cerrarModalEditar(): void {
-    this.modalEditarAbierto = false;
-  }
-
-  guardarEdicion(): void {
-    if (this.formEdicion.invalid) {
-      this.formEdicion.markAllAsTouched();
-      return;
-    }
-
-    const cancha = this.canchaSeleccionada();
-    if (!cancha) return;
-
-    const formVal = this.formEdicion.value;
-
-    const mapaTipoCancha: Record<string, number> = {
-      'FUTBOL': 1,
-      'BASKET': 2,
-      'BASQUET': 2,
-      'VOLEY': 3,
-      'TENIS': 4,
-      'FUTSAL': 5
-    };
-
-    const idTipo = mapaTipoCancha[formVal.deporte.toUpperCase()] || cancha.cancha?.idTipoCancha || 1;
-
-    const dtoActualizado: SedeCanchaModelo = {
-      ...cancha,
-      nombre: formVal.nombre.trim() || cancha.nombre,
-      precio: Number(formVal.precio),
-      estado: cancha.estado,
-      imgCancha: formVal.imgCancha || cancha.imgCancha || 'https://sportfit.com/imagenes/cancha-default.png',
-      sede: {
-        idSede: cancha.sede?.idSede || 1,
-        nombre: cancha.sede?.nombre || 'Sede Surco'
-      },
-      cancha: {
-        idTipoCancha: idTipo,
-        deporte: formVal.deporte.toUpperCase(),
-        descripcion: cancha.cancha?.descripcion || 'Cancha deportiva con iluminación LED',
-        aforo: Number(formVal.aforo)
+    const dialogRef = this.dialog.open(A23EditarEspacioDialogo, {
+      width: '560px',
+      maxWidth: '95vw',
+      maxHeight: '92vh',
+      data: {
+        cancha,
+        opcionesDeporte: this.opcionesDeporte,
+        opcionesAforo: this.opcionesAforo,
+        tiposCancha: this.tiposCancha()
       }
-    };
+    });
 
-    this.espacioServicio.update(dtoActualizado).subscribe({
-      next: (resp) => {
+    dialogRef.afterClosed().subscribe((resp: SedeCanchaModelo | null | undefined) => {
+      if (resp && resp.idSedeCancha) {
+        const enriquecida = this.enriquecerCancha(resp);
         const actualizadas = this.canchas().map(item =>
-          item.idSedeCancha === resp.idSedeCancha ? resp : item
+          item.idSedeCancha === enriquecida.idSedeCancha ? enriquecida : item
         );
         this.canchas.set(actualizadas);
         this.aplicarFiltros();
-        this.cerrarModalEditar();
-      },
-      error: (err: unknown) => {
-        console.error('Error al actualizar cancha:', err);
-        const msg = (err instanceof HttpErrorResponse && err.error?.message)
-          ? err.error.message
-          : 'Error al comunicarse con el backend para actualizar el espacio.';
-        alert(msg);
       }
     });
   }
 
-  // --- VISTA a24: DESACTIVACIÓN DE ESPACIOS ---
+  // --- VISTA a24/a25: DESACTIVACIÓN DE ESPACIOS (MatDialog) ---
   abrirModalDesactivar(cancha: SedeCanchaModelo): void {
-    this.canchaSeleccionada.set(cancha);
-    this.modalDesactivarAbierto = true;
-  }
+    const dialogRef = this.dialog.open(A24DesactivarEspacioDialogo, {
+      width: '420px',
+      maxWidth: '95vw',
+      data: cancha
+    });
 
-  cerrarModalDesactivar(): void {
-    this.modalDesactivarAbierto = false;
-  }
-
-  confirmarDesactivacion(): void {
-    const cancha = this.canchaSeleccionada();
-    if (!cancha) return;
-
-    this.espacioServicio.cambiarEstado(cancha.idSedeCancha, false).subscribe({
-      next: (resp) => {
+    dialogRef.afterClosed().subscribe((desactivado: boolean | undefined) => {
+      if (desactivado) {
         const actualizadas = this.canchas().map(item =>
-          item.idSedeCancha === resp.idSedeCancha ? { ...item, estado: false } : item
+          item.idSedeCancha === cancha.idSedeCancha ? { ...item, estado: false } : item
         );
         this.canchas.set(actualizadas);
         this.aplicarFiltros();
-        this.modalDesactivarAbierto = false;
-        // Abrir Vista a25
-        this.modalConfirmacionDesactivadoAbierto = true;
-      },
-      error: (err: unknown) => {
-        console.error('Error al desactivar cancha:', err);
-        const msg = (err instanceof HttpErrorResponse && err.error?.message)
-          ? err.error.message
-          : 'Error al comunicarse con el backend para desactivar el espacio.';
-        alert(msg);
       }
     });
-  }
-
-  // --- VISTA a25: CONFIRMACIÓN DE DESACTIVACIÓN ---
-  cerrarModalConfirmacion(): void {
-    this.modalConfirmacionDesactivadoAbierto = false;
   }
 
   // --- REACTIVAR CANCHA ---
@@ -303,27 +249,13 @@ export class A22GestionEspaciosComponente implements OnInit {
     });
   }
 
-  // --- MODAL VER RESERVAS (ED67) ---
+  // --- MODAL VER RESERVAS (MatDialog ED67) ---
   abrirModalReservas(cancha: SedeCanchaModelo): void {
-    this.canchaSeleccionada.set(cancha);
-    this.cargandoReservas.set(true);
-    this.reservasCancha.set([]);
-    this.modalReservasAbierto = true;
-
-    this.espacioServicio.listarReservasPorCancha(cancha.idSedeCancha).subscribe({
-      next: (reservas) => {
-        this.reservasCancha.set(reservas || []);
-        this.cargandoReservas.set(false);
-      },
-      error: () => {
-        this.reservasCancha.set([]);
-        this.cargandoReservas.set(false);
-      }
+    this.dialog.open(A25ReservasEspacioDialogo, {
+      width: '620px',
+      maxWidth: '95vw',
+      data: cancha
     });
-  }
-
-  cerrarModalReservas(): void {
-    this.modalReservasAbierto = false;
   }
 
   // --- HELPERS VISUALES ---

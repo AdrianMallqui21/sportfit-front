@@ -12,12 +12,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ClienteModelo } from '../../modelos/cliente-modelo';
 import { ReservaModelo } from '../../modelos/solicitud-reserva-modelo';
 import { ClienteServicio } from '../../servicios/cliente-servicio';
 import { AutorizacionServicio } from '../../servicios/autorizacion-servicio';
 import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
+import { A15EditarClienteDialogo } from './a15-editar-cliente-dialogo/a15-editar-cliente-dialogo';
+import { A16ReservasClienteDialogo } from './a16-reservas-cliente-dialogo/a16-reservas-cliente-dialogo';
+import { A17DesactivarClienteDialogo } from './a17-desactivar-cliente-dialogo/a17-desactivar-cliente-dialogo';
 
 @Component({
   selector: 'app-a14-gestion-clientes-componente',
@@ -35,7 +41,10 @@ import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
     MatInputModule,
     MatSelectModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDividerModule,
+    MatChipsModule,
+    MatTooltipModule
   ],
   templateUrl: './a14-gestion-clientes-componente.html',
   styleUrl: './a14-gestion-clientes-componente.css'
@@ -57,6 +66,7 @@ export class A14GestionClientesComponente implements OnInit, AfterViewInit {
 
   // Lista principal y cliente seleccionado
   clientes = signal<ClienteModelo[]>([]);
+  todosClientes = signal<ClienteModelo[]>([]);
   clienteSeleccionado = signal<ClienteModelo | null>(null);
   cargando = signal<boolean>(false);
   errorCarga = signal<string | null>(null);
@@ -65,6 +75,14 @@ export class A14GestionClientesComponente implements OnInit, AfterViewInit {
 
   // Reservas del cliente seleccionado (ED02)
   reservasHistorial = signal<ReservaModelo[]>([]);
+  reservaDetalleModal = signal<ReservaModelo | null>(null);
+  errorEdicion = signal<string | null>(null);
+  reservasConfirmadasCliente = computed(() =>
+    this.reservasHistorial().filter(r => (r.estado || '').toLowerCase() === 'confirmada').length
+  );
+  reservasCanceladasCliente = computed(() =>
+    this.reservasHistorial().filter(r => (r.estado || '').toLowerCase() === 'cancelada').length
+  );
 
   // Filtros de búsqueda (Escenarios 2 - 7)
   filtroNombre = '';
@@ -125,6 +143,7 @@ export class A14GestionClientesComponente implements OnInit, AfterViewInit {
     this.clienteService.listarClientes().subscribe({
       next: (data) => {
         const lista = data || [];
+        this.todosClientes.set(lista);
         this.clientes.set(lista);
         this.dataSource.data = lista;
         if (this.sort) this.dataSource.sort = this.sort;
@@ -138,6 +157,7 @@ export class A14GestionClientesComponente implements OnInit, AfterViewInit {
           this.clienteService.obtenerCantidadReservas(c.idUsuario).subscribe({
             next: (cantidad) => {
               c.cantidadReservas = cantidad;
+              this.todosClientes.set([...this.todosClientes()]);
               this.clientes.set([...this.clientes()]);
               this.dataSource.data = [...this.clientes()];
             }
@@ -211,10 +231,10 @@ export class A14GestionClientesComponente implements OnInit, AfterViewInit {
       return;
     }
 
-    if (this.filtroReservas !== null && this.filtroReservas !== undefined && this.filtroReservas >= 0) {
-      this.clienteService.buscarPorCantidadReservas(Number(this.filtroReservas)).subscribe({
-        next: (res) => this.actualizarLista(res)
-      });
+    if (this.filtroReservas !== null && this.filtroReservas !== undefined && String(this.filtroReservas).trim() !== '' && Number(this.filtroReservas) >= 0) {
+      const minimo = Number(this.filtroReservas);
+      const filtrados = this.todosClientes().filter(c => (c.cantidadReservas ?? 0) >= minimo);
+      this.actualizarLista(filtrados);
       return;
     }
 
@@ -227,6 +247,15 @@ export class A14GestionClientesComponente implements OnInit, AfterViewInit {
     this.dataSource.data = res;
     if (res.length > 0) {
       this.seleccionarCliente(res[0]);
+      res.forEach(c => {
+        this.clienteService.obtenerCantidadReservas(c.idUsuario).subscribe({
+          next: (cantidad) => {
+            c.cantidadReservas = cantidad;
+            this.clientes.set([...this.clientes()]);
+            this.dataSource.data = [...this.clientes()];
+          }
+        });
+      });
     } else {
       this.clienteSeleccionado.set(null);
       this.reservasHistorial.set([]);
@@ -243,96 +272,83 @@ export class A14GestionClientesComponente implements OnInit, AfterViewInit {
     this.cargarClientes();
   }
 
-  // --- VISTA a15: EDICIÓN DE CLIENTE (ED55 - Formulario Reactivo) ---
+  // --- VISTA a15: EDICIÓN DE CLIENTE (MatDialog) ---
   abrirModalEditar(): void {
     const c = this.clienteSeleccionado();
     if (!c) return;
-    this.formEdicion.patchValue({
-      nombre: c.nombre || '',
-      apellido: c.apellido || '',
-      dni: c.dni || '',
-      telefono: c.telefono || '',
-      correo: c.correo || ''
+    const ref = this.dialogo.open(A15EditarClienteDialogo, {
+      width: '540px',
+      maxWidth: '95vw',
+      data: c
     });
-    this.modalEditarAbierto = true;
-  }
 
-  cerrarModalEditar(): void {
-    this.modalEditarAbierto = false;
-  }
-
-  guardarEdicion(): void {
-    if (this.formEdicion.invalid) {
-      this.formEdicion.markAllAsTouched();
-      return;
-    }
-
-    const c = this.clienteSeleccionado();
-    if (!c) return;
-
-    const datosActualizados: Partial<ClienteModelo> & { idUsuario: number } = {
-      idUsuario: c.idUsuario,
-      ...this.formEdicion.value
-    };
-
-    this.clienteService.actualizarCliente(datosActualizados).subscribe({
-      next: (actualizado) => {
-        const clienteFinal = { ...c, ...actualizado };
+    ref.afterClosed().subscribe((clienteFinal: ClienteModelo | null | undefined) => {
+      if (clienteFinal) {
         const listaActual = this.clientes().map(item =>
-          item.idUsuario === c.idUsuario ? clienteFinal : item
+          item.idUsuario === clienteFinal.idUsuario ? clienteFinal : item
         );
         this.clientes.set(listaActual);
         this.dataSource.data = listaActual;
         this.clienteSeleccionado.set(clienteFinal);
-        this.cerrarModalEditar();
         this.mostrarMensaje('Información actualizada correctamente');
-      },
-      error: () => {
-        this.mostrarMensaje('Error al actualizar la información del cliente.');
       }
     });
   }
 
-  // --- VISTA a16: LISTADO DE RESERVAS (ED02) ---
+  // --- VISTA a16: LISTADO DE RESERVAS (MatDialog) ---
   abrirModalReservas(): void {
     const c = this.clienteSeleccionado();
     if (!c) return;
-    this.cargarReservasCliente(c.idUsuario);
-    this.modalReservasAbierto = true;
+    this.dialogo.open(A16ReservasClienteDialogo, {
+      width: '920px',
+      maxWidth: '95vw',
+      data: {
+        cliente: c,
+        reservas: this.reservasHistorial()
+      }
+    });
   }
 
-  cerrarModalReservas(): void {
-    this.modalReservasAbierto = false;
+  obtenerCanchaDeporteReserva(r: ReservaModelo): string {
+    const deporte = r.sedeCancha?.cancha?.deporte || r.deporte || '';
+    const cancha = r.sedeCancha?.nombre || r.cancha || '';
+    if (deporte && cancha) return `${deporte} - ${cancha}`;
+    return cancha || deporte || 'Cancha';
   }
 
-  // --- VISTA a17: DESACTIVAR USUARIO (ED60) ---
+  formatearHora(hora?: string): string {
+    return hora ? hora.slice(0, 5) : '--:--';
+  }
+
+  formatearFechaCorta(fechaIso?: string): string {
+    if (!fechaIso) return '—';
+    const soloFecha = fechaIso.split('T')[0];
+    const partes = soloFecha.split('-');
+    if (partes.length === 3) {
+      return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+    return soloFecha;
+  }
+
+  // --- VISTA a17: DESACTIVAR USUARIO (MatDialog) ---
   abrirModalDesactivar(): void {
-    this.modalDesactivarAbierto = true;
-  }
-
-  cerrarModalDesactivar(): void {
-    this.modalDesactivarAbierto = false;
-  }
-
-  confirmarDesactivar(): void {
     const c = this.clienteSeleccionado();
     if (!c) return;
+    const ref = this.dialogo.open(A17DesactivarClienteDialogo, {
+      width: '430px',
+      maxWidth: '95vw',
+      data: c
+    });
 
-    const nuevoEstado = !c.activo;
-    this.clienteService.cambiarEstado(c.idUsuario, nuevoEstado).subscribe({
-      next: () => {
-        const clienteModificado = { ...c, activo: nuevoEstado };
+    ref.afterClosed().subscribe((clienteModificado: ClienteModelo | null | undefined) => {
+      if (clienteModificado) {
         const listaActual = this.clientes().map(item =>
-          item.idUsuario === c.idUsuario ? clienteModificado : item
+          item.idUsuario === clienteModificado.idUsuario ? clienteModificado : item
         );
         this.clientes.set(listaActual);
         this.dataSource.data = listaActual;
         this.clienteSeleccionado.set(clienteModificado);
-        this.cerrarModalDesactivar();
-        this.mostrarMensaje(`Estado del cliente actualizado a: ${nuevoEstado ? 'Activo' : 'Inactivo'}`);
-      },
-      error: () => {
-        this.mostrarMensaje('Error al cambiar el estado del usuario.');
+        this.mostrarMensaje(`Estado del cliente actualizado a: ${clienteModificado.activo ? 'Activo' : 'Inactivo'}`);
       }
     });
   }

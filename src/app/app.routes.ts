@@ -33,6 +33,9 @@ import {
 import {
   A11NotificacionesAdministradorComponente
 } from './componentes/a11-notificaciones-administrador-componente/a11-notificaciones-administrador-componente';
+import {
+  A18GestionReservasComponente
+} from './componentes/a18-gestion-reservas-componente/a18-gestion-reservas-componente';
 
 export const routes: Routes = [
   // Ruta de prueba de la vista A28.
@@ -47,8 +50,9 @@ export const routes: Routes = [
   {path: 'home', component: C4HomeClienteComponente},
   {path: 'perfil-administrador', component: A2PerfilAdministradorComponente},
 
-  // Vistas de Anthony (HU04, HU14, HU13, HU07, HU18)
+  // Vistas de Anthony (HU04, HU05, HU14, HU13, HU07, HU18)
   {path: 'clientes', component: A14GestionClientesComponente},
+  {path: 'reservas', component: A18GestionReservasComponente},
   {path: 'espacios', component: A22GestionEspaciosComponente},
   {path: 'solicitudes', component: A8GestionSolicitudesComponente},
   {path: 'reporte-financiero', component: A33ReporteFinancieroComponente},

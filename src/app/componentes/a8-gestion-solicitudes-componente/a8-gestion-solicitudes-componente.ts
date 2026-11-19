@@ -1,27 +1,33 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import {
   SolicitudReservaModelo,
-  PagoDetalleModelo,
   ReservaModelo
 } from '../../modelos/solicitud-reserva-modelo';
-import { SedeModelo } from '../../modelos/espacio-deportivo-modelo';
+import { SedeCanchaModelo, SedeModelo, TipoCanchaModelo } from '../../modelos/espacio-deportivo-modelo';
+import { ClienteModelo } from '../../modelos/cliente-modelo';
 import { SolicitudReservaServicio } from '../../servicios/solicitud-reserva-servicio';
+import { EspacioDeportivoServicio } from '../../servicios/espacio-deportivo-servicio';
 import { ClienteServicio } from '../../servicios/cliente-servicio';
 import { AutorizacionServicio } from '../../servicios/autorizacion-servicio';
 import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
+import { A8ComprobantePagoDialogo } from './a8-comprobante-pago-dialogo/a8-comprobante-pago-dialogo';
+import { A9ResultadoSolicitudDialogo } from './a9-resultado-solicitud-dialogo/a9-resultado-solicitud-dialogo';
 
 @Component({
   selector: 'app-a8-gestion-solicitudes-componente',
@@ -33,37 +39,49 @@ import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
     MatCardModule,
     MatButtonModule,
     MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatIconModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatDialogModule
   ],
   providers: [
-    provideNativeDateAdapter()
+    provideNativeDateAdapter(),
+    { provide: MAT_DATE_LOCALE, useValue: 'es-PE' }
   ],
   templateUrl: './a8-gestion-solicitudes-componente.html',
   styleUrl: './a8-gestion-solicitudes-componente.css'
 })
-export class A8GestionSolicitudesComponente implements OnInit {
+export class A8GestionSolicitudesComponente implements OnInit, AfterViewInit {
   private readonly solicitudServicio = inject(SolicitudReservaServicio);
+  private readonly espacioServicio = inject(EspacioDeportivoServicio);
   private readonly clienteServicio = inject(ClienteServicio);
   private readonly authServicio = inject(AutorizacionServicio);
+  private readonly dialog = inject(MatDialog);
 
   // Columnas para MatTable (Vista a7)
   columnasSolicitudes: string[] = ['sede', 'canchasDeporte', 'fecha', 'horario', 'estado'];
+  dataSource: MatTableDataSource<ReservaModelo> = new MatTableDataSource<ReservaModelo>();
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   // Listas y estados
   solicitudes = signal<ReservaModelo[]>([]);
   solicitudesFiltradas = signal<ReservaModelo[]>([]);
   sedes = signal<SedeModelo[]>([]);
+  canchas = signal<SedeCanchaModelo[]>([]);
+  tiposCancha = signal<TipoCanchaModelo[]>([]);
+  clientes = signal<ClienteModelo[]>([]);
   solicitudSeleccionada = signal<ReservaModelo | null>(null);
   detalleCompleto = signal<SolicitudReservaModelo | null>(null);
   totalReservasCliente = signal<number>(0);
 
-  // Filtros de búsqueda (Angular Material)
+  // Filtros de búsqueda (Vista a7)
   filtroSede = '';
-  filtroFecha: Date | null = null;
+  filtroFecha: Date | string | null = null;
   filtroHorario = '';
   filtroDeporte = '';
 
@@ -77,22 +95,22 @@ export class A8GestionSolicitudesComponente implements OnInit {
     { valor: '12:00', etiqueta: '12:00 - 14:00' },
     { valor: '14:00', etiqueta: '14:00 - 16:00' },
     { valor: '15:00', etiqueta: '15:00 - 17:00' },
-    { valor: '16:00', etiqueta: '16:00 - 18:00' }
+    { valor: '16:00', etiqueta: '16:00 - 18:00' },
+    { valor: '17:00', etiqueta: '17:00 - 19:00' },
+    { valor: '18:00', etiqueta: '18:00 - 20:00' },
+    { valor: '19:00', etiqueta: '19:00 - 21:00' },
+    { valor: '20:00', etiqueta: '20:00 - 22:00' }
   ];
 
   // Opciones desplegables para Deporte
   readonly opcionesDeporte = [
     { valor: '', etiqueta: 'Ingrese el deporte' },
     { valor: 'FUTBOL', etiqueta: 'Fútbol' },
+    { valor: 'FUTSAL', etiqueta: 'Futsal' },
     { valor: 'TENIS', etiqueta: 'Tenis' },
     { valor: 'BASQUET', etiqueta: 'Básquet' },
     { valor: 'VOLEY', etiqueta: 'Vóley' }
   ];
-
-  // Modales (Vistas a8, a9, a10)
-  modalComprobanteAbierto = false;
-  modalAprobadoAbierto = false;
-  modalRechazadoAbierto = false;
 
   // Estados de carga y autenticación
   cargando = signal<boolean>(false);
@@ -103,14 +121,54 @@ export class A8GestionSolicitudesComponente implements OnInit {
     if (!localStorage.getItem('token')) {
       this.alertaAutenticacion.set(true);
     }
-    this.cargarSedes();
+    this.cargarCatalogos();
     this.cargarSolicitudes();
   }
 
-  cargarSedes(): void {
+  ngAfterViewInit(): void {
+    this.dataSource.sortingDataAccessor = (item: ReservaModelo, property: string): string => {
+      if (property === 'sede') return this.formatearSede(item).toLowerCase();
+      if (property === 'canchasDeporte') return this.formatearCanchaDeporte(item).toLowerCase();
+      if (property === 'fecha') return item.fReserva || '';
+      if (property === 'horario') return item.hInicio || '';
+      if (property === 'estado') return (item.estado || '').toLowerCase();
+      return '';
+    };
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  cargarCatalogos(): void {
     this.solicitudServicio.listarSedes().subscribe({
-      next: (data) => this.sedes.set(data || []),
+      next: (data) => {
+        this.sedes.set(data || []);
+        this.rehidratarSolicitudes();
+      },
       error: () => this.sedes.set([])
+    });
+
+    this.espacioServicio.listarTiposCancha().subscribe({
+      next: (data) => {
+        this.tiposCancha.set(data || []);
+        this.rehidratarSolicitudes();
+      },
+      error: () => this.tiposCancha.set([])
+    });
+
+    this.espacioServicio.listarCanchas().subscribe({
+      next: (data) => {
+        this.canchas.set(data || []);
+        this.rehidratarSolicitudes();
+      },
+      error: () => this.canchas.set([])
+    });
+
+    this.clienteServicio.listarClientes().subscribe({
+      next: (data) => {
+        this.clientes.set(data || []);
+        this.rehidratarSolicitudes();
+      },
+      error: () => this.clientes.set([])
     });
   }
 
@@ -118,14 +176,10 @@ export class A8GestionSolicitudesComponente implements OnInit {
     this.cargando.set(true);
     this.solicitudServicio.listarSolicitudes().subscribe({
       next: (data) => {
-        const lista = data || [];
+        const lista = (data || []).map(s => this.enriquecerSolicitud(s));
         this.solicitudes.set(lista);
-        this.solicitudesFiltradas.set(lista);
+        this.aplicarFiltros();
         this.alertaAutenticacion.set(false);
-
-        if (lista.length > 0 && !this.solicitudSeleccionada()) {
-          this.seleccionarSolicitud(lista[0]);
-        }
         this.cargando.set(false);
       },
       error: (err: unknown) => {
@@ -137,29 +191,78 @@ export class A8GestionSolicitudesComponente implements OnInit {
     });
   }
 
+  private rehidratarSolicitudes(): void {
+    if (this.solicitudes().length === 0) return;
+    const lista = this.solicitudes().map(s => this.enriquecerSolicitud(s));
+    this.solicitudes.set(lista);
+    const selActual = this.solicitudSeleccionada();
+    if (selActual) {
+      const selAct = lista.find(item => item.idReserva === selActual.idReserva);
+      if (selAct) this.solicitudSeleccionada.set(selAct);
+    }
+    this.aplicarFiltros();
+  }
+
+  private enriquecerSolicitud(s: ReservaModelo): ReservaModelo {
+    const idCancha = s.sedeCancha?.idSedeCancha ?? (s as any).idSedeCancha;
+    const idUsuario = s.usuario?.idUsuario ?? (s as any).idUsuario;
+
+    const canchaBase = this.canchas().find(c => c.idSedeCancha === idCancha) || s.sedeCancha;
+    let sedeCanchaEnriquecida = canchaBase;
+
+    if (canchaBase) {
+      const idSede = canchaBase.idSedeSede ?? canchaBase.sede?.idSede;
+      const idTipo = canchaBase.idTipoCancha ?? canchaBase.cancha?.idTipoCancha;
+      const sedeObj = this.sedes().find(sd => sd.idSede === idSede) || canchaBase.sede;
+      const tipoObj = this.tiposCancha().find(t => t.idTipoCancha === idTipo) || canchaBase.cancha;
+      sedeCanchaEnriquecida = {
+        ...canchaBase,
+        idSedeSede: idSede,
+        idTipoCancha: idTipo,
+        sede: sedeObj,
+        cancha: tipoObj
+      };
+    }
+
+    const clienteObj = this.clientes().find(cl => cl.idUsuario === idUsuario);
+    const usuarioEnriquecido = clienteObj
+      ? {
+          idUsuario: clienteObj.idUsuario,
+          nombre: clienteObj.nombre,
+          apellido: clienteObj.apellido,
+          correo: clienteObj.correo,
+          telefono: clienteObj.telefono
+        }
+      : s.usuario;
+
+    return {
+      ...s,
+      sedeCancha: sedeCanchaEnriquecida,
+      usuario: usuarioEnriquecido
+    };
+  }
+
   // --- FILTROS DE BÚSQUEDA (Vista a7) ---
   aplicarFiltros(): void {
     let lista = this.solicitudes();
 
-    // 1. Filtro Sede
+    // 1. Filtro Sede (por idSede o nombre)
     if (this.filtroSede) {
+      const idSedeNum = Number(this.filtroSede);
       lista = lista.filter(s => {
-        const nombreSede = s.sedeCancha?.sede?.nombre || s.sede || '';
-        return nombreSede.toLowerCase().includes(this.filtroSede.toLowerCase());
+        const idSedeSol = s.sedeCancha?.idSedeSede ?? s.sedeCancha?.sede?.idSede;
+        if (!isNaN(idSedeNum) && idSedeNum > 0 && idSedeSol) {
+          return idSedeSol === idSedeNum;
+        }
+        const nombreSede = this.formatearSede(s).toLowerCase();
+        return nombreSede.includes(String(this.filtroSede).toLowerCase());
       });
     }
 
     // 2. Filtro Fecha
-    if (this.filtroFecha) {
-      const year = this.filtroFecha.getFullYear();
-      const month = String(this.filtroFecha.getMonth() + 1).padStart(2, '0');
-      const day = String(this.filtroFecha.getDate()).padStart(2, '0');
-      const fechaStr = `${year}-${month}-${day}`;
-
-      lista = lista.filter(s => {
-        const fecha = s.fReserva || '';
-        return fecha.startsWith(fechaStr);
-      });
+    const fechaStr = this.convertirFechaAISO(this.filtroFecha);
+    if (fechaStr) {
+      lista = lista.filter(s => (s.fReserva || '').startsWith(fechaStr));
     }
 
     // 3. Filtro Horario
@@ -170,21 +273,61 @@ export class A8GestionSolicitudesComponente implements OnInit {
       });
     }
 
-    // 4. Filtro Deporte
+    // 4. Filtro Deporte (normaliza tildes y variantes BASKET/BASQUET)
     if (this.filtroDeporte) {
+      const buscado = this.normalizarTexto(this.filtroDeporte);
       lista = lista.filter(s => {
-        const deporte = s.sedeCancha?.cancha?.deporte || '';
-        return deporte.toUpperCase().includes(this.filtroDeporte.toUpperCase());
+        const dep = this.normalizarTexto(s.sedeCancha?.cancha?.deporte || '');
+        if (buscado === 'BASKET' || buscado === 'BASQUET') {
+          return dep === 'BASKET' || dep === 'BASQUET';
+        }
+        return dep === buscado;
       });
     }
 
     this.solicitudesFiltradas.set(lista);
+    this.dataSource.data = lista;
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
     if (lista.length > 0) {
-      this.seleccionarSolicitud(lista[0]);
+      const sel = this.solicitudSeleccionada();
+      const sigueEnLista = sel && lista.some(item => item.idReserva === sel.idReserva);
+      if (!sigueEnLista) {
+        this.seleccionarSolicitud(lista[0]);
+      }
     } else {
       this.solicitudSeleccionada.set(null);
       this.detalleCompleto.set(null);
     }
+  }
+
+  private convertirFechaAISO(valor: Date | string | null): string | null {
+    if (!valor) return null;
+    if (valor instanceof Date && !isNaN(valor.getTime())) {
+      const y = valor.getFullYear();
+      const m = String(valor.getMonth() + 1).padStart(2, '0');
+      const d = String(valor.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+    if (typeof valor === 'string') {
+      const texto = valor.trim();
+      if (!texto) return null;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(texto)) return texto;
+      const slash = texto.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (slash) {
+        return `${slash[3]}-${slash[2].padStart(2, '0')}-${slash[1].padStart(2, '0')}`;
+      }
+    }
+    return null;
+  }
+
+  private normalizarTexto(texto: string): string {
+    return texto
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toUpperCase()
+      .trim();
   }
 
   limpiarFiltros(): void {
@@ -192,9 +335,14 @@ export class A8GestionSolicitudesComponente implements OnInit {
     this.filtroFecha = null;
     this.filtroHorario = '';
     this.filtroDeporte = '';
-    this.solicitudesFiltradas.set(this.solicitudes());
-    if (this.solicitudes().length > 0) {
-      this.seleccionarSolicitud(this.solicitudes()[0]);
+    const todas = this.solicitudes();
+    this.solicitudesFiltradas.set(todas);
+    this.dataSource.data = todas;
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+    if (todas.length > 0) {
+      this.seleccionarSolicitud(todas[0]);
     }
   }
 
@@ -270,7 +418,7 @@ export class A8GestionSolicitudesComponente implements OnInit {
       });
     }
 
-    const idUsuario = solicitud.usuario?.idUsuario;
+    const idUsuario = solicitud.usuario?.idUsuario ?? (solicitud as any).idUsuario;
     if (idUsuario) {
       this.clienteServicio.obtenerCantidadReservas(idUsuario).subscribe({
         next: (total: number) => this.totalReservasCliente.set(total ?? 0),
@@ -301,13 +449,6 @@ export class A8GestionSolicitudesComponente implements OnInit {
     return '/imagenes/comprobante-yape.png';
   }
 
-  onVoucherError(event: Event): void {
-    const img = event.target as HTMLImageElement;
-    if (img && !img.src.includes('comprobante-yape.png')) {
-      img.src = '/imagenes/comprobante-yape.png';
-    }
-  }
-
   onLogoError(event: Event): void {
     const img = event.target as HTMLImageElement;
     if (img) {
@@ -315,27 +456,34 @@ export class A8GestionSolicitudesComponente implements OnInit {
     }
   }
 
-  // --- MODAL VISTA a8: Ver comprobante de pago ---
+  // --- MODAL VISTA a8: Ver comprobante de pago (MatDialog) ---
   abrirComprobante(): void {
-    this.modalComprobanteAbierto = true;
+    this.dialog.open(A8ComprobantePagoDialogo, {
+      width: '480px',
+      maxWidth: '95vw',
+      data: { urlComprobante: this.urlComprobanteActual() }
+    });
   }
 
-  cerrarComprobante(): void {
-    this.modalComprobanteAbierto = false;
-  }
-
-  // --- MODAL VISTA a9: Aprobación de solicitud (ED25) ---
+  // --- MODAL VISTA a9: Aprobación de solicitud (MatDialog ED25) ---
   aceptarSolicitud(): void {
     const s = this.solicitudSeleccionada();
     if (!s) return;
 
     this.solicitudServicio.actualizarEstado(s.idReserva, 'confirmada').subscribe({
-      next: (reservaActualizada) => {
-        // Remover de la lista de solicitudes pendientes
+      next: () => {
         const actualizadas = this.solicitudes().filter(item => item.idReserva !== s.idReserva);
         this.solicitudes.set(actualizadas);
         this.aplicarFiltros();
-        this.modalAprobadoAbierto = true;
+        this.dialog.open(A9ResultadoSolicitudDialogo, {
+          width: '420px',
+          maxWidth: '95vw',
+          data: {
+            titulo: 'Se aprobó la solicitud de reserva',
+            descripcion: 'La solicitud de reserva fue aprobada correctamente. La reserva ahora figura como confirmada para la fecha y el horario solicitados.',
+            tipo: 'aprobada'
+          }
+        });
       },
       error: (err: unknown) => {
         console.error('Error al confirmar reserva en el backend:', err);
@@ -347,22 +495,25 @@ export class A8GestionSolicitudesComponente implements OnInit {
     });
   }
 
-  cerrarModalAprobado(): void {
-    this.modalAprobadoAbierto = false;
-  }
-
-  // --- MODAL VISTA a10: Rechazo de solicitud (ED25) ---
+  // --- MODAL VISTA a10: Rechazo de solicitud (MatDialog ED25) ---
   rechazarSolicitud(): void {
     const s = this.solicitudSeleccionada();
     if (!s) return;
 
     this.solicitudServicio.actualizarEstado(s.idReserva, 'rechazada').subscribe({
-      next: (reservaActualizada) => {
-        // Remover de la lista de solicitudes pendientes
+      next: () => {
         const actualizadas = this.solicitudes().filter(item => item.idReserva !== s.idReserva);
         this.solicitudes.set(actualizadas);
         this.aplicarFiltros();
-        this.modalRechazadoAbierto = true;
+        this.dialog.open(A9ResultadoSolicitudDialogo, {
+          width: '420px',
+          maxWidth: '95vw',
+          data: {
+            titulo: 'Se rechazó la solicitud de reserva',
+            descripcion: 'La solicitud de reserva fue rechazada porque la información proporcionada está incompleta o contiene datos no válidos.',
+            tipo: 'rechazada'
+          }
+        });
       },
       error: (err: unknown) => {
         console.error('Error al rechazar reserva en el backend:', err);
@@ -372,10 +523,6 @@ export class A8GestionSolicitudesComponente implements OnInit {
         alert(msg);
       }
     });
-  }
-
-  cerrarModalRechazado(): void {
-    this.modalRechazadoAbierto = false;
   }
 
   // Autenticación rápida de prueba
