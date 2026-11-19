@@ -1,0 +1,30 @@
+.titulo-eliminar {
+  text-align: center;
+  color: #df3030;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 20px 16px 8px;
+}
+
+.mensaje-eliminar {
+  text-align: center;
+  color: #333;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 12px 25px 18px !important;
+}
+
+.acciones-eliminar {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 20px 24px;
+}
+
+.boton-no, .boton-si {
+  min-width: 90px;
+  border-radius: 6px;
+  color: white !important;
+}
+
+.boton-no { background: #df3030 !important; }
+.boton-si { background: #39b887 !important; }

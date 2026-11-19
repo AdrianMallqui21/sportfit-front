@@ -1,1 +1,106 @@
-<p>a11-notificaciones-administrador-componente works!</p>
+<div class="notificaciones-pagina">
+  <header class="encabezado">
+    <img src="/loge-sportfit.png" alt="SportFit" class="brand-logo">
+  </header>
+
+  <main class="notificaciones-contenido">
+    <section class="columna-izquierda" aria-label="Notificaciones">
+      <mat-card class="bienvenida-card">
+        <mat-icon class="icono-bienvenida">waving_hand</mat-icon>
+        <h1>Bienvenido{{ nombre ? ' ' + nombre : '' }}, te presentamos un resumen de tus notificaciones.</h1>
+      </mat-card>
+
+      <mat-card class="lista-card">
+        @if (cargando) {
+          <p class="mensaje-estado" role="status">Cargando notificaciones…</p>
+        } @else if (error) {
+          <p class="mensaje-estado" role="alert">{{ error }}</p>
+        } @else {
+          @for (n of notificaciones; track n.idNotificacion) {
+            <button
+              mat-button
+              type="button"
+              class="notificacion-item"
+              [class.seleccionada]="seleccionada?.idNotificacion === n.idNotificacion"
+              [class.leida]="n.leido"
+              [attr.aria-pressed]="seleccionada?.idNotificacion === n.idNotificacion"
+              (click)="seleccionar(n)"
+            >
+              <span class="item-contenido">
+                <strong>
+                  {{ n.titulo }}
+                  @if (!n.leido) {
+                    <span class="punto-nuevo" aria-label="No leída"></span>
+                  }
+                </strong>
+
+                <span class="item-mensaje">
+                  <mat-icon class="icono-rojo">warning_amber</mat-icon>
+                  <span>{{ n.mensaje | slice:0:130 }}{{ n.mensaje.length > 130 ? '…' : '' }}</span>
+                </span>
+              </span>
+            </button>
+          } @empty {
+            <p class="mensaje-estado">No tienes notificaciones.</p>
+          }
+        }
+      </mat-card>
+    </section>
+
+    <mat-card class="detalle-card" aria-label="Detalle de la notificación">
+      @if (seleccionada; as n) {
+        <div class="detalle-contenido">
+          <h2>Título</h2>
+          <p>{{ n.titulo }}</p>
+
+          <h2>Detalles de la notificación</h2>
+          <p class="descripcion">{{ n.mensaje }}</p>
+
+          <h2>Información de la notificación</h2>
+          <p class="etiqueta">Tipo de notificación</p>
+          <p>{{ n.tipo }}</p>
+
+          <div class="fecha-detalle">
+            <div>
+              <mat-icon>calendar_today</mat-icon>
+              <span>Fecha de envío</span>
+              <strong>{{ n.fNotificacion | date:'dd/MM/yyyy' }}</strong>
+            </div>
+            <div>
+              <mat-icon>schedule</mat-icon>
+              <span>Hora de envío</span>
+              <strong>{{ n.fNotificacion | date:'HH:mm' }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="acciones-detalle">
+          <button
+            mat-flat-button
+            type="button"
+            class="boton-leida"
+            [disabled]="n.leido || procesando"
+            (click)="marcarComoLeida()"
+          >
+            {{ n.leido ? 'Notificación leída' : 'Marcar como leído' }}
+          </button>
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="boton-eliminar"
+            [disabled]="procesando"
+            (click)="abrirConfirmacion()"
+          >
+            Eliminar notificación
+          </button>
+        </div>
+      } @else {
+        <div class="mensaje-estado">
+          <mat-icon>notifications_none</mat-icon>
+          <p>Selecciona una notificación para ver sus detalles.</p>
+        </div>
+      }
+    </mat-card>
+  </main>
+</div>

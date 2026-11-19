@@ -59,4 +59,5 @@ export const routes: Routes = [
   {path: 'reporte-incidencias', component: A37ReporteIncidenciasComponente},
 
   {path: 'incidencias', component: A26ListadoIncidenciasAdministradorComponente},
+  {path: 'notificaciones', component: A11NotificacionesAdministradorComponente},
 ];
