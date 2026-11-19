@@ -1,0 +1,75 @@
+:host {
+  display: block;
+}
+
+.confirmacion-respuesta {
+  position: relative;
+  padding: 24px 16px 20px;
+  border-radius: 8px;
+  background: #fff;
+  color: #1b1f1c;
+  text-align: center;
+}
+
+.confirmacion-respuesta h2 {
+  margin: 0 28px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.confirmacion-respuesta p {
+  max-width: 360px;
+  margin: 0 auto 16px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.confirmacion-respuesta button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.confirmacion-respuesta__cerrar {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+}
+
+.confirmacion-respuesta__cerrar span {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.confirmacion-respuesta__cerrar:hover {
+  background: #edf5ef;
+}
+
+.confirmacion-respuesta .confirmacion-respuesta__continuar {
+  min-width: 96px;
+  padding: 7px 18px;
+  border: 0;
+  border-radius: 7px;
+  background: #26825b;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.confirmacion-respuesta__continuar:hover {
+  background: #1e6c4b;
+}
+
+.confirmacion-respuesta button:focus-visible {
+  outline: 2px solid #1e6c4b;
+  outline-offset: 2px;
+}

@@ -33,3 +33,15 @@ export class SedeIncidenciaModelo {
   pendientes: number;
   color: string;
 }
+
+export class IncidenciaModelo {
+  idIncidencia: number;
+  tipo: string;
+  asunto: string;
+  descripcion: string;
+  estado: string;
+  respuestaAdmin: string;
+  fCreacion: string;
+  fRespuesta: string;
+  idUsuario: number;
+}

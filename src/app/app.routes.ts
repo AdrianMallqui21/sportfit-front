@@ -50,4 +50,6 @@ export const routes: Routes = [
   {path: 'solicitudes', component: A8GestionSolicitudesComponente},
   {path: 'reporte-financiero', component: A33ReporteFinancieroComponente},
   {path: 'reporte-incidencias', component: A37ReporteIncidenciasComponente},
+
+  {path: 'incidencias', component: A26ListadoIncidenciasAdministradorComponente},
 ];

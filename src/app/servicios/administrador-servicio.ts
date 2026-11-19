@@ -18,12 +18,12 @@ export class AdministradorServicio {
   }
 
   actualizarContraseña(contrasena: string, idAdmin: number): Observable<UsuarioModelo> {
-    return this.http.put<UsuarioModelo>(`${this.url}/usuario/administrador-password/{idAdmin}`, {
-      params: {
-        idAdmin,
-        contrasena
-      }
-    });
+    return this.http.put<UsuarioModelo>(
+      `${this.url}/usuario/administrador-password/${idAdmin}`,
+      contrasena,
+      {headers: {'Content-Type': 'text/plain'}}
+    );
   }
+
 
 }

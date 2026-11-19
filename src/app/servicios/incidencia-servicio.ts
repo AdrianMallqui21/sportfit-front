@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 import {
   BannerIncidenciasModelo,
   DistribucionCategoriaModelo,
-  EstadoResolucionModelo,
+  EstadoResolucionModelo, IncidenciaModelo,
   SedeIncidenciaModelo,
   TendenciaIncidenciasModelo
 } from '../modelos/incidencia-modelo';
@@ -61,4 +61,30 @@ export class IncidenciaServicio {
   listarSedes(): Observable<SedeModelo[]> {
     return this.http.get<SedeModelo[]>(`${this.url}/sedes`);
   }
+
+  filtrarIncidencias(tipo: string, estado: string, fecha?: string): Observable<IncidenciaModelo[]> {
+    let params = new HttpParams();
+
+    if (tipo) params = params.set('tipo', tipo);
+    if (estado) params = params.set('estado', estado);
+    if (fecha) params = params.set('fecha', fecha);
+
+    return this.http.get<IncidenciaModelo[]>(`${this.url}/incidencias/filtro`, { params });
+  }
+
+  buscarIncidenciaPorId(id: number): Observable<IncidenciaModelo> {
+    return this.http.get<IncidenciaModelo>(`${this.url}/incidencia-id/${id}`);
+  }
+
+  responderIncidencia(idIncidencia: number, respuestaAdmin: string): Observable<IncidenciaModelo> {
+    return this.http.put<IncidenciaModelo>(`${this.url}/incidencia-responder`, {
+      idIncidencia,
+      respuestaAdmin,
+    });
+  }
+
+  listarIncidencias(): Observable<IncidenciaModelo[]> {
+    return this.http.get<IncidenciaModelo[]>(`${this.url}/incidencias`);
+  }
+
 }

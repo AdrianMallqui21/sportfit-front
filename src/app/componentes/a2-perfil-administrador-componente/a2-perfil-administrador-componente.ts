@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectorRef, Component, inject} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {ActivatedRoute} from '@angular/router';
@@ -6,6 +6,7 @@ import {UsuarioModelo} from '../../modelos/usuario-modelo';
 import {DatePipe} from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
 import {A3PerfilActualizarDialogo} from './a3-perfil-actualizar-dialogo/a3-perfil-actualizar-dialogo';
+import {A5EditarContrasenaDialogo} from './a5-editar-contrasena-dialogo/a5-editar-contrasena-dialogo';
 
 @Component({
   imports: [MatCardModule, MatButtonModule, DatePipe],
@@ -21,6 +22,7 @@ export class A2PerfilAdministradorComponente {
   ultimoAcceso: Date = new Date();
   sesioneActivas = 1
   private dialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
     this.usuario = history.state.usuario ?? null;
@@ -38,6 +40,23 @@ export class A2PerfilAdministradorComponente {
       width: '520px',
       maxWidth: '95vw',
       data: this.usuario
+    }).afterClosed().subscribe((usuarioActualizado?: UsuarioModelo) => {
+      if (usuarioActualizado) {
+        this.usuario = usuarioActualizado;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  abrirDialogoContrasena(): void {
+    this.dialog.open(A5EditarContrasenaDialogo, {
+      width: '520px',
+      maxWidth: '95vw',
+      data: this.usuario
+    }).afterClosed().subscribe((usuarioActualizado?: UsuarioModelo) => {
+      if (usuarioActualizado) {
+        this.usuario = usuarioActualizado;
+      }
     });
   }
 

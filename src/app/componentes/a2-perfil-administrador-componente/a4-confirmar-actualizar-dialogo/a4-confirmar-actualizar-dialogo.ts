@@ -19,8 +19,7 @@ class A4PerfilConfirmacionDialogo {
   templateUrl: './a4-confirmar-actualizar-dialogo.html',
 })
 export class A4ConfirmarActualizarDialogo {
-  private dialogRef =
-    inject(MatDialogRef<A4PerfilConfirmacionDialogo>);
+  private dialogRef = inject(MatDialogRef<A4PerfilConfirmacionDialogo>);
 
   // Cierra el diálogo al pulsar ENTENDIDO
   cerrar(): void {
