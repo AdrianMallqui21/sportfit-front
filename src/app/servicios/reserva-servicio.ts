@@ -1,14 +1,15 @@
-import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {map, Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
 import {
   BannerReservasModelo,
   ReservaHorarioModelo,
   ReservaModelo,
   SolicitudReservaModelo
 } from '../modelos/solicitud-reserva-modelo';
-import { SedeCanchaModelo, SedeModelo, TipoCanchaModelo } from '../modelos/espacio-deportivo-modelo';
+import {SedeCanchaModelo, SedeModelo, TipoCanchaModelo} from '../modelos/espacio-deportivo-modelo';
+import {DeporteParticipacionModelo, ReservaDeporteSedeModelo, TendenciaAnualModelo} from '../modelos/reserva-modelo';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class ReservaServicio {
     if (fecha && fecha.trim().length > 0) {
       params = params.set('fecha', fecha.trim());
     }
-    return this.http.get<ReservaModelo[]>(`${this.url}/reserva-filtro-concatenado`, { params });
+    return this.http.get<ReservaModelo[]>(`${this.url}/reserva-filtro-concatenado`, {params});
   }
 
   // ED17: Consultar horarios por fecha, deporte y sede
@@ -61,7 +62,7 @@ export class ReservaServicio {
       .set('fecha', fecha)
       .set('idDeporte', idDeporte.toString())
       .set('idSede', idSede.toString());
-    return this.http.get<ReservaHorarioModelo[]>(`${this.url}/reservas/horarios`, { params });
+    return this.http.get<ReservaHorarioModelo[]>(`${this.url}/reservas/horarios`, {params});
   }
 
   // ED23: Editar / actualizar reserva
@@ -86,4 +87,32 @@ export class ReservaServicio {
   listarCanchas(): Observable<SedeCanchaModelo[]> {
     return this.http.get<SedeCanchaModelo[]>(`${this.url}/canchas`);
   }
+
+  // ED03
+  frecuenciaReservasPorDeporteSede(mes?: number): Observable<ReservaDeporteSedeModelo[]> {
+    return this.http.get<Array<Partial<ReservaDeporteSedeModelo> & {
+      Deporte?: string;
+      Sede?: string;
+      frecuencia: number;
+    }>>(
+      `${this.url}/reservas/sede/tipoCancha`,
+      { params: mes === undefined ? {} : { mes } }
+    ).pipe(map(filas => filas.map(fila => ({
+      deporte: fila.deporte ?? fila.Deporte ?? 'Sin deporte',
+      sede: fila.sede ?? fila.Sede ?? 'Sin sede',
+      frecuencia: fila.frecuencia,
+    }))));
+  }
+
+  // ED04
+  listarDeporteParticipacion(): Observable<DeporteParticipacionModelo[]> {
+    return this.http.get<DeporteParticipacionModelo[]>(`${this.url}/reservas/sede/tipoCancha/participacion`);
+  }
+
+  // ED13
+  listarTendenciaAnual(anio?: number): Observable<TendenciaAnualModelo[]> {
+    return this.http.get<TendenciaAnualModelo[]>(`${this.url}/reservas-tendencia-anual`, {params: anio === undefined ? {} : {anio}});
+  }
+
+
 }

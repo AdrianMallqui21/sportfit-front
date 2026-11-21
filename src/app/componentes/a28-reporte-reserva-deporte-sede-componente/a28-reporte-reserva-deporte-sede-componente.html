@@ -1,0 +1,167 @@
+<main class="reporte">
+  <div class="reporte-marca">
+    <img src="loge-sportfit.png" alt="SportFit" />
+  </div>
+  <header class="encabezado">
+    <div class="encabezado-emblema" aria-hidden="true">
+      <span class="material-symbols-outlined">monitoring</span>
+    </div>
+    <div class="encabezado-texto">
+      <h1>DashBoard <span>Reservas por deporte y Sede</span></h1>
+      <p>Análisis general de reservas por ubicación y tipo de cancha</p>
+    </div>
+  </header>
+
+  <section class="paneles" aria-label="Reporte de reservas">
+    <div class="resumen">
+      <div class="indicadores">
+        <mat-card class="indicador indicador-reservas">
+          <mat-card-subtitle>Reservas del mes</mat-card-subtitle>
+          <div class="indicador-contenido">
+            <span class="material-symbols-outlined indicador-icono" aria-hidden="true">calendar_month</span>
+            <strong>{{ banners()?.datos?.reservasMes ?? '—' }}</strong>
+          </div>
+        </mat-card>
+        <mat-card class="indicador indicador-deporte">
+          <mat-card-subtitle>Deporte más reservado</mat-card-subtitle>
+          <div class="indicador-contenido">
+            <span class="material-symbols-outlined indicador-icono" aria-hidden="true">sports_soccer</span>
+            <strong>{{ banners()?.datos?.deportePopular ?? '—' }}</strong>
+          </div>
+        </mat-card>
+        <mat-card class="indicador indicador-sede">
+          <mat-card-subtitle>Sede con más demanda</mat-card-subtitle>
+          <div class="indicador-contenido">
+            <span class="material-symbols-outlined indicador-icono" aria-hidden="true">location_city</span>
+            <strong>{{ banners()?.datos?.sedePopular ?? banners()?.datos?.SedePopular ?? '—' }}</strong>
+          </div>
+        </mat-card>
+      </div>
+      @if (banners()?.estado === 'error') { <p role="alert">No se pudieron cargar los indicadores.</p> }
+
+      <mat-card class="panel">
+        <h2>Participación de reservas por deporte</h2>
+        @if (participacion()?.estado === 'cargando') { <p role="status">Cargando…</p> }
+  @else if (participacion()?.estado === 'error') { <p role="alert">No se pudieron cargar los datos.</p> }
+  @else if (!total()) { <p role="status">Sin datos para mostrar.</p> }
+        @else {
+          <div class="participacion">
+            <div class="dona" [style.background]="dona()"><div><strong>{{ total() }}</strong><span>reservas</span></div></div>
+            <ul class="leyenda">
+              @for (fila of participacion()?.datos; track fila.deporte) {
+                <li><i [style.background]="color(fila.deporte)"></i>{{ fila.deporte }} <b>{{ fila.cantidad / total() | percent:'1.0-1' }}</b></li>
+              }
+            </ul>
+          </div>
+        }
+      </mat-card>
+    </div>
+
+    <mat-card class="panel">
+      <div class="titulo titulo-barras">
+        <h2>Reservas por deporte y sede</h2>
+        <mat-form-field class="mes-barras" appearance="outline" subscriptSizing="dynamic">
+          <mat-select aria-label="Mes del gráfico de reservas" [formControl]="mesBarras">
+            <mat-select-trigger>Mes · {{ meses[mesBarras.value - 1] ?? 'Todos' }}</mat-select-trigger>
+            <mat-option [value]="0">Todos los meses</mat-option>
+            @for (mes of meses; track $index) {
+              <mat-option [value]="$index + 1">{{ mes }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      @if (frecuencia()?.estado === 'cargando') { <p role="status">Cargando…</p> }
+  @else if (frecuencia()?.estado === 'error') { <p role="alert">No se pudieron cargar los datos.</p> }
+  @else if (!graficoBarras().barras.length) { <p role="status">Sin datos para mostrar.</p> }
+      @else {
+        <svg viewBox="0 0 565 205" role="img" aria-label="Reservas agrupadas por sede y deporte">
+          @for (marca of [0, 1, 2, 3, 4, 5]; track marca) {
+      <line x1="48" x2="558" [attr.y1]="170 - marca * 30" [attr.y2]="170 - marca * 30" stroke="#d9e4dc" />
+      <text x="42" [attr.y]="174 - marca * 30" text-anchor="end">{{ escala(marca, graficoBarras().maximo) }}</text>
+    }
+          @for (barra of graficoBarras().barras; track $index) {
+            <rect [attr.x]="barra.x" [attr.y]="170 - barra.alto" [attr.width]="barra.ancho" [attr.height]="barra.alto" [attr.fill]="color(barra.deporte)">
+              <title>{{ barra.sede }} · {{ barra.deporte }} · {{ barra.frecuencia }} reservas</title>
+            </rect>
+          }
+          @for (etiqueta of graficoBarras().etiquetas; track etiqueta.sede) {
+            <text [attr.x]="etiqueta.x" y="188" text-anchor="middle">{{ etiqueta.sede }}</text>
+          }
+        </svg>
+        <ul class="leyenda horizontal">
+          @for (deporte of graficoBarras().deportes; track deporte) { <li><i [style.background]="color(deporte)"></i>{{ deporte }}</li> }
+        </ul>
+      }
+    </mat-card>
+
+    <mat-card class="panel">
+      <div class="titulo"><h2>Tendencia mensual de reservas</h2>
+        <mat-form-field appearance="outline">
+    <mat-label>Año</mat-label><mat-select [formControl]="anioTendencia">
+    @for (anio of anios; track $index) { <mat-option [value]="anio">{{ anio }}</mat-option> }
+    </mat-select>
+  </mat-form-field>
+      </div>
+      @if (tendencia()?.estado === 'cargando') { <p role="status">Cargando…</p> }
+  @else if (tendencia()?.estado === 'error') { <p role="alert">No se pudieron cargar los datos.</p> }
+  @else if (!graficoTendencia().series.length) { <p role="status">Sin datos para mostrar.</p> }
+      @else {
+        <svg viewBox="0 0 565 205" role="img" aria-label="Tendencia mensual por deporte en todas las sedes">
+          @for (marca of [0, 1, 2, 3, 4, 5]; track marca) {
+      <line x1="48" x2="558" [attr.y1]="170 - marca * 30" [attr.y2]="170 - marca * 30" stroke="#d9e4dc" />
+      <text x="42" [attr.y]="174 - marca * 30" text-anchor="end">{{ escala(marca, graficoTendencia().maximo) }}</text>
+    }
+          @for (serie of graficoTendencia().series; track serie.deporte) {
+            <polyline [attr.points]="serie.linea" [attr.stroke]="color(serie.deporte)" fill="none" stroke-width="2.5" />
+            @for (punto of serie.puntos; track punto.x) {
+              <circle [attr.cx]="punto.x" [attr.cy]="punto.y" r="3.5" [attr.fill]="color(serie.deporte)"><title>{{ serie.deporte }} · {{ meses[$index] }} · {{ punto.cantidad }}</title></circle>
+            }
+          }
+          @for (mes of meses; track mes) { <text [attr.x]="48 + $index * 45" y="188" text-anchor="middle">{{ mes }}</text> }
+        </svg>
+        <ul class="leyenda horizontal">
+          @for (serie of graficoTendencia().series; track serie.deporte) { <li><i [style.background]="color(serie.deporte)"></i>{{ serie.deporte }}</li> }
+        </ul>
+      }
+    </mat-card>
+
+    <mat-card class="panel">
+      <div class="titulo"><h2>Detalle por sede</h2>
+        <button mat-stroked-button type="button" (click)="exportar()" [disabled]="!detalle()?.datos?.length">Exportar CSV</button>
+      </div>
+      <div class="filtros">
+        <mat-form-field appearance="outline">
+    <mat-label>Mes</mat-label><mat-select [formControl]="mesDetalle">
+    @for (mes of meses; track $index) { <mat-option [value]="$index + 1">{{ mes }}</mat-option> }
+    </mat-select>
+  </mat-form-field>
+        <mat-form-field appearance="outline">
+    <mat-label>Año</mat-label><mat-select [formControl]="anioDetalle">
+    @for (anio of anios; track $index) { <mat-option [value]="anio">{{ anio }}</mat-option> }
+    </mat-select>
+  </mat-form-field>
+        <mat-form-field appearance="outline">
+    <mat-label>Sede</mat-label><mat-select [canSelectNullableOptions]="true" [formControl]="sedeDetalle"><mat-option [value]="null">Todas las sedes</mat-option>
+    @for (sede of sedes()?.datos; track $index) { <mat-option [value]="sede.idSede">{{ sede.nombre }}</mat-option> }
+    </mat-select>
+  </mat-form-field>
+      </div>
+      @if (sedes()?.estado === 'error') { <p role="alert">No se pudo cargar el selector de sedes.</p> }
+      @if (detalle()?.estado === 'cargando') { <p role="status">Cargando…</p> }
+  @else if (detalle()?.estado === 'error') { <p role="alert">No se pudieron cargar los datos.</p> }
+  @else if (!detalle()?.datos?.length) { <p role="status">Sin datos para mostrar.</p> }
+      @else {
+        <div class="tabla">
+          <table mat-table [dataSource]="detalle()?.datos ?? []">
+            <ng-container matColumnDef="sede"><th mat-header-cell *matHeaderCellDef>Sede</th><td mat-cell *matCellDef="let fila">{{ fila.sede }}</td></ng-container>
+            <ng-container matColumnDef="deporte"><th mat-header-cell *matHeaderCellDef>Deporte</th><td mat-cell *matCellDef="let fila">{{ fila.deporte }}</td></ng-container>
+            <ng-container matColumnDef="cantidad"><th mat-header-cell *matHeaderCellDef>Reservas</th><td mat-cell *matCellDef="let fila">{{ fila.cantidad }}</td></ng-container>
+            <ng-container matColumnDef="ingresos"><th mat-header-cell *matHeaderCellDef>Ingresos</th><td mat-cell *matCellDef="let fila">{{ fila.ingresos | currency:'PEN':'S/ ' }}</td></ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+            <tr mat-row *matRowDef="let fila; columns: columnas"></tr>
+          </table>
+        </div>
+      }
+    </mat-card>
+  </section>
+</main>

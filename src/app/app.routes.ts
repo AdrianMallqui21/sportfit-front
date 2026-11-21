@@ -39,6 +39,13 @@ import {
 } from './componentes/a18-gestion-reservas-componente/a18-gestion-reservas-componente';
 
 export const routes: Routes = [
+  {
+    path: 'reporte-reservas',
+    loadComponent: () => import('./componentes/a28-reporte-reserva-deporte-sede-componente/a28-reporte-reserva-deporte-sede-componente')
+      .then(m => m.A28ReporteReservaDeporteSedeComponente),
+    canActivate: [AuthGuard],
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
+  },
   // Rutas públicas de acceso y registro
   {path: '', component: C1InicioSesionClienteComponente},
   {path: 'registro', component: C2RegistroClienteComponente},
