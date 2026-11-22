@@ -1,0 +1,67 @@
+.dialogo-confirmacion {
+  padding: 20px 24px 22px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.cabecera-dialogo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.titulo-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1e293b;
+}
+
+.titulo-con-icono h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.cuerpo-confirmacion {
+  padding: 4px 0 0 !important;
+}
+
+.texto-confirmacion {
+  font-size: 14.5px;
+  color: #334155;
+  margin: 10px 0 20px;
+  line-height: 1.5;
+}
+
+.texto-error {
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.acciones-confirmacion {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.boton-rojo {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  min-width: 110px;
+  height: 40px;
+}
+
+.boton-verde {
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  min-width: 110px;
+  height: 40px;
+}

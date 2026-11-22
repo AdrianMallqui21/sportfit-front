@@ -7,8 +7,10 @@ import {Router, RouterLink} from '@angular/router';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {AutorizacionServicio} from '../../servicios/autorizacion-servicio';
 import {CredencialesDTOModelo} from '../../modelos/credenciales-dto-modelo';
-import { RespuestaDTOModelo } from '../../modelos/respuesta-dto-modelo';
-import { LoginService } from '../../servicios/login-service';
+import {RespuestaDTOModelo} from '../../modelos/respuesta-dto-modelo';
+import {map, Observable} from 'rxjs';
+import {UsuarioModelo} from '../../modelos/usuario-modelo';
+import {AdministradorServicio} from '../../servicios/administrador-servicio';
 
 @Component({
   selector: 'app-a1-inicio-sesion-administrador-componente',
@@ -33,8 +35,10 @@ export class A1InicioSesionAdministradorComponente {
   contrsena: string = '';
   router: Router = inject(Router);
   // Logica de auth
-  loginService: LoginService = inject(LoginService);
+  autorizacionServicio: AutorizacionServicio = inject(AutorizacionServicio);
+  administradorServicio: AdministradorServicio = inject(AdministradorServicio);
   protected loginAdministrador: FormGroup;
+
 
   private readonly fb = inject(FormBuilder);
 
@@ -42,7 +46,7 @@ export class A1InicioSesionAdministradorComponente {
     this.loginAdministrador = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-    });
+    })
   }
 
   clickEvent(event: MouseEvent) {
@@ -51,11 +55,21 @@ export class A1InicioSesionAdministradorComponente {
   }
 
   ngOnInit() {
-    this.loadForm();
+    if (localStorage.getItem('token') != null) {
+      localStorage.clear();
+      console.log("Token e items eliminados")
+    }
+    this.loadForm()
   }
 
   loadForm(): void {
-    console.log('Cargando formulario');
+    console.log("Cargando formulario");
+  }
+
+  cargarAdministrador(emailBuscado: string): Observable<UsuarioModelo> {
+    return this.administradorServicio.obtenerAdministradorCorreo(emailBuscado, 2).pipe(
+      map(usuario => usuario)
+    )
   }
 
   protected onSubmit() {
@@ -63,7 +77,7 @@ export class A1InicioSesionAdministradorComponente {
       const credenciales: CredencialesDTOModelo = new CredencialesDTOModelo();
       credenciales.correo = this.loginAdministrador.value.email;
       credenciales.password = this.loginAdministrador.value.password;
-      this.loginService.login(credenciales).subscribe({
+      this.autorizacionServicio.accederCliente(credenciales).subscribe({
         next: (data: RespuestaDTOModelo) => {
           if (!data.roles?.includes('ROLE_ADMINISTRADOR')) {
             localStorage.removeItem('token');
@@ -72,16 +86,25 @@ export class A1InicioSesionAdministradorComponente {
             return;
           }
           localStorage.setItem('rol', 'ROLE_ADMINISTRADOR');
-          this.router.navigate(['/perfil-administrador']);
+          //PASAR
+          this.cargarAdministrador(credenciales.correo).subscribe({
+            next: (usuario) => {
+            localStorage.setItem('correoAdministrador', usuario.correo);
+              console.log("Usuario enviado: ", usuario);
+              this.router.navigate(['/perfil-administrador'], {state: {usuario}});
+            },
+            error: () => alert('No se pudo obtener el ID del administrador')
+          });
         },
         error: (error) => {
           console.error('Error al iniciar sesión:', error);
           alert('No se pudo iniciar sesión');
-        },
+        }
       });
     } else {
-      alert('Formulario no valido!');
-      console.log('Formulario no valido');
+      alert("Formulario no valido!")
+      console.log("Formulario no valido");
     }
   }
+
 }

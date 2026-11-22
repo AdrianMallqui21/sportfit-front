@@ -1,0 +1,27 @@
+<div class="dialogo-confirmacion">
+  <div class="cabecera-dialogo">
+    <div class="titulo-con-icono">
+      <mat-icon>edit</mat-icon>
+      <h3>Editar información</h3>
+    </div>
+    <button mat-icon-button type="button" [mat-dialog-close]="false" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="cuerpo-confirmacion">
+    <p class="texto-confirmacion">¿Estás seguro que deseas actualizar la información de la reserva?</p>
+    @if (data?.fecha && data?.horario) {
+      <div class="resumen-cambio">
+        @if (data?.canchaNombre) {
+          <span><strong>Espacio:</strong> {{ data?.canchaNombre }}</span>
+        }
+        <span><strong>Nuevo horario:</strong> {{ data?.fecha }} ({{ data?.horario }})</span>
+      </div>
+    }
+    <div class="acciones-confirmacion">
+      <button mat-flat-button type="button" class="boton-rojo" [mat-dialog-close]="false">Cancelar</button>
+      <button mat-flat-button type="button" class="boton-verde" (click)="confirmar()">Continuar</button>
+    </div>
+  </mat-dialog-content>
+</div>

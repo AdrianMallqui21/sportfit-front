@@ -1,0 +1,209 @@
+.barra-lateral-admin {
+  width: 205px;
+  min-width: 205px;
+  background-color: #4f8576;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  font-family: inherit;
+  z-index: 100;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
+}
+
+/* BOTÓN DE NOTIFICACIONES (CAMPANA) */
+.boton-campana {
+  position: absolute !important;
+  top: 14px;
+  right: 14px;
+  width: 34px !important;
+  height: 34px !important;
+  padding: 0 !important;
+  border-radius: 50%;
+  background-color: #ebc21c !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.boton-campana:hover {
+  transform: scale(1.08);
+}
+
+.boton-campana mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #1e293b;
+}
+
+/* SECCIÓN PERFIL */
+.bloque-perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 22px;
+  text-align: center;
+}
+
+.avatar-circular {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  background-color: #d1fae5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.icono-avatar {
+  font-size: 68px;
+  width: 68px;
+  height: 68px;
+  color: #059669;
+}
+
+.etiqueta-rol {
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* NAVEGACIÓN PRINCIPAL */
+.navegacion-admin {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px;
+  padding: 10px 20px !important;
+  height: auto !important;
+  min-height: 44px;
+  border-radius: 0 !important;
+  color: #e6f0ec !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.1px !important;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff !important;
+}
+
+.nav-item mat-icon {
+  font-size: 19px;
+  width: 19px;
+  height: 19px;
+  margin: 0 !important;
+  color: #e6f0ec;
+}
+
+/* ITEM ACTIVO (AMARILLO DORADO CON TEXTO BLANCO COMO LA CAPTURA) */
+.nav-item.activo,
+.nav-item.activo:hover {
+  background-color: #ebc21c;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.nav-item.activo mat-icon {
+  color: #ffffff;
+}
+
+/* BLOQUE DE REPORTES */
+.bloque-reportes {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item-reportes ::ng-deep .mdc-button__label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.reportes-label-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icono-flecha {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* SUBMENÚ REPORTES (AMARILLO EN CASCADA CON TEXTO BLANCO) */
+.submenu-reportes {
+  background-color: #ebc21c;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sub-item {
+  display: block;
+  padding: 8px 14px 8px 42px;
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+  line-height: 1.3;
+}
+
+.sub-item:hover {
+  background-color: #d9b014;
+}
+
+/* SUB-ITEM ACTIVO (FONDO OSCURO OLIVA CON TEXTO BLANCO COMO EN LA CAPTURA) */
+.sub-item.sub-item-activo,
+.sub-item.sub-item-activo:hover {
+  background-color: #594d16;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* FOOTER CERRAR SESIÓN */
+.footer-barra-lateral {
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.boton-cerrar-sesion {
+  color: #e6f0ec !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+}
+
+.boton-cerrar-sesion:hover {
+  color: #ffffff !important;
+  background-color: rgba(0, 0, 0, 0.15);
+}

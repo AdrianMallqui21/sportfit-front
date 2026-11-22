@@ -1,0 +1,82 @@
+.dialogo-desactivar-contenedor {
+  padding: 20px 24px 24px;
+  background: #ffffff;
+}
+
+.cabecera-dialogo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.titulo-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #111827;
+}
+
+.titulo-con-icono h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.icono-power {
+  color: #dc2626;
+}
+
+.cuerpo-dialogo {
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.pregunta-desactivar,
+.texto-confirmado {
+  margin: 4px 0 20px;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.texto-confirmado {
+  color: #15803d;
+  font-weight: 600;
+}
+
+.texto-error {
+  margin: 0 0 14px;
+  font-size: 12.5px;
+  color: #b91c1c;
+  background: #fee2e2;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.botones-confirmar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-cancelar {
+  background-color: #f1f5f9 !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+}
+
+.btn-continuar {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+}
+
+.btn-aceptar {
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+}

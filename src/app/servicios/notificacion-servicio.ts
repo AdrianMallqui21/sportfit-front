@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { NotificacionModelo } from '../modelos/notificacion-modelo';
 
+export type Notificacion = NotificacionModelo;
+
 @Injectable({ providedIn: 'root' })
 export class NotificacionServicio {
   private url = environment.apiUrl;

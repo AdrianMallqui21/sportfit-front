@@ -1,0 +1,27 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.layout-aplicacion {
+  min-height: 100vh;
+  display: flex;
+  width: 100%;
+}
+
+.layout-aplicacion.con-barra {
+  display: flex;
+  flex-direction: row;
+}
+
+.contenido-principal {
+  flex: 1;
+  min-width: 0;
+  background-color: #eaf4e5;
+}
+
+.contenido-principal.contenido-con-barra {
+  overflow-y: auto;
+  height: 100vh;
+}

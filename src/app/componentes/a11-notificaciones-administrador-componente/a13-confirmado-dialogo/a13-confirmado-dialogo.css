@@ -1,0 +1,29 @@
+
+.titulo-exito {
+  text-align: center;
+  color: #19a779;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 20px 16px 8px;
+}
+
+.mensaje-exito {
+  text-align: center;
+  color: #333;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 12px 25px 18px !important;
+}
+
+.acciones-exito {
+  display: flex;
+  justify-content: center;
+  padding: 8px 20px 24px;
+}
+
+.boton-entendido {
+  min-width: 105px;
+  background: #39b887 !important;
+  color: white !important;
+  border-radius: 6px;
+}

@@ -1,0 +1,170 @@
+/* Contenedor principal */
+.dialogo-perfil {
+  background-color: #ffffff;
+  color: #222222;
+  border-radius: 10px;
+  padding: 16px 24px 24px;
+  font-family: Arial, sans-serif;
+}
+
+/* Cabecera del diálogo */
+.dialogo-cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+/* Título e ícono de edición */
+.dialogo-cabecera h2[mat-dialog-title] {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 8px 0 0;
+  color: #171717;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+/* Elimina el espacio adicional que Material reserva en el título */
+.dialogo-cabecera h2[mat-dialog-title]::before {
+  display: none;
+}
+
+/* Ícono del título */
+.dialogo-cabecera h2 mat-icon {
+  width: 26px;
+  height: 26px;
+  font-size: 26px;
+}
+
+/* Botón de cierre */
+.dialogo-cabecera button {
+  flex-shrink: 0;
+  color: #222222;
+}
+
+/* Área del contenido */
+mat-dialog-content {
+  max-height: 65vh;
+  padding: 0 10px;
+}
+
+/* Distribución vertical del formulario */
+.formulario-perfil {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Etiqueta y entrada de cada campo */
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* Etiquetas superiores */
+.grupo-campo label {
+  color: #262626;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+/* Fondo y borde de las entradas */
+.campo-entrada {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 34px;
+  padding: 0 10px;
+  background-color: #f6f7fa;
+  border: 1px solid #eef0f3;
+  border-radius: 9px;
+  box-sizing: border-box;
+}
+
+/* Íconos dentro de las entradas */
+.campo-entrada mat-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: #999999;
+  font-size: 20px;
+}
+
+/* Texto de los campos */
+.campo-entrada input {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #555555;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+/* Texto de ejemplo */
+.campo-entrada input::placeholder {
+  color: #a0a0a0;
+  opacity: 1;
+}
+
+/* Resalta el campo al seleccionarlo */
+.campo-entrada:focus-within {
+  border-color: #3bb88b;
+}
+
+/* DNI y teléfono en dos columnas */
+.fila {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+/* Espacio para el botón inferior */
+mat-dialog-actions {
+  padding: 46px 0 0;
+  min-height: auto;
+}
+
+/* Botón verde de actualización */
+.boton-actualizar {
+  width: 242px;
+  max-width: 100%;
+  height: 51px;
+  border-radius: 8px;
+  background-color: #3bb88b !important;
+  color: #ffffff !important;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Adaptación para pantallas pequeñas */
+@media (max-width: 480px) {
+  .dialogo-perfil {
+    padding: 16px;
+  }
+
+  mat-dialog-content {
+    padding: 0;
+  }
+
+  .fila {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  mat-dialog-actions {
+    padding-top: 30px;
+  }
+}

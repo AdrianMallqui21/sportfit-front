@@ -1,0 +1,42 @@
+.dialogo-confirmacion-contenedor {
+  padding: 24px 28px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.titulo-modal-confirmacion {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.descripcion-modal-confirmacion {
+  margin: 0 0 22px;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.pie-modal-confirmacion {
+  display: flex;
+  justify-content: center;
+}
+
+.boton-entendido-verde {
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  padding: 0 28px !important;
+  height: 42px;
+}
+
+.boton-entendido-rojo {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  padding: 0 28px !important;
+  height: 42px;
+}
