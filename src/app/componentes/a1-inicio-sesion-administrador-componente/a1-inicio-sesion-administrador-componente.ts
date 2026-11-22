@@ -86,6 +86,7 @@ export class A1InicioSesionAdministradorComponente {
             return;
           }
           localStorage.setItem('rol', 'ROLE_ADMINISTRADOR');
+          localStorage.setItem('correo', credenciales.correo);
           //PASAR
           this.cargarAdministrador(credenciales.correo).subscribe({
             next: (usuario) => {

@@ -1,0 +1,149 @@
+.dialogo-foto-contenedor {
+  padding: 20px 24px 22px;
+  background: #ffffff;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.cabecera-dialogo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.titulo-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #0f172a;
+}
+
+.titulo-con-icono h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cuerpo-dialogo {
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.preview-circular {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  border: 3px solid #2eb875;
+  background: #f1f5f9;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #94a3b8;
+}
+
+.preview-circular img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-circular mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+}
+
+.zona-drop-foto {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.zona-drop-foto:hover,
+.zona-drop-activa {
+  border-color: #2eb875;
+  background: #ecfdf5;
+}
+
+.zona-drop-foto mat-icon {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.texto-drop {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.texto-drop strong {
+  font-size: 13px;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.texto-drop span {
+  font-size: 11.5px;
+  color: #64748b;
+}
+
+.btn-cancelar-img {
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+  font-size: 12px !important;
+  height: 32px !important;
+  flex-shrink: 0;
+}
+
+.estado-foto {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 7px 10px;
+}
+
+.estado-info {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.estado-error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.btn-guardar-foto {
+  width: 100%;
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  border-radius: 10px !important;
+  height: 44px;
+}
+
+.btn-guardar-foto:disabled {
+  background-color: #cbd5e1 !important;
+  color: #64748b !important;
+}

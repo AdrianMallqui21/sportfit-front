@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { SedeCanchaModelo, TipoCanchaModelo } from '../../../modelos/espacio-deportivo-modelo';
 import { EspacioDeportivoServicio } from '../../../servicios/espacio-deportivo-servicio';
+import { ImagenServicio } from '../../../servicios/imagen-servicio';
 
 export interface OpcionDeporteEspacio {
   valor: string;
@@ -43,13 +44,17 @@ export interface DatosEditarEspacioDialogo {
 export class A23EditarEspacioDialogo {
   private readonly fb = inject(FormBuilder);
   private readonly espacioServicio = inject(EspacioDeportivoServicio);
+  private readonly imagenServicio = inject(ImagenServicio);
   private readonly dialogRef = inject(MatDialogRef<A23EditarEspacioDialogo>);
 
   formEdicion: FormGroup;
   guardando = signal<boolean>(false);
+  subiendoImagen = signal<boolean>(false);
+  arrastrando = signal<boolean>(false);
   errorServidor = signal<string | null>(null);
+  archivoPendiente = signal<File | null>(null);
   previewLocal = signal<string | null>(null);
-  avisoImagenLocal = signal<string | null>(null);
+  estadoImagen = signal<{ tipo: 'ok' | 'info' | 'error'; texto: string } | null>(null);
   imagenInvalida = signal<boolean>(false);
 
   readonly opcionesDeporte: OpcionDeporteEspacio[];
@@ -74,47 +79,113 @@ export class A23EditarEspacioDialogo {
 
   obtenerUrlPreview(): string {
     if (this.previewLocal()) return this.previewLocal()!;
-    const url = (this.formEdicion.get('imgCancha')?.value || '').trim();
-    return url;
+    return (this.formEdicion.get('imgCancha')?.value || '').trim();
   }
 
   alCambiarUrlImagen(): void {
+    this.archivoPendiente.set(null);
     this.previewLocal.set(null);
-    this.avisoImagenLocal.set(null);
+    this.estadoImagen.set(null);
     this.imagenInvalida.set(false);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.arrastrando.set(true);
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.arrastrando.set(false);
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.arrastrando.set(false);
+    const archivo = event.dataTransfer?.files?.[0];
+    if (archivo) {
+      this.prepararArchivoLocal(archivo);
+    }
   }
 
   alSeleccionarArchivo(event: Event): void {
     const input = event.target as HTMLInputElement;
     const archivo = input.files?.[0];
-    if (!archivo) return;
-
-    this.avisoImagenLocal.set(null);
-    this.imagenInvalida.set(false);
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const resultado = reader.result as string;
-      this.previewLocal.set(resultado);
-
-      if (resultado.length <= 300) {
-        this.formEdicion.patchValue({ imgCancha: resultado });
-      } else {
-        this.avisoImagenLocal.set(
-          `Vista previa cargada (${archivo.name}). El backend admite rutas/URLs de hasta 300 caracteres en "imgCancha", así que pega una URL si deseas guardarla en BD.`
-        );
-      }
-    };
-    reader.readAsDataURL(archivo);
+    if (archivo) {
+      this.prepararArchivoLocal(archivo);
+    }
     input.value = '';
   }
 
+  cancelarSeleccionImagen(event: Event): void {
+    event.stopPropagation();
+    this.archivoPendiente.set(null);
+    this.previewLocal.set(null);
+    this.estadoImagen.set(null);
+    this.imagenInvalida.set(false);
+  }
+
+  private prepararArchivoLocal(archivo: File): void {
+    if (!archivo.type.startsWith('image/')) {
+      this.estadoImagen.set({ tipo: 'error', texto: 'Solo se permiten archivos de imagen (JPG, PNG, WEBP).' });
+      return;
+    }
+
+    if (archivo.size > 5 * 1024 * 1024) {
+      this.estadoImagen.set({ tipo: 'error', texto: 'La imagen supera los 5 MB permitidos.' });
+      return;
+    }
+
+    this.archivoPendiente.set(archivo);
+    this.imagenInvalida.set(false);
+
+    const reader = new FileReader();
+    reader.onload = () => this.previewLocal.set(reader.result as string);
+    reader.readAsDataURL(archivo);
+
+    this.estadoImagen.set({
+      tipo: 'info',
+      texto: `Imagen "${archivo.name}" lista. Se subirá a Cloudinary al pulsar ACTUALIZAR.`
+    });
+  }
+
   guardarEdicion(): void {
-    if (this.formEdicion.invalid) {
+    if (this.formEdicion.invalid || this.guardando() || this.subiendoImagen()) {
       this.formEdicion.markAllAsTouched();
       return;
     }
 
+    const pendiente = this.archivoPendiente();
+    if (pendiente) {
+      this.subiendoImagen.set(true);
+      this.errorServidor.set(null);
+
+      this.imagenServicio.subirImagen(pendiente).subscribe({
+        next: (urlNube) => {
+          this.subiendoImagen.set(false);
+          this.archivoPendiente.set(null);
+          this.previewLocal.set(null);
+          this.formEdicion.patchValue({ imgCancha: urlNube });
+          this.enviarActualizacionBackend(urlNube);
+        },
+        error: () => {
+          this.subiendoImagen.set(false);
+          this.estadoImagen.set({
+            tipo: 'error',
+            texto: 'No se pudo subir la imagen a Cloudinary. Verifica tu conexión o el Upload Preset.'
+          });
+        }
+      });
+    } else {
+      const urlActual = (this.formEdicion.get('imgCancha')?.value || '').trim();
+      this.enviarActualizacionBackend(urlActual);
+    }
+  }
+
+  private enviarActualizacionBackend(urlImagen: string): void {
     const cancha = this.data.cancha;
     const formVal = this.formEdicion.getRawValue();
     const depNorm = this.normalizarTexto(formVal.deporte || '');
@@ -134,7 +205,7 @@ export class A23EditarEspacioDialogo {
 
     const idTipo = tipoMatch?.idTipoCancha || mapaTipoCancha[depNorm] || cancha.idTipoCancha || cancha.cancha?.idTipoCancha || 1;
     const idSede = cancha.idSedeSede || cancha.sede?.idSede || 1;
-    const imgFinal = (formVal.imgCancha || '').trim() || cancha.imgCancha || 'https://sportfit.com/imagenes/cancha-default.png';
+    const imgFinal = urlImagen || cancha.imgCancha || 'https://sportfit.com/imagenes/cancha-default.png';
 
     const dtoActualizado: SedeCanchaModelo = {
       ...cancha,

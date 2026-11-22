@@ -9,8 +9,7 @@
     <div class="columna-identidad">
       <mat-card appearance="outlined" class="fotografia-admin">
         <mat-card-content>
-          <!-- Agregar el atributo src con la fotografía del administrador. -->
-          <img alt="Fotografía del administrador" class="imagen-administrador">
+          <img [src]="usuario.imgUsuario || ''" alt="Fotografía del administrador" class="imagen-administrador" (error)="usuario.imgUsuario = ''">
           <h2 class="nombre-administrador">{{ usuario.nombre }}</h2>
           <p class="rol">{{ rol }}</p>
           @if (usuario.activo) {
@@ -21,7 +20,7 @@
         </mat-card-content>
 
         <mat-card-actions>
-          <button class="boton-cambiar-fotografia" mat-stroked-button type="button">
+          <button (click)="abrirDialogoCambiarFoto()" class="boton-cambiar-fotografia" mat-stroked-button type="button">
             Cambiar fotografía
           </button>
         </mat-card-actions>

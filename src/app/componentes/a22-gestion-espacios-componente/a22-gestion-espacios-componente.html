@@ -131,15 +131,24 @@
               </span>
 
               <div class="cuerpo-tarjeta-cancha">
-                <!-- Avatar cancha SVG circular -->
+                <!-- Avatar cancha (Imagen real de Cloudinary o SVG circular) -->
                 <div class="avatar-cancha" [class.avatar-activo]="cancha.estado" [class.avatar-inactivo]="!cancha.estado">
-                  <svg viewBox="0 0 48 34" class="svg-pitch-cancha" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="2" width="44" height="30" rx="3" />
-                    <line x1="24" y1="2" x2="24" y2="32" />
-                    <circle cx="24" cy="17" r="6" />
-                    <rect x="2" y="9" width="8" height="16" />
-                    <rect x="38" y="9" width="8" height="16" />
-                  </svg>
+                  @if (cancha.imgCancha && !cancha.imgCancha.includes('cancha-default.png')) {
+                    <img
+                      [src]="cancha.imgCancha"
+                      [alt]="cancha.nombre"
+                      class="img-cancha-avatar"
+                      (error)="cancha.imgCancha = ''"
+                    >
+                  } @else {
+                    <svg viewBox="0 0 48 34" class="svg-pitch-cancha" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="2" y="2" width="44" height="30" rx="3" />
+                      <line x1="24" y1="2" x2="24" y2="32" />
+                      <circle cx="24" cy="17" r="6" />
+                      <rect x="2" y="9" width="8" height="16" />
+                      <rect x="38" y="9" width="8" height="16" />
+                    </svg>
+                  }
                 </div>
 
                 <!-- Información del espacio -->
