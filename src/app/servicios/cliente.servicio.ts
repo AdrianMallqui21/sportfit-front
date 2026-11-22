@@ -63,4 +63,16 @@ export class ClienteServicio {
   obtenerTiposCancha(): Observable<TipoCanchaHome[]> {
     return this.httpClient.get<TipoCanchaHome[]>(this.url + '/tipoCanchas',);
   }
+
+
+  subirFoto(archivo: File): Observable<UsuarioModelo> {
+    const datos = new FormData();
+    datos.append('archivo', archivo);
+
+    return this.httpClient.post<UsuarioModelo>(
+      this.url + '/usuario/foto',
+      datos
+    );
+  }
+
 }

@@ -26,6 +26,7 @@ export class BarraLateral {
   private detector = inject(ChangeDetectorRef);
   nombre: string = '';
   error: string = '';
+  imgUsuario: string | null = null;
   constructor() {}
 
   ngOnInit() {
@@ -39,7 +40,11 @@ export class BarraLateral {
     this.usuarioServicio.obtenerUsuario(correo, idRol).subscribe({
       next: (data) => {
         this.nombre = data.nombre;
+        this.imgUsuario = data.imgUsuario;
         this.detector.markForCheck();
+      },
+      error: (error) => {
+        console.error('Error al obtener usuario:', error);
       },
     });
   }
@@ -52,6 +57,6 @@ export class BarraLateral {
     localStorage.removeItem('rol');
     localStorage.removeItem('idRol');
 
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 }

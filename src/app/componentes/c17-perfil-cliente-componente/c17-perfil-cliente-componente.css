@@ -22,24 +22,18 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
+  min-height: 38px;
   margin-bottom: 30px;
+  padding-right: 10px;
 }
 
-.encabezado h2 {
-  font-size: 24px;
-  font-weight: bold;
-  color: #2eb785;
-  margin: 0;
+/* Logo SPORTFIT */
+.brand-logo {
+  display: block;
+  width: clamp(112px, 11vw, 150px);
+  max-height: 38px;
+  object-fit: contain;
 }
-
-.encabezado mat-icon {
-  color: #2eb785;
-  font-size: 28px;
-  width: 28px;
-  height: 28px;
-}
-
 
 /* =========================================
    DISTRIBUCIÓN PRINCIPAL

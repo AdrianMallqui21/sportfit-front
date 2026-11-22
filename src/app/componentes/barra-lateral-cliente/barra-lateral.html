@@ -6,9 +6,15 @@
         <button mat-icon-button routerLink="/notificaciones-cliente" class="campana">
           <mat-icon>notifications</mat-icon>
         </button>
+
         <div class="avatar">
-          <mat-icon>account_circle</mat-icon>
+          @if (imgUsuario) {
+            <img [src]="imgUsuario" alt="Foto del cliente">
+          } @else {
+            <mat-icon>account_circle</mat-icon>
+          }
         </div>
+
         <p class="nombre">{{nombre}}</p>
       </div>
 

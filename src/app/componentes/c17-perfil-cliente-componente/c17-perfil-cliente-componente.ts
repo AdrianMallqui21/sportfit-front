@@ -1,16 +1,18 @@
 import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 import { BarraLateral } from '../barra-lateral-cliente/barra-lateral';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
-import { MatFormField, MatLabel, MatError, MatPrefix } from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatError, MatPrefix, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClienteServicio } from '../../servicios/cliente.servicio';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { UsuarioModelo } from '../../modelos/usuario-modelo';
 import { Router } from '@angular/router';
 import { ReservaHome } from '../../modelos/home-cliente-modelo';
+import { MatDialog } from '@angular/material/dialog';
+import { C18ActualizacionDatosDialogo } from './c18-actualizacion-datos-dialogo/c18-actualizacion-datos-dialogo';
 
 
 @Component({
@@ -28,6 +30,8 @@ import { ReservaHome } from '../../modelos/home-cliente-modelo';
     MatButton,
     ReactiveFormsModule,
     MatPrefix,
+    MatSuffix,
+    MatIconButton,
   ],
   selector: 'app-c17-perfil-cliente-componente',
   styleUrl: './c17-perfil-cliente-componente.css',
@@ -44,6 +48,7 @@ export class C17PerfilClienteComponente implements OnInit {
   clienteServicio: ClienteServicio = inject(ClienteServicio);
   router = inject(Router);
   detector = inject(ChangeDetectorRef);
+  dialog = inject(MatDialog);
 
   // =====================================
   // VARIABLES DEL PERFIL
@@ -60,6 +65,7 @@ export class C17PerfilClienteComponente implements OnInit {
 
   // Datos completos para mostrar el resumen del perfil
   usuarioActual: UsuarioModelo | null = null;
+  mostrarContrasena = false;
 
   // =====================================
   // VARIABLES DE RESERVAS
@@ -86,6 +92,7 @@ export class C17PerfilClienteComponente implements OnInit {
       telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
 
       correo: ['', [Validators.required, Validators.email]],
+      contrasenaHash: ['', Validators.minLength(8)],
     });
   }
 
@@ -147,47 +154,46 @@ export class C17PerfilClienteComponente implements OnInit {
 
   protected onSubmit() {
     if (this.perfilForm.valid && this.idUsuario > 0 && !this.cargando) {
-      // Creamos una copia del usuario original
       let usuario = { ...this.usuario };
 
-      // Actualizamos los campos ingresados en el formulario
       usuario.idUsuario = this.idUsuario;
       usuario.nombre = this.perfilForm.value.nombre;
       usuario.apellido = this.perfilForm.value.apellido;
       usuario.dni = this.perfilForm.value.dni;
       usuario.telefono = this.perfilForm.value.telefono;
       usuario.correo = this.perfilForm.value.correo;
-
-      console.log('Datos leidos del formulario:', usuario);
+      usuario.contrasenaHash = this.perfilForm.value.contrasenaHash || '';
 
       this.clienteServicio.actualizarPerfil(usuario).subscribe({
         next: (data) => {
-          console.log('Datos actualizados:', data);
+          this.usuario = data;
+          this.usuarioActual = data;
 
-          // Actualizamos los datos del usuario en memoria
-          this.usuario = { ...usuario } as UsuarioModelo;
-          this.usuarioActual = this.usuario;
+          localStorage.setItem('correo', data.correo);
 
-          // Marcamos el formulario como actualizado
+          this.perfilForm.patchValue({
+            contrasenaHash: '',
+          });
+
           this.perfilForm.markAsPristine();
+          this.mostrarContrasena = false;
 
-          alert('Perfil actualizado correctamente');
+          this.dialog.open(C18ActualizacionDatosDialogo, {
+            width: '360px',
+            maxWidth: '90vw',
+            disableClose: true,
+          });
 
           this.detector.markForCheck();
         },
-
         error: (error) => {
           console.error('Error al actualizar:', error);
-
           alert('No se pudieron actualizar los datos');
-
           this.detector.markForCheck();
         },
       });
     } else {
       this.perfilForm.markAllAsTouched();
-
-      console.log('Formulario no valido');
     }
   }
 
@@ -269,5 +275,36 @@ export class C17PerfilClienteComponente implements OnInit {
     }
 
     return 'actividad-amarilla';
+  }
+
+  seleccionarFoto(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const archivo = input.files?.[0];
+
+    if (!archivo) return;
+
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(archivo.type)) {
+      alert('Seleccione una imagen JPG, PNG o WEBP');
+      return;
+    }
+
+    if (archivo.size > 2 * 1024 * 1024) {
+      alert('La imagen no debe superar los 2 MB');
+      return;
+    }
+
+    this.clienteServicio.subirFoto(archivo).subscribe({
+      next: (data) => {
+        this.usuarioActual = data;
+        this.usuario = data;
+        alert('Foto actualizada correctamente');
+        this.detector.markForCheck();
+      },
+      error: () => {
+        alert('No se pudo actualizar la fotografía');
+      },
+    });
+
+    input.value = '';
   }
 }

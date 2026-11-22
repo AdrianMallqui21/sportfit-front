@@ -1,4 +1,3 @@
-
 import { inject, Injectable, isDevMode } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -16,20 +15,21 @@ export class LoginService {
   constructor() {}
 
   login(credencialesDTO: CredencialesDTOModelo): Observable<RespuestaDTOModelo> {
-    return this.http
+    return this.http //dirección y correo y contraseña enviados
       .post<RespuestaDTOModelo>(this.url + '/authenticate', credencialesDTO, {
         observe: 'response',
       })
-      .pipe(
+      .pipe( //recuperamos el jwt
         map((response) => {
           const bearerToken = response.headers.get('Authorization');
-
+          //
           if (!bearerToken) {
             throw new Error('Token no encontrado en la respuesta del servidor');
           }
 
           const token = bearerToken.replace('Bearer ', '');
 
+          //guardamos la información del token
           localStorage.setItem('token', token);
 
           if (isDevMode()) {

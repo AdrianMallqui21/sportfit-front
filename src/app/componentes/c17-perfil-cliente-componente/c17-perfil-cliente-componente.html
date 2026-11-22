@@ -3,11 +3,12 @@
 
   <div class="perfil-pagina">
 
-    <!-- ENCABEZADO SPORTFIT -->
-    <div class="encabezado">
-      <h2>SportFit</h2>
-      <mat-icon>sports_soccer</mat-icon>
-    </div>
+
+    <!-- LOGO SPORTFIT -->
+    <header class="encabezado">
+      <img src="/loge-sportfit.png" alt="SportFit" class="brand-logo">
+    </header>
+
 
     <div class="perfil-contenido">
 
@@ -17,25 +18,17 @@
 
       <mat-card class="perfil-card">
 
-        <mat-card-title class="titulo">
-          Tus datos
-        </mat-card-title>
+        <mat-card-title class="titulo">Tus datos</mat-card-title>
 
-        <p class="subtitulo">
-          Administra tus datos personales
-        </p>
+        <p class="subtitulo">Administra tus datos personales</p>
 
         <mat-card-content>
-
           <form [formGroup]="perfilForm"
                 class="form-container"
                 (ngSubmit)="onSubmit()">
-
             <!-- NOMBRES -->
             <mat-form-field appearance="fill">
-
               <mat-label>Nombres</mat-label>
-
               <mat-icon matPrefix>person</mat-icon>
 
               <input matInput
@@ -108,20 +101,15 @@
 
             <!-- CORREO -->
             <mat-form-field appearance="fill">
-
               <mat-label>Correo electrónico</mat-label>
-
               <mat-icon matPrefix>email</mat-icon>
-
               <input matInput
                      type="email"
                      formControlName="correo"
                      placeholder="Ingrese su correo">
-
               @if (perfilForm.get('correo')?.invalid) {
                 <mat-error>Ingrese un correo válido</mat-error>
               }
-
             </mat-form-field>
 
             <!-- CARGANDO -->
@@ -138,22 +126,42 @@
               </p>
             }
 
+            <!-- CONTRASEÑA -->
+            <mat-form-field appearance="fill">
+              <mat-label>Nueva contraseña (opcional)</mat-label>
+              <mat-icon matPrefix>lock</mat-icon>
+
+              <input matInput
+                     [type]="mostrarContrasena ? 'text' : 'password'"
+                     formControlName="contrasenaHash"
+                     placeholder="••••••••"
+                     autocomplete="new-password">
+
+              <button mat-icon-button matSuffix
+                      type="button"
+                      (click)="mostrarContrasena = !mostrarContrasena"
+                      [attr.aria-label]="mostrarContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                <mat-icon>
+                  {{ mostrarContrasena ? 'visibility_off' : 'visibility' }}
+                </mat-icon>
+              </button>
+
+              @if (perfilForm.get('contrasenaHash')?.hasError('minlength')) {
+                <mat-error>La contraseña debe tener mínimo 8 caracteres</mat-error>
+              }
+            </mat-form-field>
+
+
             <!-- BOTON ACTUALIZAR -->
             <div class="acciones">
-
               <button mat-raised-button
                       type="submit"
                       class="boton-actualizar"
                       [disabled]="perfilForm.invalid || cargando">
-
                 ACTUALIZAR
-
               </button>
-
             </div>
-
           </form>
-
         </mat-card-content>
 
       </mat-card>
@@ -271,21 +279,26 @@
                 }
 
                 <!-- Pendiente implementar cambio de fotografía -->
+
+                <input #archivoFoto
+                       type="file"
+                       accept="image/jpeg,image/png,image/webp"
+                       hidden
+                       (change)="seleccionarFoto($event)">
+
                 <button mat-flat-button
                         type="button"
                         class="boton-foto"
-                        disabled>
-
+                        (click)="archivoFoto.click()">
                   CAMBIAR FOTO DE PERFIL
-
                 </button>
+
 
               </div>
 
             </div>
 
           } @else if (cargando) {
-
             <p class="mensaje-cargando">
               Cargando información del cliente...
             </p>
@@ -319,73 +332,6 @@
             </p>
 
           }
-
-          <!-- ERROR -->
-          @else if (errorReservas) {
-
-            <p class="mensaje-error">
-              {{ errorReservas }}
-            </p>
-
-          }
-
-          <!-- SIN RESERVAS -->
-          @else if (reservasRecientes.length === 0) {
-
-            <div class="actividad-vacia">
-
-              <mat-icon>event_busy</mat-icon>
-
-              <p>No tienes actividad reciente</p>
-
-            </div>
-
-          }
-
-          <!-- LISTADO DE RESERVAS -->
-          @else {
-
-            @for (reserva of reservasRecientes; track reserva.idReserva) {
-
-              <div class="actividad-item">
-
-                <!-- ICONO SEGUN ESTADO -->
-                <div class="actividad-icono"
-                     [ngClass]="claseActividad(reserva.estado || '')">
-
-                  <mat-icon>event</mat-icon>
-
-                </div>
-
-                <!-- INFORMACION DE LA RESERVA -->
-                <div class="actividad-detalle">
-
-                  <p class="actividad-titulo">
-
-                    {{ tituloActividad(reserva.estado || '') }}
-
-                  </p>
-
-                  <p class="actividad-descripcion">
-
-                    Reserva #{{ reserva.idReserva }}
-
-                    -
-                    {{ (reserva.fReserva || reserva.freserva) | date:'dd/MM/yyyy' }}
-
-                    -
-                    {{ (reserva.hInicio || reserva.hinicio || '') | slice:0:5 }}
-
-                  </p>
-
-                </div>
-
-              </div>
-
-            }
-
-          }
-
         </mat-card>
 
       </div>
