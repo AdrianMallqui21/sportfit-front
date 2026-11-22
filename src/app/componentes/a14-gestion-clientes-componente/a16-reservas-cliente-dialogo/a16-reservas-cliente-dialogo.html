@@ -16,7 +16,16 @@
     @if (data.cliente; as c) {
       <div class="banner-cliente-dialogo">
         <div class="avatar-dialogo-circulo">
-          <mat-icon>account_circle</mat-icon>
+          @if (c.imgUsuario) {
+            <img
+              [src]="c.imgUsuario"
+              [alt]="c.nombre"
+              class="img-avatar-dialogo"
+              (error)="c.imgUsuario = ''"
+            />
+          } @else {
+            <mat-icon>account_circle</mat-icon>
+          }
         </div>
         <div class="datos-banner-dialogo">
           <div class="nombre-badge-dialogo">

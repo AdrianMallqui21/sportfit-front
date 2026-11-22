@@ -91,7 +91,7 @@ export class A15EditarClienteDialogo {
       dni: this.formEdicion.value.dni?.trim(),
       telefono: this.formEdicion.value.telefono?.trim(),
       correo: this.formEdicion.value.correo?.trim(),
-      contrasenaHash: extra.contrasenaHash,
+      contrasenaHash: null,
       activo: c.activo ?? true,
       imgUsuario: c.imgUsuario ?? null,
       fCreacion: c.fCreacion,
