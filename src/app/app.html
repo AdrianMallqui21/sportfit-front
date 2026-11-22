@@ -1,3 +1,15 @@
+<div
+  [class.con-barra]="mostrarBarraAdmin()"
+  [class.layout-aplicacion]="mostrarBarraAdmin()"
+>
+  @if (mostrarBarraAdmin()) {
+    <app-barra-lateral-administrador-componente/>
+  }
 
-<router-outlet />
-
+  <div
+    [class.contenido-con-barra]="mostrarBarraAdmin()"
+    [class.contenido-principal]="mostrarBarraAdmin()"
+  >
+    <router-outlet/>
+  </div>
+</div>

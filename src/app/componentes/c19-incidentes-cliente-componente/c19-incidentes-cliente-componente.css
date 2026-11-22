@@ -7,15 +7,13 @@
 .incidentes-pagina {
   box-sizing: border-box;
   width: 100%;
-  height: calc(100dvh - 50px);
-  min-height: 0;
+  min-height: calc(100dvh - 50px);
   padding: 12px 18px 14px;
 
   display: grid;
   grid-template-rows: 38px minmax(0, 1fr);
   gap: 12px;
 
-  overflow: hidden;
   background-color: #eaf4e5;
 }
 

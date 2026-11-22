@@ -36,6 +36,6 @@ export class ReporteFinancieroServicio {
     if (mes !== undefined && mes !== null && mes > 0) {
       params = params.set('mes', mes.toString());
     }
-    return this.http.get<BannerPagoReporteModelo>(`${this.url}/pago/reporte/banner`, { params });
+    return this.http.get<BannerPagoReporteModelo>(`${this.url}/pago/reporte/banners`, { params });
   }
 }

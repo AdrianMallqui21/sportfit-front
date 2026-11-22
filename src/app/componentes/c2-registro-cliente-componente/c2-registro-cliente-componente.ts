@@ -7,6 +7,7 @@ import {C3ConfirmarRegistroDialogo} from './c3-confirmar-registro-dialogo/c3-con
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatFormField, MatInput, MatPrefix, MatSuffix} from '@angular/material/input';
 import {MatIcon} from '@angular/material/icon';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-c2-registro-cliente-componente',
@@ -19,6 +20,7 @@ import {MatIcon} from '@angular/material/icon';
     MatPrefix,
     MatIcon,
     MatInput,
+    RouterLink,
   ],
   templateUrl: './c2-registro-cliente-componente.html',
   styleUrl: './c2-registro-cliente-componente.css',
@@ -58,7 +60,7 @@ export class C2RegistroClienteComponente {
     usuario.correo = valores.correo!;
     usuario.contrasenaHash = valores.contrasena!;
     usuario.imgUsuario = "http://adriantupapi.com"
-    
+
 
     this.autorizacion.registroCliente(usuario).subscribe({
       next: () => this.abrirDialogo(),
