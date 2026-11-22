@@ -425,10 +425,10 @@ export class A18GestionReservasComponente implements OnInit, AfterViewInit {
 
   etiquetaEstado(estado?: string): string {
     const est = (estado || '').toLowerCase();
-    if (est === 'confirmada') return 'Confirmado';
-    if (est === 'solicitada') return 'Pendiente';
+    if (est === 'confirmada') return 'Confirmada';
+    if (est === 'solicitada') return 'Solicitada';
     if (est === 'cancelada') return 'Cancelada';
-    if (est === 'completada') return 'Finalizado';
+    if (est === 'completada') return 'Completada';
     if (est === 'rechazada') return 'Rechazada';
     return estado || '—';
   }

@@ -152,9 +152,9 @@ export class A16ReservasClienteDialogo implements OnInit, AfterViewInit {
 
   etiquetaEstadoReserva(estado?: string): string {
     const est = (estado || '').toLowerCase();
-    if (est === 'confirmada') return 'Confirmado';
-    if (est === 'solicitada') return 'Pendiente';
-    if (est === 'completada') return 'Finalizado';
+    if (est === 'confirmada') return 'Confirmada';
+    if (est === 'solicitada') return 'Solicitada';
+    if (est === 'completada') return 'Completada';
     if (est === 'cancelada') return 'Cancelada';
     if (est === 'rechazada') return 'Rechazada';
     return estado || '—';
