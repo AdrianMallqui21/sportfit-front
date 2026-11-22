@@ -278,18 +278,10 @@
 
                 }
 
-                <!-- Pendiente implementar cambio de fotografía -->
-
-                <input #archivoFoto
-                       type="file"
-                       accept="image/jpeg,image/png,image/webp"
-                       hidden
-                       (change)="seleccionarFoto($event)">
-
                 <button mat-flat-button
                         type="button"
                         class="boton-foto"
-                        (click)="archivoFoto.click()">
+                        (click)="abrirDialogoCambiarFoto()">
                   CAMBIAR FOTO DE PERFIL
                 </button>
 

@@ -169,7 +169,11 @@
                 <th mat-header-cell *matHeaderCellDef class="th-foto">Foto</th>
                 <td mat-cell *matCellDef="let c">
                   <div class="avatar-circular">
-                    <mat-icon>person</mat-icon>
+                    @if (c.imgUsuario) {
+                      <img [src]="c.imgUsuario" [alt]="c.nombre" class="img-avatar-cliente" (error)="c.imgUsuario = ''">
+                    } @else {
+                      <mat-icon>person</mat-icon>
+                    }
                   </div>
                 </td>
               </ng-container>
@@ -268,7 +272,11 @@
           <mat-card-content>
             <div class="bloque-perfil-cliente">
               <div class="avatar-perfil-grande">
-                <mat-icon>account_circle</mat-icon>
+                @if (cliente.imgUsuario) {
+                  <img [src]="cliente.imgUsuario" [alt]="cliente.nombre" class="img-avatar-cliente" (error)="cliente.imgUsuario = ''">
+                } @else {
+                  <mat-icon>account_circle</mat-icon>
+                }
               </div>
               <div class="nombre-estado">
                 <h3 class="nombre-cliente">{{ cliente.nombre }} {{ cliente.apellido }}</h3>

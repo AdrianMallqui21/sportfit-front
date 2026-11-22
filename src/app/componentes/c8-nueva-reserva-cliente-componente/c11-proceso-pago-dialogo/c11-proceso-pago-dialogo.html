@@ -32,24 +32,63 @@
 
       <img src="/qr-pago.jpeg" alt="QR de pago" class="qr">
 
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="campo">
-        <mat-label>URL del comprobante de pago</mat-label>
-        <input matInput [formControl]="urlComprobante" placeholder="https://...">
-        @if (urlComprobante.hasError('required')) {
-          <mat-error>Ingresa la URL del comprobante</mat-error>
-        } @else if (urlComprobante.hasError('pattern')) {
-          <mat-error>Debe empezar con http:// o https://</mat-error>
-        } @else if (urlComprobante.hasError('maxlength')) {
-          <mat-error>Máximo 500 caracteres</mat-error>
+      <!-- Subida de comprobante por Drag & Drop o clic -->
+      <input #inputArchivo type="file" accept="image/*" hidden (change)="alSeleccionarArchivo($event)">
+      <div class="zona-drop-comprobante"
+           [class.zona-drop-activa]="arrastrando()"
+           (dragover)="onDragOver($event)"
+           (dragleave)="onDragLeave($event)"
+           (drop)="onDrop($event)"
+           (click)="inputArchivo.click()">
+        @if (previewLocal()) {
+          <img [src]="previewLocal()" alt="Vista previa del comprobante" class="preview-comprobante">
+        } @else {
+          <mat-icon fontSet="material-symbols-outlined">cloud_upload</mat-icon>
         }
-      </mat-form-field>
+
+        <div class="texto-drop-comprobante">
+          @if (archivoPendiente(); as arch) {
+            <strong>{{ arch.name }}</strong>
+            <span>Clic o arrastra otra imagen para cambiarla</span>
+          } @else {
+            <strong>Arrastra tu comprobante aquí o haz clic</strong>
+            <span>Captura de Yape/Plin (JPG, PNG, máx. 5 MB)</span>
+          }
+        </div>
+
+        @if (archivoPendiente() && !subiendo()) {
+          <button matButton="outlined" type="button" class="btn-cancelar-voucher" (click)="cancelarSeleccion($event)">
+            Cancelar
+          </button>
+        }
+      </div>
+
+      @if (estadoImagen(); as est) {
+        <p class="estado-comprobante" [class.estado-info]="est.tipo === 'info'" [class.estado-error]="est.tipo === 'error'">
+          {{ est.texto }}
+        </p>
+      }
+
+      @if (!archivoPendiente()) {
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="campo">
+          <mat-label>O pega la URL del comprobante</mat-label>
+          <input matInput [formControl]="urlComprobante" placeholder="https://...">
+          @if (urlComprobante.hasError('required')) {
+            <mat-error>Sube una imagen arriba o ingresa la URL del comprobante</mat-error>
+          } @else if (urlComprobante.hasError('pattern')) {
+            <mat-error>Debe empezar con http:// o https://</mat-error>
+          } @else if (urlComprobante.hasError('maxlength')) {
+            <mat-error>Máximo 500 caracteres</mat-error>
+          }
+        </mat-form-field>
+      }
     </section>
   </div>
 
   <div class="acciones">
-    <button mat-dialog-close matButton="outlined" type="button">Cancelar</button>
-    <button matButton="filled" type="button" class="boton-principal" (click)="enviar()">
-      Enviar solicitud de reserva
+    <button mat-dialog-close matButton="outlined" type="button" [disabled]="subiendo()">Cancelar</button>
+    <button matButton="filled" type="button" class="boton-principal" [disabled]="subiendo()" (click)="enviar()">
+      {{ subiendo() ? 'Subiendo comprobante...' : 'Enviar solicitud de reserva' }}
     </button>
   </div>
 </div>

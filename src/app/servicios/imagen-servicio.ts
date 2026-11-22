@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -13,6 +13,9 @@ interface CloudinaryRespuesta {
 export class ImagenServicio {
   private readonly httpSinInterceptor = new HttpClient(inject(HttpBackend));
 
+  /** Signal reactivo para refrescar las barras laterales apenas cambia la foto de perfil. */
+  readonly fotoPerfilActualizada = signal<string | null>(null);
+
   /**
    * Sube una imagen directamente a Cloudinary (Unsigned Upload) y devuelve su secure_url.
    */
@@ -25,5 +28,9 @@ export class ImagenServicio {
     return this.httpSinInterceptor.post<CloudinaryRespuesta>(url, formData).pipe(
       map(resp => resp.secure_url)
     );
+  }
+
+  notificarFotoPerfil(url: string): void {
+    this.fotoPerfilActualizada.set(url);
   }
 }

@@ -7,7 +7,11 @@
   <!-- SECCIÓN PERFIL / AVATAR -->
   <div class="bloque-perfil">
     <div class="avatar-circular">
-      <mat-icon class="icono-avatar">account_circle</mat-icon>
+      @if (imgAdmin()) {
+        <img [src]="imgAdmin()" alt="Foto del administrador" class="img-avatar-admin" (error)="imgAdmin.set(null)">
+      } @else {
+        <mat-icon class="icono-avatar">account_circle</mat-icon>
+      }
     </div>
     <span class="etiqueta-rol">Administrador</span>
   </div>

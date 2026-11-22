@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, inject} from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject} from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { ClienteServicio } from '../../servicios/cliente.servicio';
+import { ImagenServicio } from '../../servicios/imagen-servicio';
 
 @Component({
   imports: [
@@ -23,11 +24,20 @@ import { ClienteServicio } from '../../servicios/cliente.servicio';
 })
 export class BarraLateral {
   private usuarioServicio: ClienteServicio = inject(ClienteServicio);
+  private imagenServicio: ImagenServicio = inject(ImagenServicio);
   private detector = inject(ChangeDetectorRef);
   nombre: string = '';
   error: string = '';
   imgUsuario: string | null = null;
-  constructor() {}
+  constructor() {
+    effect(() => {
+      const nuevaFoto = this.imagenServicio.fotoPerfilActualizada();
+      if (nuevaFoto) {
+        this.imgUsuario = nuevaFoto;
+        this.detector.markForCheck();
+      }
+    });
+  }
 
   ngOnInit() {
     this.obtenernombre();

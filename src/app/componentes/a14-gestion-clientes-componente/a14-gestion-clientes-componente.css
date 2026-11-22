@@ -872,3 +872,15 @@
     padding: 16px;
   }
 }
+
+.avatar-circular,
+.avatar-perfil-grande {
+  overflow: hidden;
+}
+
+.img-avatar-cliente {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

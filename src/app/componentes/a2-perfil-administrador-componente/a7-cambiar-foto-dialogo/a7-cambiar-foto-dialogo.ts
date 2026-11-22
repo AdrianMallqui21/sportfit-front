@@ -115,6 +115,7 @@ export class A7CambiarFotoDialogo {
         this.adminServicio.actualizarAdministrador(usuarioActualizado).subscribe({
           next: (resp) => {
             this.guardando.set(false);
+            this.imagenServicio.notificarFotoPerfil(urlNube);
             this.dialogRef.close({ ...usuarioActualizado, ...resp, imgUsuario: urlNube });
           },
           error: (err: unknown) => {

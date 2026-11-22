@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { ReservaHome } from '../../modelos/home-cliente-modelo';
 import { MatDialog } from '@angular/material/dialog';
 import { C18ActualizacionDatosDialogo } from './c18-actualizacion-datos-dialogo/c18-actualizacion-datos-dialogo';
+import { A7CambiarFotoDialogo } from '../a2-perfil-administrador-componente/a7-cambiar-foto-dialogo/a7-cambiar-foto-dialogo';
 
 
 @Component({
@@ -195,6 +196,23 @@ export class C17PerfilClienteComponente implements OnInit {
     } else {
       this.perfilForm.markAllAsTouched();
     }
+  }
+
+  abrirDialogoCambiarFoto(): void {
+    if (!this.usuarioActual) return;
+
+    const idRolCliente = this.usuarioActual.idRol ?? (Number(localStorage.getItem('idRol')) || 1);
+    this.dialog.open(A7CambiarFotoDialogo, {
+      width: '460px',
+      maxWidth: '95vw',
+      data: { ...this.usuarioActual, idRol: idRolCliente }
+    }).afterClosed().subscribe((usuarioActualizado?: UsuarioModelo) => {
+      if (usuarioActualizado) {
+        this.usuario = usuarioActualizado;
+        this.usuarioActual = usuarioActualizado;
+        this.detector.markForCheck();
+      }
+    });
   }
 
   // =====================================
