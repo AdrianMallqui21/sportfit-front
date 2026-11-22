@@ -25,7 +25,6 @@ import { C10ReservaNoDisponibleDialogo } from './c10-reserva-no-disponible-dialo
 import { C11ProcesoPagoDialogo } from './c11-proceso-pago-dialogo/c11-proceso-pago-dialogo';
 import { C12SolicitudEnviadaDialogo } from './c12-solicitud-enviada-dialogo/c12-solicitud-enviada-dialogo';
 
-
 import {
   CanchaReserva,
   HorarioOcupado,
@@ -94,15 +93,15 @@ export class C8NuevaReservaClienteComponente implements OnInit {
   busquedaHecha = false; // true cuando ya se buscó disponibilidad
   mensajeError = '';
 
-  // ----- Filtros (0 significa "sin elegir") -----
+  // ----- Filtros -----
   readonly fechaMinima: Date = this.calcularManana();
   fechaSeleccionada: Date = this.fechaMinima;
-  tipoCanchaSeleccionada = 0;
+  tipoCanchaSeleccionada = 0; //sin elegir =0
   sedeSeleccionada = 0;
 
   // ----- Selección de horas -----
-  canchaSeleccionada: number | null = null; // idSedeCancha de la cancha elegida
-  horasSeleccionadas: number[] = []; // posiciones seguidas, ordenadas
+  canchaSeleccionada: number | null = null;
+  horasSeleccionadas: number[] = [];
 
   // Columnas de horas del cuadro: 08:00 a 22:00 (posiciones 0 a 14)
   readonly horarios = Array.from({ length: 15 }, (_, indice) => {
@@ -125,7 +124,7 @@ export class C8NuevaReservaClienteComponente implements OnInit {
       },
       error: (err) => this.mostrarError('No se pudo obtener el usuario', err),
     });
-
+    //Aqui llena los filtros de sede y deporte
     console.log('[Nueva reserva] Paso 1: cargando sedes y deportes');
     this.reservaServicio.listarSedes().subscribe({
       next: (sedes) => {

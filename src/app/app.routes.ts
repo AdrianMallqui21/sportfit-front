@@ -48,128 +48,136 @@ import {
 import {
   A18GestionReservasComponente
 } from './componentes/a18-gestion-reservas-componente/a18-gestion-reservas-componente';
-import {
-  A28ReporteReservaDeporteSedeComponente
-} from './componentes/a28-reporte-reserva-deporte-sede-componente/a28-reporte-reserva-deporte-sede-componente';
+import { A28ReporteReservaDeporteSedeComponente } from './componentes/a28-reporte-reserva-deporte-sede-componente/a28-reporte-reserva-deporte-sede-componente';
+import { A30ReporteCancelacionesComponente } from './componentes/a30-reporte-cancelaciones-componente/a30-reporte-cancelaciones-componente';
+
 
 export const routes: Routes = [
-
-  {path: '', component: LandingPage},
-  {path: 'login', component: C1InicioSesionClienteComponente},
-  {path: 'registro', component: C2RegistroClienteComponente},
-  {path: 'administrador', component: A1InicioSesionAdministradorComponente},
+  { path: '', component: LandingPage },
+  { path: 'login', component: C1InicioSesionClienteComponente },
+  { path: 'registro', component: C2RegistroClienteComponente },
+  { path: 'administrador', component: A1InicioSesionAdministradorComponente },
 
   //Vistas cliente con permisos con guard
   {
     path: 'home',
     component: C4HomeClienteComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_CLIENTE']},
+    data: { roles: ['ROLE_CLIENTE'] },
   },
   {
     path: 'nueva-reserva',
     component: C8NuevaReservaClienteComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_CLIENTE']},
+    data: { roles: ['ROLE_CLIENTE'] },
   },
   {
     path: 'mis-reservas',
     component: C13MisReservasClienteComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_CLIENTE']},
+    data: { roles: ['ROLE_CLIENTE'] },
   },
   {
     path: 'perfil-cliente',
     component: C17PerfilClienteComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_CLIENTE']},
-  }, {
+    data: { roles: ['ROLE_CLIENTE'] },
+  },
+  {
     path: 'reporte-deporte-sede',
     component: A28ReporteReservaDeporteSedeComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']},
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
 
   {
     path: 'incidencias-cliente',
     component: C19IncidentesClienteComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_CLIENTE']},
+    data: { roles: ['ROLE_CLIENTE'] },
   },
 
   {
     path: 'notificaciones-cliente',
     component: C5NotificacionesCliente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_CLIENTE']},
+    data: { roles: ['ROLE_CLIENTE'] },
   },
 
   // Rutas protegidas para Administrador
   {
     path: 'reporte-reservas',
-    loadComponent: () => import('./componentes/a28-reporte-reserva-deporte-sede-componente/a28-reporte-reserva-deporte-sede-componente')
-      .then(m => m.A28ReporteReservaDeporteSedeComponente),
+    loadComponent: () =>
+      import('./componentes/a28-reporte-reserva-deporte-sede-componente/a28-reporte-reserva-deporte-sede-componente').then(
+        (m) => m.A28ReporteReservaDeporteSedeComponente,
+      ),
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']},
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
   {
     path: 'dialogo',
     component: A11NotificacionesAdministradorComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']}
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
   {
     path: 'perfil-administrador',
     component: A2PerfilAdministradorComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']}
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
   {
     path: 'clientes',
     component: A14GestionClientesComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']}
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
   {
     path: 'reservas',
     component: A18GestionReservasComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']}
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
   {
     path: 'espacios',
     component: A22GestionEspaciosComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']}
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
   {
     path: 'solicitudes',
     component: A8GestionSolicitudesComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']}
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
   {
     path: 'reporte-financiero',
     component: A33ReporteFinancieroComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']}
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
+  },
+  {
+    path: 'reporte-cancelacion',
+    component: A30ReporteCancelacionesComponente,
+    canActivate: [AuthGuard],
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
   {
     path: 'reporte-incidencias',
     component: A37ReporteIncidenciasComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']}
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
   {
     path: 'incidencias',
     component: A26ListadoIncidenciasAdministradorComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']}
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
   {
     path: 'notificaciones',
     component: A11NotificacionesAdministradorComponente,
     canActivate: [AuthGuard],
-    data: {roles: ['ROLE_ADMINISTRADOR']}
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
 ];
