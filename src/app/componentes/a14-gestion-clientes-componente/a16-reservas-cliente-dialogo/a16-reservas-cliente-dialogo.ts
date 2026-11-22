@@ -15,7 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ClienteModelo } from '../../../modelos/cliente-modelo';
 import { ReservaModelo } from '../../../modelos/solicitud-reserva-modelo';
-import { SedeModelo, TipoCanchaModelo } from '../../../modelos/espacio-deportivo-modelo';
+import { SedeCanchaModelo, SedeModelo, TipoCanchaModelo } from '../../../modelos/espacio-deportivo-modelo';
 import { ClienteServicio } from '../../../servicios/cliente-servicio';
 import { ReservaServicio } from '../../../servicios/reserva-servicio';
 
@@ -53,11 +53,17 @@ export class A16ReservasClienteDialogo implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   reservasHistorial = signal<ReservaModelo[]>(this.data?.reservas || []);
+  canchas = signal<SedeCanchaModelo[]>([]);
   sedes = signal<SedeModelo[]>([]);
   tiposCancha = signal<TipoCanchaModelo[]>([]);
   reservaDetalleModal = signal<ReservaModelo | null>(null);
 
   ngOnInit(): void {
+    this.reservaService.listarCanchas().subscribe({
+      next: (lista) => this.canchas.set(lista || []),
+      error: () => this.canchas.set([])
+    });
+
     this.reservaService.listarSedes().subscribe({
       next: (lista) => this.sedes.set(lista || []),
       error: () => this.sedes.set([])
@@ -94,9 +100,17 @@ export class A16ReservasClienteDialogo implements OnInit, AfterViewInit {
     this.reservaDetalleModal.set(actual?.idReserva === reserva.idReserva ? null : reserva);
   }
 
+  private obtenerCanchaDeReserva(r: ReservaModelo): SedeCanchaModelo | null {
+    if (r.sedeCancha && r.sedeCancha.nombre) return r.sedeCancha;
+    const idCancha = r.sedeCancha?.idSedeCancha ?? (r as any).idSedeCancha ?? 0;
+    if (!idCancha) return null;
+    return this.canchas().find(c => c.idSedeCancha === idCancha) || null;
+  }
+
   obtenerSedeReserva(r: ReservaModelo): string {
-    if (r.sedeCancha?.sede?.nombre) return r.sedeCancha.sede.nombre;
-    const idSede = r.sedeCancha?.idSedeSede;
+    const sc = this.obtenerCanchaDeReserva(r);
+    if (sc?.sede?.nombre) return sc.sede.nombre;
+    const idSede = sc?.idSedeSede;
     if (idSede) {
       const sedeEncontrada = this.sedes().find(s => s.idSede === idSede);
       if (sedeEncontrada) return sedeEncontrada.nombre;
@@ -105,19 +119,21 @@ export class A16ReservasClienteDialogo implements OnInit, AfterViewInit {
   }
 
   obtenerCanchaDeporteReserva(r: ReservaModelo): string {
-    let deporte = r.sedeCancha?.cancha?.deporte || r.deporte || '';
-    const idTipo = r.sedeCancha?.idTipoCancha;
+    const sc = this.obtenerCanchaDeReserva(r);
+    let deporte = sc?.cancha?.deporte || r.deporte || '';
+    const idTipo = sc?.idTipoCancha;
     if (!deporte && idTipo) {
       const tipo = this.tiposCancha().find(t => t.idTipoCancha === idTipo);
       if (tipo) deporte = tipo.deporte;
     }
-    const cancha = r.sedeCancha?.nombre || r.cancha || '';
+    const cancha = sc?.nombre || r.cancha || '';
     if (deporte && cancha) return `${deporte} - ${cancha}`;
     return cancha || deporte || 'Cancha';
   }
 
   obtenerMontoReserva(r: ReservaModelo): number {
-    return r.sedeCancha?.precio ?? r.montoTotal ?? 0;
+    const sc = this.obtenerCanchaDeReserva(r);
+    return r.montoTotal ?? sc?.precio ?? 0;
   }
 
   formatearHora(hora?: string): string {
