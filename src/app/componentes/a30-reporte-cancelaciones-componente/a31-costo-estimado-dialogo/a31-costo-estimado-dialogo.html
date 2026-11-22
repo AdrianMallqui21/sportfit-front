@@ -1,0 +1,14 @@
+<button mat-icon-button mat-dialog-close class="boton-cerrar" aria-label="Cerrar">
+  <mat-icon>close</mat-icon>
+</button>
+
+<div class="costo">
+  <div>
+    <h2>Costo estimado de perdida</h2>
+    <p class="monto">S/ {{ datos.monto | number:'1.2-2' }}</p>
+  </div>
+  <div class="periodo">
+    <span>{{ mesTexto }}</span>
+    <span>{{ datos.anio }}</span>
+  </div>
+</div>
