@@ -1,0 +1,335 @@
+<div class="pagina-reporte-financiero">
+  <!-- ENCABEZADO SUPERIOR -->
+  <header class="encabezado-superior">
+    <div class="espaciador"></div>
+    <img src="/imagenes/sportfit-logo.png" alt="SportFit" class="logotipo-sportfit">
+  </header>
+
+  <!-- BANNER DE ALERTA DE AUTENTICACIÓN (SI EL USUARIO NO HA INICIADO SESIÓN) -->
+  @if (alertaAutenticacion()) {
+    <div class="alerta-autenticacion-banner">
+      <div class="icono-banner">
+        <mat-icon>lock</mat-icon>
+      </div>
+      <div class="textos-banner">
+        <strong>Se requiere sesión de Administrador</strong>
+        <span>Para consultar los datos en vivo del backend necesitas haber iniciado sesión en el sistema.</span>
+      </div>
+      <div class="acciones-banner">
+        <button mat-flat-button class="boton-login-rapido" (click)="iniciarSesionAdminPrueba()" [disabled]="iniciandoSesionRapida()">
+          <mat-icon>login</mat-icon>
+          {{ iniciandoSesionRapida() ? 'Autenticando...' : 'Autenticar como Admin' }}
+        </button>
+        <a mat-stroked-button routerLink="/administrador" class="enlace-ir-login">
+          Ir a Login
+        </a>
+      </div>
+    </div>
+  }
+
+  <!-- PRESENTACIÓN / TÍTULO DEL DASHBOARD -->
+  <section class="seccion-presentacion">
+    <div class="icono-presentacion">
+      <mat-icon>query_stats</mat-icon>
+    </div>
+    <div class="textos-presentacion">
+      <h1 class="titulo-dashboard">
+        DashBoard <span class="texto-verde">Financiero por periodo</span>
+      </h1>
+      <p class="subtitulo-dashboard">Análisis general financiero por periodo</p>
+    </div>
+  </section>
+
+  <!-- PANEL DE FILTRO DE BÚSQUEDA -->
+  <mat-card class="tarjeta-filtro" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title class="titulo-filtro">
+        <mat-icon>search</mat-icon>
+        <span>Filtro de búsqueda</span>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="contenido-filtro">
+      <div class="grupo-controles-filtro">
+        <!-- Píldora Total -->
+        <button
+          type="button"
+          class="boton-pildora-total"
+          [class.pildora-activa]="filtroMes === 0"
+          (click)="filtroMes = 0; cargarReporte()"
+        >
+          Total
+        </button>
+
+        <!-- Filtro Mes -->
+        <div class="control-select">
+          <label class="etiqueta-select">Mes</label>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-select [(ngModel)]="filtroMes" (selectionChange)="cargarReporte()">
+              @for (m of mesesDisponibles; track m.valor) {
+                <mat-option [value]="m.valor">{{ m.nombre }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Filtro Año -->
+        <div class="control-select">
+          <label class="etiqueta-select">Año</label>
+          <mat-form-field appearance="outline" subscriptSizing="dynamic">
+            <mat-select [(ngModel)]="filtroAnio" (selectionChange)="cargarReporte()">
+              @for (a of aniosDisponibles; track a) {
+                <mat-option [value]="a">{{ a }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <button mat-stroked-button class="boton-consultar" (click)="cargarReporte()">
+          <mat-icon>refresh</mat-icon>
+          Consultar
+        </button>
+      </div>
+
+      <div class="grupo-acciones-filtro">
+        <button mat-flat-button class="boton-exportar" (click)="exportarReporte()" [disabled]="ingresos().length === 0">
+          <mat-icon>download</mat-icon>
+          Exportar
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- CUADRÍCULA PRINCIPAL: GRÁFICA LINEAL (IZQUIERDA) + DISTRIBUCIÓN Y TARJETAS (DERECHA) -->
+  <div class="grid-dashboard-financiero">
+    <!-- COLUMNA IZQUIERDA: GRÁFICO LINEAL DE INGRESOS -->
+    <section class="columna-grafico-principal">
+      <mat-card class="tarjeta-grafico-ingresos" appearance="outlined">
+        <mat-card-header class="cabecera-grafico">
+          <mat-card-title class="titulo-panel">
+            Gráfico {{ tipoGrafica === 'lineal' ? 'lineal' : 'de barras' }} de ingresos por {{ filtroMes === 0 ? 'mes' : 'día' }}
+          </mat-card-title>
+
+          <div class="selector-tipo-grafica">
+            <span class="etiqueta-tipo-grafica">Tipo de grafica</span>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="select-tipo-compacto">
+              <mat-select [(ngModel)]="tipoGrafica">
+                <mat-option value="lineal">Lineal</mat-option>
+                <mat-option value="barras">Barras</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content class="contenido-grafico-svg">
+          @if (ingresos().length > 0) {
+            <div class="contenedor-svg-responsivo">
+              <svg class="grafico-svg" viewBox="0 0 660 230" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <linearGradient id="degradadoAreaIngresos" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#818cf8" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="#c7d2fe" stop-opacity="0.05"/>
+                  </linearGradient>
+                </defs>
+
+                <!-- Líneas horizontales de la cuadrícula -->
+                @for (nivel of [2000, 1600, 1200, 800, 400, 0]; track nivel) {
+                  <line
+                    x1="45"
+                    x2="630"
+                    [attr.y1]="25 + (2000 - nivel) * (155 / 2000)"
+                    [attr.y2]="25 + (2000 - nivel) * (155 / 2000)"
+                    class="linea-cuadricula"
+                  />
+                  <text
+                    x="38"
+                    [attr.y]="29 + (2000 - nivel) * (155 / 2000)"
+                    text-anchor="end"
+                    class="texto-eje-y"
+                  >
+                    {{ nivel }}
+                  </text>
+                }
+
+                @if (tipoGrafica === 'lineal') {
+                  <!-- Área sombreada bajo la curva -->
+                  @if (polygonAreaPoints()) {
+                    <polygon
+                      [attr.points]="polygonAreaPoints()"
+                      fill="url(#degradadoAreaIngresos)"
+                    />
+                  }
+
+                  <!-- Línea poligonal -->
+                  @if (polylinePoints()) {
+                    <polyline
+                      fill="none"
+                      stroke="#818cf8"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      [attr.points]="polylinePoints()"
+                    />
+                  }
+
+                  <!-- Puntos y etiquetas de valores -->
+                  @for (p of puntosGrafico(); track $index) {
+                    <circle [attr.cx]="p.x" [attr.cy]="p.y" r="4.5" fill="#ffffff" stroke="#6366f1" stroke-width="2.5"/>
+                    <text [attr.x]="p.x" [attr.y]="p.y - 8" text-anchor="middle" class="etiqueta-valor-punto">
+                      {{ p.valor | number:'1.0-0' }}
+                    </text>
+                    <text [attr.x]="p.x" y="200" text-anchor="middle" class="etiqueta-eje-x">
+                      {{ p.etiqueta }}
+                    </text>
+                  }
+                } @else {
+                  <!-- Gráfico de Barras -->
+                  @for (p of puntosGrafico(); track $index) {
+                    <rect
+                      [attr.x]="p.x - 14"
+                      [attr.y]="p.y"
+                      width="28"
+                      [attr.height]="180 - p.y"
+                      fill="#818cf8"
+                      rx="4"
+                    />
+                    <text [attr.x]="p.x" [attr.y]="p.y - 6" text-anchor="middle" class="etiqueta-valor-punto">
+                      {{ p.valor | number:'1.0-0' }}
+                    </text>
+                    <text [attr.x]="p.x" y="200" text-anchor="middle" class="etiqueta-eje-x">
+                      {{ p.etiqueta }}
+                    </text>
+                  }
+                }
+              </svg>
+            </div>
+          } @else {
+            <div class="estado-sin-datos-grafico">
+              <mat-icon class="icono-vacio">bar_chart</mat-icon>
+              <p>Sin ingresos registrados para el período seleccionado.</p>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </section>
+
+    <!-- COLUMNA DERECHA: DISTRIBUCIÓN POR MÉTODO DE PAGO Y TARJETAS MÉTRICAS -->
+    <aside class="columna-secundaria">
+      <!-- PANEL DISTRIBUCIÓN POR MÉTODO DE PAGO -->
+      <mat-card class="tarjeta-metodos-pago" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title class="titulo-panel">Distribución por método de pago</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="contenido-metodos">
+          @if (segmentosCirculares().length > 0) {
+            <div class="contenedor-dona">
+              <svg class="grafico-dona-svg" viewBox="0 0 130 130">
+                @for (seg of segmentosCirculares(); track seg.nombre) {
+                  <circle
+                    cx="65"
+                    cy="65"
+                    r="45"
+                    fill="none"
+                    stroke-width="26"
+                    [attr.stroke]="seg.color"
+                    [attr.stroke-dasharray]="seg.strokeDasharray"
+                    [attr.stroke-dashoffset]="seg.strokeDashoffset"
+                    transform="rotate(-90 65 65)"
+                  />
+                }
+              </svg>
+            </div>
+
+            <div class="leyenda-metodos">
+              @for (seg of segmentosCirculares(); track seg.nombre) {
+                <div class="item-leyenda">
+                  <span class="punto-color" [style.background-color]="seg.color"></span>
+                  <span class="nombre-metodo">{{ seg.nombre }}</span>
+                  <span class="porcentaje-metodo">{{ seg.porcentaje | number:'1.1-2' }}%</span>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="estado-vacio-dona">
+              <mat-icon>pie_chart</mat-icon>
+              <p>Sin métodos de pago para calcular</p>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <!-- 4 TARJETAS DE MÉTRICAS FINANCIERAS (ED62) -->
+      <div class="grid-tarjetas-resumen">
+        <!-- Tarjeta 1: Recaudación total -->
+        <mat-card class="tarjeta-resumen" appearance="outlined">
+          <mat-card-content>
+            <span class="etiqueta-resumen">Recaudación total</span>
+            <span class="monto-resumen monto-verde">
+              S/ {{ banner().recaudacionTotal | number:'1.2-2' }}
+            </span>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Tarjeta 2: Promedio diario -->
+        <mat-card class="tarjeta-resumen" appearance="outlined">
+          <mat-card-content>
+            <span class="etiqueta-resumen">Promedio diario</span>
+            <span class="monto-resumen monto-verde">
+              S/ {{ banner().promedioDiario | number:'1.2-2' }}
+            </span>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Tarjeta 3: Día pico -->
+        <mat-card class="tarjeta-resumen" appearance="outlined">
+          <mat-card-content>
+            <span class="etiqueta-resumen">Día pico</span>
+            <span class="monto-resumen monto-amarillo">
+              S/ {{ banner().diaPico | number:'1.2-2' }}
+            </span>
+            <span class="subtexto-fecha">{{ fechaDiaPico() }}</span>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Tarjeta 4: Pagos realizados -->
+        <mat-card class="tarjeta-resumen" appearance="outlined">
+          <mat-card-content>
+            <span class="etiqueta-resumen">Pagos realizados</span>
+            <span class="monto-resumen monto-verde">
+              {{ banner().pagosRealizados }}
+            </span>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- DIÁLOGO / MODAL VISTA a34: Reportes financiero por periodo sin datos     -->
+<!-- ========================================================================= -->
+@if (sinDatosModal()) {
+  <div class="backdrop-alerta" (click)="cerrarModalSinDatos()">
+    <mat-card class="dialogo-alerta-sin-datos" appearance="outlined" (click)="$event.stopPropagation()">
+      <div class="cabecera-alerta">
+        <h2 class="titulo-alerta">Información de búsqueda de ingresos</h2>
+        <div class="icono-alerta-rojo">
+          <mat-icon>warning_amber</mat-icon>
+        </div>
+      </div>
+
+      <div class="cuerpo-alerta">
+        <p class="mensaje-alerta-rojo">
+          ¡No se encontraron ingresos para el período seleccionado!
+        </p>
+      </div>
+
+      <div class="pie-alerta">
+        <button mat-flat-button class="boton-entendido-alerta" (click)="cerrarModalSinDatos()">
+          ENTENDIDO
+        </button>
+      </div>
+    </mat-card>
+  </div>
+}

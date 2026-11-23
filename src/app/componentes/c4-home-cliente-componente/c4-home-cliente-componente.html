@@ -1,0 +1,170 @@
+<app-barra-lateral>
+  <div class="home">
+
+    <!-- Logo SPORTFIT -->
+    <header class="encabezado">
+      <img
+        src="/loge-sportfit.png"
+        alt="SportFit"
+        class="brand-logo">
+    </header>
+
+    <mat-card class="bienvenida">
+      <mat-card-content>
+        <div class="icono-saludo">
+          <mat-icon>waving_hand</mat-icon>
+        </div>
+        <div class="texto-saludo">
+          <h1>Bienvenido de vuelta, {{ nombre }}.</h1>
+          <h2>¡Encuentra tus mejores horarios!</h2>
+        </div>
+        <button mat-flat-button disabled>RESERVAR AHORA</button>
+      </mat-card-content>
+    </mat-card>
+
+    <p class="error" *ngIf="error">{{ error }}</p>
+
+    <div class="columnas">
+      <div class="columna">
+        <div class="estadisticas">
+          <mat-card>
+            <mat-card-content>
+              <strong>{{ proximas.length }}</strong>
+              <span>Reservas próximas</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content>
+              <strong>{{ realizadas }}</strong>
+              <span>Reservas realizadas</span>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-content>
+              <strong>{{ canceladas }}</strong>
+              <span>Reservas canceladas</span>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <mat-card class="tabla-card tabla-proximas">
+          <mat-card-header>
+            <mat-card-title>Próximas reservas</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="tabla-scroll">
+              <table mat-table [dataSource]="proximas">
+                <ng-container matColumnDef="cancha">
+                  <th mat-header-cell *matHeaderCellDef>Cancha</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ nombreCancha(reserva.idSedeCancha) }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="sede">
+                  <th mat-header-cell *matHeaderCellDef>Sede</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ nombreSede(reserva.idSedeCancha) }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="fecha">
+                  <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ reserva.fReserva | date:'dd/MM/yyyy' }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="hora">
+                  <th mat-header-cell *matHeaderCellDef>Hora</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ hora(reserva) }}
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+              </table>
+            </div>
+            <p class="sin-datos" *ngIf="proximas.length === 0">
+              No tienes reservas próximas.
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="columna">
+        <mat-card class="tabla-card tabla-solicitudes">
+          <mat-card-header>
+            <mat-card-title>Solicitudes de reserva</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="tabla-scroll">
+              <table mat-table [dataSource]="solicitadas">
+                <ng-container matColumnDef="cancha">
+                  <th mat-header-cell *matHeaderCellDef>Cancha</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ nombreCancha(reserva.idSedeCancha) }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="sede">
+                  <th mat-header-cell *matHeaderCellDef>Sede</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ nombreSede(reserva.idSedeCancha) }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="fecha">
+                  <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ reserva.fReserva | date:'dd/MM/yyyy' }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="hora">
+                  <th mat-header-cell *matHeaderCellDef>Hora</th>
+                  <td mat-cell *matCellDef="let reserva">
+                    {{ hora(reserva) }}
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+              </table>
+            </div>
+            <p class="sin-datos" *ngIf="solicitadas.length === 0">
+              No tienes solicitudes pendientes.
+            </p>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="grafico-card">
+          <mat-card-header>
+            <mat-card-title>
+              Tendencia mensual de horas de actividad
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <svg viewBox="0 0 520 210"
+                 role="img"
+                 aria-label="Horas de reservas completadas en los últimos seis meses">
+              <line x1="42" y1="155" x2="500" y2="155" class="eje"/>
+              <line x1="42" y1="35" x2="42" y2="155" class="eje"/>
+              <line x1="42" y1="95" x2="500" y2="95" class="guia"/>
+              <line x1="42" y1="35" x2="500" y2="35" class="guia"/>
+              <polyline [attr.points]="puntosGrafico" class="linea"/>
+              <circle *ngFor="let punto of puntos"
+                      [attr.cx]="punto.x"
+                      [attr.cy]="punto.y"
+                      r="4"
+                      class="punto"/>
+              <text *ngFor="let mes of meses; let i = index"
+                    [attr.x]="42 + i * 86"
+                    y="181"
+                    class="mes">{{ mes }}</text>
+              <text x="260" y="205" class="etiqueta">Meses</text>
+              <text x="14" y="90" class="etiqueta"
+                    transform="rotate(-90 14 90)">Horas</text>
+            </svg>
+            <p class="sin-datos" *ngIf="!tieneActividad">
+              Sin horas completadas en los últimos seis meses.
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</app-barra-lateral>

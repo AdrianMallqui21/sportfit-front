@@ -1,0 +1,228 @@
+<app-barra-lateral>
+  <div class="incidentes-pagina">
+
+    <!-- Logo SPORTFIT -->
+    <header class="encabezado">
+      <img
+        src="/loge-sportfit.png"
+        alt="SportFit"
+        class="brand-logo">
+    </header>
+
+    <div class="incidentes-contenido">
+
+      <!-- FORMULARIO DE INCIDENCIAS -->
+      <mat-card class="reporte-card">
+
+        <h2 class="titulo">Reportar incidente</h2>
+        <p class="subtitulo">Siempre escuchamos tu opinión</p>
+
+        <mat-card-content>
+          <form [formGroup]="incidenciaForm" (ngSubmit)="onSubmit()" class="form-container">
+
+            <!-- Tipo de solicitud HU12 Escenario 2-->
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de solicitud</mat-label>
+              <mat-select formControlName="tipo">
+                <!-- Combobox -->
+                <mat-option value="Tecnico">Técnico</mat-option>
+                <mat-option value="Instalaciones">Instalaciones</mat-option>
+                <mat-option value="Preguntas">Preguntas</mat-option>
+              </mat-select>
+
+              @if (incidenciaForm.get('tipo')?.hasError('required')) {
+                <mat-error>Seleccione un tipo de solicitud</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Asunto -->
+            <mat-form-field appearance="outline">
+              <mat-label>Asunto</mat-label>
+              <input matInput formControlName="asunto" placeholder="Escribir asunto" maxlength="100">
+
+              @if (incidenciaForm.get('asunto')?.hasError('required')) {
+                <mat-error>El asunto es obligatorio</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- Descripción -->
+            <mat-form-field appearance="outline" class="campo-descripcion">
+              <mat-label>Descripción</mat-label>
+
+              <textarea matInput
+                        formControlName="descripcion"
+                        placeholder="Escribir descripción"
+                        rows="8"
+                        maxlength="300">
+              </textarea>
+
+              <mat-hint align="end">
+                {{ incidenciaForm.get('descripcion')?.value?.length || 0 }}/300
+              </mat-hint>
+
+              @if (incidenciaForm.get('descripcion')?.hasError('required')) {
+                <mat-error>La descripción es obligatoria</mat-error>
+              }
+            </mat-form-field>
+
+            <p class="texto-ayuda">• Máximo 300 caracteres</p>
+
+            @if (cargando) {
+              <p class="mensaje-cargando">Cargando información del usuario...</p>
+            }
+
+            @if (error) {
+              <p class="mensaje-error">{{ error }}</p>
+            }
+
+            <div class="acciones">
+              <button mat-flat-button
+                      type="submit"
+                      class="boton-enviar"
+                      [disabled]="incidenciaForm.invalid || cargando || enviando || idUsuario <= 0">
+                {{ enviando ? 'ENVIANDO...' : 'ENVIAR' }}
+              </button>
+            </div>
+
+          </form>
+
+        </mat-card-content>
+      </mat-card>
+
+      <!-- HISTORIAL DE INCIDENCIAS -->
+      <section class="historial">
+        <h2 class="titulo-historial">Historial de incidentes</h2>
+        <!-- Filtros de búsqueda -->
+        <mat-card class="filtros-card">
+          <div class="filtros-titulo"><mat-icon>search</mat-icon>
+            <span>Filtro de búsqueda</span>
+          </div>
+
+          <div class="filtros-contenido" [formGroup]="filtroForm">
+            <!--Filtro 1 tipo de incidencia Camonan-->
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo</mat-label>
+
+              <mat-select formControlName="tipo">
+                <mat-option value="">Todos</mat-option>
+                <mat-option value="Tecnico">Técnico</mat-option>
+                <mat-option value="Instalaciones">Instalaciones</mat-option>
+                <mat-option value="Preguntas">Preguntas</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!--Filtro 2 fecha de incidencia Camonan-->
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha</mat-label>
+
+              <input matInput
+                     [matDatepicker]="calendario"
+                     formControlName="fecha"
+                     placeholder="Seleccionar fecha"
+                     readonly>
+
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="calendario">
+              </mat-datepicker-toggle>
+
+              <mat-datepicker #calendario></mat-datepicker>
+            </mat-form-field>
+
+
+            <div class="acciones-filtro">
+              <button mat-flat-button
+                      type="button"
+                      class="boton-limpiar"
+                      (click)="limpiarFiltros()">
+                Limpiar
+              </button>
+
+              <button mat-flat-button
+                      type="button"
+                      class="boton-buscar"
+                      (click)="buscarIncidencias()">
+                Buscar
+              </button>
+            </div>
+
+          </div>
+
+        </mat-card>
+
+        <!-- Lista de incidencias -->
+        <mat-card class="historial-card">
+
+          @if (cargando) {
+            <p class="mensaje-vacio">Cargando incidencias...</p>
+          } @else if (incidenciasFiltradas.length === 0) {
+            <div class="sin-incidencias">
+              <mat-icon>inbox</mat-icon>
+              <p>No se encontraron incidencias</p>
+            </div>
+          } @else {
+
+            @for (incidencia of incidenciasFiltradas; track incidencia.idIncidencia) {
+
+              <mat-card class="incidencia-item">
+
+                <div class="incidencia-encabezado">
+
+                  <span class="incidencia-tipo"
+                        [class.tipo-tecnico]="incidencia.tipo === 'Tecnico'"
+                        [class.tipo-instalaciones]="incidencia.tipo === 'Instalaciones'"
+                        [class.tipo-preguntas]="incidencia.tipo === 'Preguntas'">
+                    {{ incidencia.tipo }}
+                  </span>
+
+                  <span class="incidencia-estado"
+                        [class.estado-pendiente]="incidencia.estado === 'Pendiente'"
+                        [class.estado-atendido]="incidencia.estado === 'Atendido'">
+                    {{ incidencia.estado }}
+                  </span>
+
+                </div>
+
+                <h3 class="incidencia-asunto">{{ incidencia.asunto }}</h3>
+
+                <p class="incidencia-descripcion">
+                  {{ incidencia.descripcion }}
+                </p>
+
+                <p class="incidencia-fecha">
+                  {{ incidencia.fCreacion | date:'dd/MM/yyyy' }}
+                </p>
+
+                <!-- Respuesta del administrador -->
+                @if (incidencia.respuestaAdmin) {
+
+                  <div class="respuesta-admin">
+
+                    <p class="respuesta-titulo">Respuesta</p>
+
+                    <p class="respuesta-texto">
+                      {{ incidencia.respuestaAdmin }}
+                    </p>
+
+                    @if (incidencia.fRespuesta) {
+                      <p class="incidencia-fecha">
+                        {{ incidencia.fRespuesta | date:'dd/MM/yyyy' }}
+                      </p>
+                    }
+                  </div>
+                }
+              </mat-card>
+            }
+          }
+        </mat-card>
+      </section>
+    </div>
+  </div>
+  <!-- C20: Confirmación de incidencia enviada -->
+  @if (mostrarConfirmacion) {
+    <app-c20-incidencia-enviada-dialogo
+      (cerrado)="mostrarConfirmacion = false">
+    </app-c20-incidencia-enviada-dialogo>
+  }
+</app-barra-lateral>
+

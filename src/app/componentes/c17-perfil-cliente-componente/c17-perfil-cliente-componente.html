@@ -1,0 +1,335 @@
+
+<app-barra-lateral>
+
+  <div class="perfil-pagina">
+
+
+    <!-- LOGO SPORTFIT -->
+    <header class="encabezado">
+      <img src="/loge-sportfit.png" alt="SportFit" class="brand-logo">
+    </header>
+
+
+    <div class="perfil-contenido">
+
+      <!-- ================================= -->
+      <!-- FORMULARIO: DATOS DEL CLIENTE -->
+      <!-- ================================= -->
+
+      <mat-card class="perfil-card">
+
+        <mat-card-title class="titulo">Tus datos</mat-card-title>
+
+        <p class="subtitulo">Administra tus datos personales</p>
+
+        <mat-card-content>
+          <form [formGroup]="perfilForm"
+                class="form-container"
+                (ngSubmit)="onSubmit()">
+            <!-- NOMBRES -->
+            <mat-form-field appearance="fill">
+              <mat-label>Nombres</mat-label>
+              <mat-icon matPrefix>person</mat-icon>
+
+              <input matInput
+                     formControlName="nombre"
+                     placeholder="Ingrese sus nombres">
+
+              @if (perfilForm.get('nombre')?.hasError('required')) {
+                <mat-error>El nombre es obligatorio</mat-error>
+              }
+
+            </mat-form-field>
+
+            <!-- APELLIDOS -->
+            <mat-form-field appearance="fill">
+
+              <mat-label>Apellidos</mat-label>
+
+              <mat-icon matPrefix>person_outline</mat-icon>
+
+              <input matInput
+                     formControlName="apellido"
+                     placeholder="Ingrese sus apellidos">
+
+              @if (perfilForm.get('apellido')?.hasError('required')) {
+                <mat-error>El apellido es obligatorio</mat-error>
+              }
+
+            </mat-form-field>
+
+            <!-- DNI Y TELEFONO -->
+            <div class="fila-formulario">
+
+              <mat-form-field appearance="fill">
+
+                <mat-label>DNI</mat-label>
+
+                <mat-icon matPrefix>badge</mat-icon>
+
+                <input matInput
+                       formControlName="dni"
+                       placeholder="Ingrese su DNI"
+                       maxlength="8"
+                       inputmode="numeric">
+
+                @if (perfilForm.get('dni')?.invalid) {
+                  <mat-error>Ingrese un DNI válido</mat-error>
+                }
+
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+
+                <mat-label>Teléfono</mat-label>
+
+                <mat-icon matPrefix>call</mat-icon>
+
+                <input matInput
+                       formControlName="telefono"
+                       placeholder="Ingrese su teléfono"
+                       maxlength="9"
+                       inputmode="numeric">
+
+                @if (perfilForm.get('telefono')?.invalid) {
+                  <mat-error>Ingrese un teléfono válido</mat-error>
+                }
+
+              </mat-form-field>
+
+            </div>
+
+            <!-- CORREO -->
+            <mat-form-field appearance="fill">
+              <mat-label>Correo electrónico</mat-label>
+              <mat-icon matPrefix>email</mat-icon>
+              <input matInput
+                     type="email"
+                     formControlName="correo"
+                     placeholder="Ingrese su correo">
+              @if (perfilForm.get('correo')?.invalid) {
+                <mat-error>Ingrese un correo válido</mat-error>
+              }
+            </mat-form-field>
+
+            <!-- CARGANDO -->
+            @if (cargando) {
+              <p class="mensaje-cargando">
+                Cargando datos del perfil...
+              </p>
+            }
+
+            <!-- ERROR -->
+            @if (error) {
+              <p class="mensaje-error">
+                {{ error }}
+              </p>
+            }
+
+            <!-- CONTRASEÑA -->
+            <mat-form-field appearance="fill">
+              <mat-label>Nueva contraseña (opcional)</mat-label>
+              <mat-icon matPrefix>lock</mat-icon>
+
+              <input matInput
+                     [type]="mostrarContrasena ? 'text' : 'password'"
+                     formControlName="contrasenaHash"
+                     placeholder="••••••••"
+                     autocomplete="new-password">
+
+              <button mat-icon-button matSuffix
+                      type="button"
+                      (click)="mostrarContrasena = !mostrarContrasena"
+                      [attr.aria-label]="mostrarContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                <mat-icon>
+                  {{ mostrarContrasena ? 'visibility_off' : 'visibility' }}
+                </mat-icon>
+              </button>
+
+              @if (perfilForm.get('contrasenaHash')?.hasError('minlength')) {
+                <mat-error>La contraseña debe tener mínimo 8 caracteres</mat-error>
+              }
+            </mat-form-field>
+
+
+            <!-- BOTON ACTUALIZAR -->
+            <div class="acciones">
+              <button mat-raised-button
+                      type="submit"
+                      class="boton-actualizar"
+                      [disabled]="perfilForm.invalid || cargando">
+                ACTUALIZAR
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+
+      </mat-card>
+
+
+      <!-- ================================= -->
+      <!-- COLUMNA DERECHA -->
+      <!-- ================================= -->
+
+      <div class="perfil-derecha">
+
+        <!-- ================================= -->
+        <!-- RESUMEN DEL CLIENTE -->
+        <!-- ================================= -->
+
+        <mat-card class="resumen-card">
+
+          @if (usuarioActual) {
+
+            <!-- ESTADO -->
+            <div class="estado-usuario"
+                 [class.estado-inactivo]="!usuarioActual.activo">
+
+              {{ usuarioActual.activo ? 'Activo' : 'Inactivo' }}
+
+            </div>
+
+            <div class="resumen-contenido">
+
+              <!-- INFORMACION PERSONAL -->
+              <div class="informacion-cliente">
+
+                <p class="nombre-cliente">
+                  {{ usuarioActual.nombre }}
+                  {{ usuarioActual.apellido }}
+                </p>
+
+                <p class="tipo-cliente">
+                  Cliente
+                </p>
+
+                <!-- DNI -->
+                <div class="dato-cliente">
+
+                  <mat-icon>badge</mat-icon>
+
+                  <span>DNI</span>
+
+                  <strong>{{ usuarioActual.dni }}</strong>
+
+                </div>
+
+                <!-- TELEFONO -->
+                <div class="dato-cliente">
+
+                  <mat-icon>call</mat-icon>
+
+                  <span>Teléfono</span>
+
+                  <strong>{{ usuarioActual.telefono }}</strong>
+
+                </div>
+
+                <!-- CORREO -->
+                <div class="dato-cliente">
+
+                  <mat-icon>email</mat-icon>
+
+                  <span>Correo</span>
+
+                  <strong>{{ usuarioActual.correo }}</strong>
+
+                </div>
+
+                <!-- TOTAL DE RESERVAS -->
+                <div class="dato-cliente">
+
+                  <mat-icon>layers</mat-icon>
+
+                  <span>Total de reservas</span>
+
+                  <strong>{{ reservas.length }}</strong>
+
+                </div>
+
+                <!-- FECHA DE REGISTRO -->
+                <div class="dato-cliente">
+
+                  <mat-icon>calendar_today</mat-icon>
+
+                  <span>Fecha de registro</span>
+
+                  <strong>
+                    {{ usuarioActual.fCreacion | date:'dd/MM/yyyy' }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+              <!-- FOTO DEL CLIENTE -->
+              <div class="foto-cliente">
+
+                @if (usuarioActual.imgUsuario) {
+
+                  <img [src]="usuarioActual.imgUsuario"
+                       alt="Foto de perfil del cliente">
+
+                } @else {
+
+                  <mat-icon class="foto-predeterminada">
+                    account_circle
+                  </mat-icon>
+
+                }
+
+                <button mat-flat-button
+                        type="button"
+                        class="boton-foto"
+                        (click)="abrirDialogoCambiarFoto()">
+                  CAMBIAR FOTO DE PERFIL
+                </button>
+
+
+              </div>
+
+            </div>
+
+          } @else if (cargando) {
+            <p class="mensaje-cargando">
+              Cargando información del cliente...
+            </p>
+
+          } @else {
+
+            <p class="mensaje-error">
+              No se pudo cargar el perfil del cliente.
+            </p>
+
+          }
+
+        </mat-card>
+        <!-- ACTIVIDAD RECIENTE -->
+
+        <mat-card class="actividad-card">
+
+          <div class="actividad-encabezado">
+
+            <mat-icon>schedule</mat-icon>
+
+            <h3>Actividad reciente</h3>
+
+          </div>
+
+          <!-- CARGANDO RESERVAS a-->
+          @if (cargandoReservas) {
+
+            <p class="mensaje-cargando">
+              Cargando actividad reciente...
+            </p>
+
+          }
+        </mat-card>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</app-barra-lateral>

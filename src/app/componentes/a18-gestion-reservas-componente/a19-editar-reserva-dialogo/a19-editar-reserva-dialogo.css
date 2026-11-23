@@ -1,0 +1,361 @@
+.dialogo-contenedor {
+  padding: 22px 28px 26px;
+  background: #ffffff;
+}
+
+.cabecera-dialogo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.titulo-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #111827;
+}
+
+.titulo-con-icono mat-icon {
+  font-size: 21px;
+  width: 21px;
+  height: 21px;
+}
+
+.titulo-con-icono h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.btn-cerrar-modal {
+  color: #374151;
+}
+
+.cuerpo-dialogo {
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.modal-cuerpo-edicion {
+  display: grid;
+  grid-template-columns: 1.68fr 1fr;
+  gap: 26px;
+  align-items: start;
+}
+
+/* CALENDARIO IZQUIERDA */
+.titulo-y-semana {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.subtitulo-modal {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.controles-semana {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.etiqueta-semana {
+  font-size: 11.5px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.btn-semana {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: #4b5563;
+  transition: all 0.15s ease;
+}
+
+.btn-semana:hover {
+  background: #ecfdf5;
+  border-color: #34c17a;
+  color: #059669;
+}
+
+.btn-semana mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.tarjeta-calendario {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
+}
+
+.calendario-top {
+  padding: 11px 16px;
+  border-bottom: 1.5px solid #34c17a;
+  background: #ffffff;
+}
+
+.leyenda-calendario {
+  display: flex;
+  gap: 16px;
+  font-size: 11.5px;
+  color: #4b5563;
+  flex-wrap: wrap;
+}
+
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-confirmada { background-color: #34c17a; }
+.dot-pendiente { background-color: #f3c11a; }
+.dot-disponible { background-color: #ffffff; border: 1.5px solid #d1d5db; }
+.dot-seleccion { background-color: #2563eb; }
+
+.tabla-calendario-wrapper {
+  max-height: 365px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.tabla-calendario {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+
+.tabla-calendario th {
+  background: #f8fafc;
+  color: #1f2937;
+  padding: 10px 6px;
+  border-bottom: 1px solid #e5e7eb;
+  border-left: 1px solid #f1f5f9;
+  font-weight: 700;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.tabla-calendario th.col-hora-header {
+  border-left: none;
+}
+
+.tabla-calendario td {
+  border: 1px solid #f1f5f9;
+  height: 44px;
+  min-width: 74px;
+  padding: 4px;
+  vertical-align: middle;
+}
+
+.celda-hora-eje {
+  font-weight: 500;
+  color: #6b7280;
+  text-align: center;
+  background: #fbfcfd;
+  width: 54px;
+  min-width: 54px !important;
+  font-size: 11px;
+}
+
+.celda-slot {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.celda-slot:hover {
+  background-color: #f0fdf4;
+}
+
+.bloque-ocupado,
+.bloque-seleccionado {
+  border-radius: 6px;
+  padding: 4px 6px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.2;
+}
+
+.bloque-confirmada {
+  background-color: #34c17a;
+  color: #ffffff;
+}
+
+.bloque-pendiente {
+  background-color: #f3c11a;
+  color: #ffffff;
+}
+
+.bloque-actual {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 3.5px #0f766e;
+}
+
+.bloque-seleccionado {
+  background-color: #dbeafe;
+  border: 1.5px solid #2563eb;
+  color: #1e40af;
+}
+
+.bloque-ocupado strong,
+.bloque-seleccionado strong {
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.bloque-ocupado small,
+.bloque-seleccionado small {
+  font-size: 9.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 68px;
+}
+
+/* FORMULARIO DERECHA */
+.seccion-campos-edicion {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 2px;
+}
+
+.fila-doble {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.campo-suave {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo-suave label {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.input-caja {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f3f5f8;
+  border: 1px solid #e9edf2;
+  border-radius: 10px;
+  padding: 0 12px;
+  height: 42px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.input-caja:focus-within {
+  border-color: #34c17a;
+  background-color: #ffffff;
+}
+
+.input-readonly {
+  background-color: #f3f5f8;
+  color: #6b7280;
+}
+
+.input-caja mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.input-caja input,
+.input-caja select {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  font-size: 13px;
+  color: #374151;
+  font-family: inherit;
+}
+
+.alerta-validacion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.alerta-validacion mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.validacion-ok {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.validacion-error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.boton-actualizar-modal {
+  background-color: #34c17a !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  border-radius: 10px !important;
+  height: 46px;
+  letter-spacing: 0.6px;
+  margin-top: 4px;
+  box-shadow: 0 2px 6px rgba(52, 193, 122, 0.25);
+}
+
+.boton-actualizar-modal:disabled {
+  background-color: #cbd5e1 !important;
+  color: #64748b !important;
+}
+
+@media (max-width: 850px) {
+  .modal-cuerpo-edicion {
+    grid-template-columns: 1fr;
+  }
+}

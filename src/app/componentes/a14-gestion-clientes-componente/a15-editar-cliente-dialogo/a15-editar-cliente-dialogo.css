@@ -1,0 +1,103 @@
+.dialogo-contenedor {
+  padding: 20px 24px 22px;
+  background: #ffffff;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.cabecera-dialogo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.titulo-con-icono {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #0f172a;
+}
+
+.titulo-con-icono h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cuerpo-dialogo {
+  padding: 0 !important;
+  max-height: 76vh;
+  overflow-y: auto !important;
+}
+
+.alerta-error-edicion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.formulario-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.grid-dos-columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.campo-grupo label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.campo-grupo mat-form-field {
+  width: 100%;
+}
+
+.btn-actualizar-cliente {
+  border-radius: 10px !important;
+  height: 46px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+  background-color: #2eb875 !important;
+  color: #ffffff !important;
+  margin-top: 4px;
+}
+
+.btn-actualizar-cliente:disabled {
+  background-color: #cbd5e1 !important;
+  color: #64748b !important;
+}
+
+.icono-valido {
+  color: #16a34a;
+  font-size: 20px;
+}
+
+@media (max-width: 600px) {
+  .grid-dos-columnas {
+    grid-template-columns: 1fr;
+  }
+}

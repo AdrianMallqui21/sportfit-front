@@ -1,0 +1,119 @@
+<div class="dialogo-contenedor">
+  <div class="cabecera-dialogo">
+    <div class="titulo-con-icono">
+      <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
+      <h2>Editar información</h2>
+    </div>
+    <button mat-icon-button type="button" [mat-dialog-close]="null" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="cuerpo-dialogo">
+    @if (errorEdicion()) {
+      <div class="alerta-error-edicion">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorEdicion() }}</span>
+      </div>
+    }
+
+    <form [formGroup]="formEdicion" class="formulario-modal" (ngSubmit)="guardarEdicion()">
+      <div class="grid-dos-columnas">
+        <div class="campo-grupo">
+          <label for="cliente-nombre">Nombres</label>
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-icon matIconPrefix fontSet="material-symbols-outlined">person</mat-icon>
+            <input matInput id="cliente-nombre" formControlName="nombre" placeholder="Ej. Juan Carlos" required>
+            @if (esCampoValido('nombre')) {
+              <mat-icon matIconSuffix class="icono-valido">check_circle</mat-icon>
+            }
+            @if (formEdicion.get('nombre')?.hasError('required')) {
+              <mat-error>El nombre es obligatorio</mat-error>
+            } @else if (formEdicion.get('nombre')?.hasError('minlength')) {
+              <mat-error>Debe tener al menos 2 caracteres</mat-error>
+            } @else if (formEdicion.get('nombre')?.hasError('pattern')) {
+              <mat-error>Solo se permiten letras y espacios</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="campo-grupo">
+          <label for="cliente-apellido">Apellidos</label>
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-icon matIconPrefix fontSet="material-symbols-outlined">person</mat-icon>
+            <input matInput id="cliente-apellido" formControlName="apellido" placeholder="Ej. Pérez Gómez" required>
+            @if (esCampoValido('apellido')) {
+              <mat-icon matIconSuffix class="icono-valido">check_circle</mat-icon>
+            }
+            @if (formEdicion.get('apellido')?.hasError('required')) {
+              <mat-error>El apellido es obligatorio</mat-error>
+            } @else if (formEdicion.get('apellido')?.hasError('minlength')) {
+              <mat-error>Debe tener al menos 2 caracteres</mat-error>
+            } @else if (formEdicion.get('apellido')?.hasError('pattern')) {
+              <mat-error>Solo se permiten letras y espacios</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="grid-dos-columnas">
+        <div class="campo-grupo">
+          <label for="cliente-dni">DNI</label>
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-icon matIconPrefix fontSet="material-symbols-outlined">badge</mat-icon>
+            <input matInput id="cliente-dni" formControlName="dni" maxlength="8" inputmode="numeric" placeholder="8 dígitos" required>
+            @if (esCampoValido('dni')) {
+              <mat-icon matIconSuffix class="icono-valido">check_circle</mat-icon>
+            }
+            <mat-hint align="end">{{ formEdicion.get('dni')?.value?.length || 0 }}/8</mat-hint>
+            @if (formEdicion.get('dni')?.hasError('required')) {
+              <mat-error>El DNI es obligatorio</mat-error>
+            } @else if (formEdicion.get('dni')?.hasError('pattern')) {
+              <mat-error>Debe tener exactamente 8 dígitos numéricos</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="campo-grupo">
+          <label for="cliente-telefono">Teléfono</label>
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-icon matIconPrefix fontSet="material-symbols-outlined">call</mat-icon>
+            <input matInput id="cliente-telefono" formControlName="telefono" maxlength="9" inputmode="numeric" placeholder="9 dígitos" required>
+            @if (esCampoValido('telefono')) {
+              <mat-icon matIconSuffix class="icono-valido">check_circle</mat-icon>
+            }
+            <mat-hint align="end">{{ formEdicion.get('telefono')?.value?.length || 0 }}/9</mat-hint>
+            @if (formEdicion.get('telefono')?.hasError('required')) {
+              <mat-error>El teléfono es obligatorio</mat-error>
+            } @else if (formEdicion.get('telefono')?.hasError('pattern')) {
+              <mat-error>Debe tener exactamente 9 dígitos numéricos</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="campo-grupo">
+        <label for="cliente-correo">Correo electrónico</label>
+        <mat-form-field subscriptSizing="dynamic">
+          <mat-icon matIconPrefix fontSet="material-symbols-outlined">mail</mat-icon>
+          <input matInput id="cliente-correo" type="email" formControlName="correo" placeholder="correo@ejemplo.com" required>
+          @if (esCampoValido('correo')) {
+            <mat-icon matIconSuffix class="icono-valido">check_circle</mat-icon>
+          }
+          @if (formEdicion.get('correo')?.hasError('required')) {
+            <mat-error>El correo electrónico es obligatorio</mat-error>
+          } @else if (formEdicion.get('correo')?.hasError('email')) {
+            <mat-error>Ingresa un correo electrónico válido</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <button mat-flat-button
+              class="btn-actualizar-cliente"
+              type="submit"
+              [disabled]="formEdicion.invalid || guardando()">
+        {{ guardando() ? 'ACTUALIZANDO...' : 'ACTUALIZAR' }}
+      </button>
+    </form>
+  </mat-dialog-content>
+</div>

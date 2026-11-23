@@ -1,0 +1,17 @@
+services:
+  app:
+    image: sportfit/front-end
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sportfit-front
+    restart: always
+    ports:
+      - "4200:80"
+    networks:
+      - springcloud
+
+networks:
+  springcloud:
+    name: springcloud
+    external: true

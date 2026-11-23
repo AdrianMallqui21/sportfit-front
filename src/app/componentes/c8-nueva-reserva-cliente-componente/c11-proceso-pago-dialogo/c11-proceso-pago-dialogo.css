@@ -1,0 +1,84 @@
+:host { display: block; padding: 24px 28px; background: #fff; color: #202020; font-family: Arial, Helvetica, sans-serif; }
+h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 18px; }
+h3 { margin: 0 0 12px; font-size: 14px; }
+.pago-columnas { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; }
+.columna-detalle { border-right: 1px solid #ddd; padding-right: 16px; }
+dl { margin: 0; }
+dt { margin-top: 10px; font-size: 12px; color: #777; }
+dd { margin: 2px 0 0; font-size: 14px; }
+.linea { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
+.linea small { display: block; color: #777; }
+.total { padding-top: 8px; border-top: 1px solid #ccc; font-weight: 700; }
+.campo { width: 100%; margin-top: 12px; }
+.qr { display: block; width: 130px; height: 130px; margin: 10px auto 0; }
+
+.zona-drop-comprobante {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.zona-drop-comprobante:hover,
+.zona-drop-activa {
+  border-color: #35b983;
+  background: #ecfdf5;
+}
+
+.preview-comprobante {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.texto-drop-comprobante {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.texto-drop-comprobante strong {
+  font-size: 12.5px;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.texto-drop-comprobante span {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.btn-cancelar-voucher {
+  flex-shrink: 0;
+  height: 30px;
+  font-size: 12px;
+}
+
+.estado-comprobante {
+  margin: 8px 0 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.estado-info { background: #e0f2fe; color: #0369a1; }
+.estado-error { background: #fee2e2; color: #b91c1c; }
+
+.acciones { display: flex; justify-content: flex-end; gap: 12px; margin-top: 18px; }
+.boton-principal {
+  --mat-button-filled-container-color: #35b983;
+  --mat-button-filled-label-text-color: #fff;
+}

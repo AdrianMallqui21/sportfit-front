@@ -1,0 +1,32 @@
+.titulo-dialogo {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #252525;
+  padding: 20px 20px 8px;
+  margin: 0;
+}
+
+.mensaje-dialogo {
+  text-align: center;
+  font-size: 13px;
+  color: #333;
+  line-height: 1.5;
+  padding: 12px 25px 18px !important;
+}
+
+.acciones-dialogo {
+  display: flex;
+  justify-content: center;
+  padding: 10px 20px 24px;
+}
+
+.boton-entendido {
+  background-color: #39b887 !important;
+  color: white !important;
+  border-radius: 6px;
+  min-width: 110px;
+  height: 36px;
+  font-size: 12px;
+  font-weight: 600;
+}

@@ -1,0 +1,42 @@
+<div class="dialogo-desactivar-contenedor">
+  <div class="cabecera-dialogo">
+    <div class="titulo-con-icono">
+      <mat-icon class="icono-power">power_settings_new</mat-icon>
+      <h2>Desactivar</h2>
+    </div>
+    <button mat-icon-button type="button" (click)="cerrar()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="cuerpo-dialogo">
+    @if (!confirmado()) {
+      <p class="pregunta-desactivar">
+        ¿Estás seguro que deseas desactivar el espacio deportivo <strong>{{ cancha.nombre }}</strong>?
+      </p>
+
+      @if (errorMsg()) {
+        <p class="texto-error">{{ errorMsg() }}</p>
+      }
+
+      <div class="botones-confirmar">
+        <button mat-flat-button type="button" class="btn-cancelar" (click)="cerrar()" [disabled]="procesando()">
+          Cancelar
+        </button>
+        <button mat-flat-button type="button" class="btn-continuar" (click)="confirmarDesactivacion()" [disabled]="procesando()">
+          {{ procesando() ? 'Procesando...' : 'Continuar' }}
+        </button>
+      </div>
+    } @else {
+      <p class="texto-confirmado">
+        Se desactivó la cancha correctamente.
+      </p>
+
+      <div class="botones-confirmar">
+        <button mat-flat-button type="button" class="btn-aceptar" (click)="cerrar()">
+          Aceptar
+        </button>
+      </div>
+    }
+  </mat-dialog-content>
+</div>

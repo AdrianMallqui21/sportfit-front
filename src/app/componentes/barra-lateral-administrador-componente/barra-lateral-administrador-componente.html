@@ -1,0 +1,64 @@
+<aside class="barra-lateral-admin">
+  <!-- Botón de Notificaciones (Campana) -->
+  <button mat-icon-button type="button" class="boton-campana" routerLink="/notificaciones" aria-label="Notificaciones">
+    <mat-icon>notifications</mat-icon>
+  </button>
+
+  <!-- SECCIÓN PERFIL / AVATAR -->
+  <div class="bloque-perfil">
+    <div class="avatar-circular">
+      @if (imgAdmin()) {
+        <img [src]="imgAdmin()" alt="Foto del administrador" class="img-avatar-admin" (error)="imgAdmin.set(null)">
+      } @else {
+        <mat-icon class="icono-avatar">account_circle</mat-icon>
+      }
+    </div>
+    <span class="etiqueta-rol">Administrador</span>
+  </div>
+
+  <!-- NAVEGACIÓN PRINCIPAL -->
+  <nav class="navegacion-admin" aria-label="Navegación principal">
+    @for (item of enlacesPrincipales; track item.ruta) {
+      <a mat-button class="nav-item" [routerLink]="item.ruta" routerLinkActive="activo">
+        <mat-icon>{{ item.icono }}</mat-icon>
+        <span>{{ item.texto }}</span>
+      </a>
+    }
+
+    <!-- Reportes (Desplegable con submenú) -->
+    <div class="bloque-reportes">
+      <button mat-button type="button" class="nav-item nav-item-reportes"
+              [class.activo]="enRutaReportes() || menuReportesAbierto()"
+              (click)="toggleMenuReportes()">
+        <span class="reportes-label-left">
+          <mat-icon>bar_chart</mat-icon>
+          <span>Reportes</span>
+        </span>
+        <mat-icon class="icono-flecha">{{ menuReportesAbierto() ? 'expand_less' : 'expand_more' }}</mat-icon>
+      </button>
+
+      @if (menuReportesAbierto()) {
+        <div class="submenu-reportes">
+          @for (rep of enlacesReportes; track rep.ruta) {
+            <a class="sub-item" [routerLink]="rep.ruta" routerLinkActive="sub-item-activo">
+              {{ rep.texto }}
+            </a>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Incidencias -->
+    <a mat-button class="nav-item" routerLink="/incidencias" routerLinkActive="activo">
+      <mat-icon>settings</mat-icon>
+      <span>Incidencias</span>
+    </a>
+  </nav>
+
+  <!-- PIE DE LA BARRA LATERAL: CERRAR SESIÓN -->
+  <div class="footer-barra-lateral">
+    <button mat-button type="button" class="boton-cerrar-sesion" (click)="cerrarSesion()">
+      Cerrar sesión
+    </button>
+  </div>
+</aside>

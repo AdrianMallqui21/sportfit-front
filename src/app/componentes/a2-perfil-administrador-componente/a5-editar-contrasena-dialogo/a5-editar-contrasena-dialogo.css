@@ -1,0 +1,131 @@
+:host {
+  display: block;
+  box-sizing: border-box;
+  padding: 12px 14px 16px;
+  background: #fff;
+  color: #202124;
+}
+
+.a5-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.a5-titulo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: normal;
+}
+
+.a5-titulo::before {
+  display: none;
+}
+
+.a5-titulo mat-icon,
+.a5-cerrar mat-icon,
+.a5-entrada mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  line-height: 18px;
+  flex-shrink: 0;
+}
+
+.a5-cerrar {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.a5-cerrar:hover {
+  background: #f1f3f5;
+}
+
+.a5-formulario {
+  display: grid;
+  gap: 8px;
+  padding: 16px 8px 0 18px;
+}
+
+.a5-campo {
+  display: grid;
+  gap: 4px;
+}
+
+.a5-campo label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.a5-entrada {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 0 8px;
+  border: 1px solid #eef1f4;
+  border-radius: 6px;
+  background: #f5f7fa;
+  color: #858b93;
+}
+
+.a5-entrada:focus-within {
+  border-color: #38b47f;
+}
+
+.a5-entrada input {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #202124;
+  font: inherit;
+  font-size: 12px;
+}
+
+.a5-entrada input::placeholder {
+  color: #858b93;
+}
+
+.a5-cambiar {
+  justify-self: center;
+  width: min(100%, 196px);
+  min-height: 42px;
+  margin-top: 20px;
+  border: 0;
+  border-radius: 6px;
+  background: #38b47f;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.a5-cambiar:hover {
+  background: #2c996a;
+}
+
+.a5-cerrar:focus-visible,
+.a5-cambiar:focus-visible {
+  outline: 2px solid #237653;
+  outline-offset: 2px;
+}

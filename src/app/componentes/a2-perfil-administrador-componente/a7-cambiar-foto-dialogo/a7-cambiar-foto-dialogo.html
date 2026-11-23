@@ -1,0 +1,60 @@
+<div class="dialogo-foto-contenedor">
+  <div class="cabecera-dialogo">
+    <div class="titulo-con-icono">
+      <mat-icon fontSet="material-symbols-outlined">photo_camera</mat-icon>
+      <h2>Cambiar fotografía</h2>
+    </div>
+    <button mat-icon-button type="button" [mat-dialog-close]="null" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="cuerpo-dialogo">
+    <input #inputArchivo type="file" accept="image/*" hidden (change)="alSeleccionarArchivo($event)">
+
+    <div class="preview-circular">
+      @if (obtenerPreview()) {
+        <img [src]="obtenerPreview()" alt="Vista previa de perfil">
+      } @else {
+        <mat-icon fontSet="material-symbols-outlined">account_circle</mat-icon>
+      }
+    </div>
+
+    <div class="zona-drop-foto"
+         [class.zona-drop-activa]="arrastrando()"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)"
+         (click)="inputArchivo.click()">
+      <mat-icon fontSet="material-symbols-outlined">cloud_upload</mat-icon>
+      <div class="texto-drop">
+        @if (archivoPendiente(); as arch) {
+          <strong>{{ arch.name }}</strong>
+          <span>Haz clic o arrastra otra foto para cambiarla</span>
+        } @else {
+          <strong>Arrastra tu foto aquí o haz clic para elegir</strong>
+          <span>Formatos JPG, PNG o WEBP (máx. 5 MB)</span>
+        }
+      </div>
+      @if (archivoPendiente() && !subiendo() && !guardando()) {
+        <button mat-stroked-button type="button" class="btn-cancelar-img" (click)="cancelarSeleccion($event)">
+          Cancelar
+        </button>
+      }
+    </div>
+
+    @if (estadoMensaje(); as est) {
+      <p class="estado-foto" [class.estado-info]="est.tipo === 'info'" [class.estado-error]="est.tipo === 'error'">
+        {{ est.texto }}
+      </p>
+    }
+
+    <button mat-flat-button
+            type="button"
+            class="btn-guardar-foto"
+            [disabled]="!archivoPendiente() || subiendo() || guardando()"
+            (click)="guardarFoto()">
+      {{ subiendo() ? 'SUBIENDO A CLOUDINARY...' : (guardando() ? 'GUARDANDO...' : 'GUARDAR FOTO') }}
+    </button>
+  </mat-dialog-content>
+</div>

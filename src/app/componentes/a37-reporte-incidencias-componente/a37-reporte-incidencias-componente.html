@@ -1,0 +1,395 @@
+<div class="reporte-pagina">
+
+  <!-- ALERTA DE AUTENTICACIÓN (SI LA SESIÓN CADUCÓ) -->
+  @if (alertaAutenticacion()) {
+    <div class="alerta-autenticacion-banner">
+      <div class="alerta-icono">
+        <mat-icon>lock</mat-icon>
+      </div>
+      <div class="alerta-contenido">
+        <strong>Acceso de Administrador requerido</strong>
+        <p>Los reportes de incidencias requieren permisos de Administrador para consultar la base de datos.</p>
+      </div>
+      <button mat-flat-button class="btn-login-rapido" (click)="iniciarSesionAdminPrueba()" [disabled]="iniciandoSesionRapida()">
+        <mat-icon>key</mat-icon>
+        {{ iniciandoSesionRapida() ? 'Iniciando...' : 'Iniciar como Administrador de prueba' }}
+      </button>
+    </div>
+  }
+
+  <!-- ENCABEZADO SUPERIOR -->
+  <header class="header-banner">
+    <div class="header-texto">
+      <h1 class="titulo-principal">
+        <span class="negro">DashBoard</span>
+        <span class="verde">Tipos de incidencias enviadas y atendidas</span>
+      </h1>
+      <p class="subtitulo-texto">
+        Análisis de incidencias enviadas vs. atendidas, categorización por motivo y rendimiento de respuesta general
+      </p>
+    </div>
+  </header>
+
+  <!-- ALERTA DE SELECCIÓN DE FILTROS OBLIGATORIOS -->
+  @if (alertaFiltrosIncompletos()) {
+    <div class="alerta-filtros-aviso">
+      <div class="aviso-flex">
+        <mat-icon class="aviso-icono">info</mat-icon>
+        <span>Por favor selecciona al menos el <strong>Año</strong> y el <strong>Mes</strong> para consultar el reporte.</span>
+      </div>
+      <button type="button" class="btn-cerrar-aviso" (click)="cerrarAlertaFiltros()">✕</button>
+    </div>
+  }
+
+  <!-- SECCIÓN SUPERIOR: (FILTRO + 3 KPIS) A LA IZQUIERDA Y ESTADO DE RESOLUCIÓN A LA DERECHA -->
+  <div class="seccion-superior-grid">
+
+    <!-- COLUMNA IZQUIERDA (FILTRO ARRIBA, 3 KPIS ABAJO) -->
+    <div class="columna-izquierda">
+
+      <!-- FILTRO DE BÚSQUEDA DE INCIDENCIAS -->
+      <div class="card-blanca card-filtro">
+        <div class="filtro-titulo-fila">
+          <svg class="icono-lupa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span class="filtro-titulo">Filtro de búsqueda de incidencias</span>
+        </div>
+
+        <div class="filtro-controles-fila">
+          <!-- SEDE -->
+          <div class="grupo-control">
+            <span class="label-inline">Sede</span>
+            <div class="select-pill-wrapper">
+              <select [(ngModel)]="filtroSede" class="select-pill">
+                <option [value]="0">Seleccionar sede</option>
+                @for (sede of sedesDisponibles(); track sede.idSede) {
+                  <option [value]="sede.idSede">{{ sede.nombre }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- AÑO (PREDETERMINADO VACÍO: SELECCIONAR AÑO) -->
+          <div class="grupo-control">
+            <span class="label-inline">Año</span>
+            <div class="select-pill-wrapper">
+              <select [(ngModel)]="filtroAnio" class="select-pill">
+                <option [value]="0">Seleccionar año</option>
+                @for (anio of aniosDisponibles; track anio) {
+                  <option [value]="anio">{{ anio }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- MES (PREDETERMINADO VACÍO: SELECCIONAR MES) -->
+          <div class="grupo-control">
+            <span class="label-inline">Mes</span>
+            <div class="select-pill-wrapper">
+              <select [(ngModel)]="filtroMes" class="select-pill">
+                <option [value]="0">Seleccionar mes</option>
+                @for (mes of mesesDisponibles; track mes.valor) {
+                  <option [value]="mes.valor">{{ mes.nombre }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <!-- BOTONES LIMPIAR Y BUSCAR -->
+          <button type="button" class="btn-amarillo-pill" (click)="limpiar()">Limpiar</button>
+          <button type="button" class="btn-verde-pill" (click)="buscar()">Buscar</button>
+        </div>
+      </div>
+
+      <!-- 3 TARJETAS KPI EN FILA -->
+      <div class="fila-kpis">
+
+        <!-- KPI 1: TOTAL DE INCIDENCIAS -->
+        <div class="card-blanca kpi-item-card">
+          <div class="kpi-icono-caja caja-azul">
+            <svg class="icono-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <div class="kpi-textos">
+            <span class="kpi-titulo-label">Total de incidencias</span>
+            <span class="kpi-numero-grande negro">{{ reporteConsultado() ? totalIncidenciasMes() : '—' }}</span>
+            <span class="kpi-pie-subtexto">{{ reporteConsultado() && filtroAnio > 0 ? (nombreMesSeleccionado() + ' ' + filtroAnio) : 'Sin consulta activa' }}</span>
+          </div>
+        </div>
+
+        <!-- KPI 2: INCIDENCIAS PENDIENTES -->
+        <div class="card-blanca kpi-item-card">
+          <div class="kpi-icono-caja caja-naranja">
+            <svg class="icono-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+          <div class="kpi-textos">
+            <span class="kpi-titulo-label">Incidencias pendientes</span>
+            <span class="kpi-numero-grande naranja">{{ reporteConsultado() ? incidenciasPendientesMes() : '—' }}</span>
+            <span class="badge-atencion">Requiere Atención</span>
+          </div>
+        </div>
+
+        <!-- KPI 3: ATENDIDAS ESTE MES -->
+        <div class="card-blanca kpi-item-card">
+          <div class="kpi-icono-caja caja-verde">
+            <svg class="icono-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <div class="kpi-textos">
+            <span class="kpi-titulo-label">Atendidas este mes</span>
+            <span class="kpi-numero-grande verde">{{ reporteConsultado() ? incidenciasAtendidasMes() : '—' }}</span>
+            <span class="kpi-pie-subtexto">{{ reporteConsultado() ? (porcentajeAtendidasCalculado() + '% Tasa de devolución') : 'Tasa de resolución' }}</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- COLUMNA DERECHA: ESTADO DE RESOLUCIÓN (OCUPA TODA LA ALTURA) -->
+    <div class="card-blanca card-estado-resolucion">
+      <div class="resolucion-encabezado">
+        <span class="resolucion-titulo">ESTADO DE RESOLUCIÓN</span>
+        <span class="resolucion-mes-tag">{{ reporteConsultado() ? (nombreMesSeleccionado() | uppercase) : 'PERÍODO' }}</span>
+      </div>
+
+      <!-- DONUT CIRCULAR -->
+      <div class="donut-wrapper">
+        <svg viewBox="0 0 140 140" class="donut-svg-element">
+          <!-- Círculo base gris claro -->
+          <circle cx="70" cy="70" r="50" fill="none" stroke="#f1f5f9" stroke-width="15" />
+          
+          <!-- Segmento Atendidas (Verde esmeralda) -->
+          <circle cx="70" cy="70" r="50" fill="none" stroke="#00b074" stroke-width="15"
+                  [attr.stroke-dasharray]="strokeDasharrayAtendidas()"
+                  [attr.stroke-dashoffset]="offsetDonutAtendidas()"
+                  transform="rotate(-90 70 70)" />
+
+          <!-- Segmento Pendientes (Amarillo/Ámbar) -->
+          <circle cx="70" cy="70" r="50" fill="none" stroke="#f5be18" stroke-width="15"
+                  [attr.stroke-dasharray]="strokeDasharrayPendientes()"
+                  [attr.stroke-dashoffset]="offsetDonutPendientes()"
+                  transform="rotate(-90 70 70)" />
+        </svg>
+
+        <div class="donut-texto-centro">
+          <span class="donut-num">{{ reporteConsultado() ? porcentajeAtendidasCalculado() : 0 }}%</span>
+          <span class="donut-sub">ATENDIDAS</span>
+        </div>
+      </div>
+
+      <!-- LEYENDA INFERIOR DEL DONUT -->
+      <div class="resolucion-leyenda-fila">
+        <div class="leyenda-columna">
+          <div class="punto-item">
+            <span class="dot-circulo verde"></span>
+            <strong>{{ reporteConsultado() ? incidenciasAtendidasMes() : 0 }} Atendidas</strong>
+          </div>
+          <span class="porcentaje-sub">{{ reporteConsultado() ? porcentajeAtendidasCalculado() : 0 }}% del total</span>
+        </div>
+
+        <div class="leyenda-columna">
+          <div class="punto-item">
+            <span class="dot-circulo amarillo"></span>
+            <strong>{{ reporteConsultado() ? incidenciasPendientesMes() : 0 }} Pendientes</strong>
+          </div>
+          <span class="porcentaje-sub">{{ reporteConsultado() ? porcentajePendientesCalculado() : 0 }}% en espera</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SECCIÓN INFERIOR: 3 TARJETAS / GRÁFICOS (TENDENCIA, CATEGORÍA, SEDES) -->
+  <div class="seccion-inferior-grid">
+
+    <!-- PANEL 1: TENDENCIA MENSUAL DE INCIDENCIAS -->
+    <div class="card-blanca panel-grafico">
+      <div class="panel-header-fila">
+        <h3 class="panel-titulo-verde">TENDENCIA MENSUAL DE INCIDENCIAS</h3>
+        <div class="leyenda-tendencia-inline">
+          <span class="leyenda-tag"><span class="caja-color amarillo"></span> Enviadas</span>
+          <span class="leyenda-tag"><span class="caja-color verde"></span> Atendidas</span>
+          <span class="leyenda-tag"><span class="caja-color azul"></span> Pendientes</span>
+        </div>
+      </div>
+
+      <div class="tendencia-svg-contenedor">
+        <svg viewBox="0 0 420 200" class="tendencia-svg">
+          <!-- Líneas guía horizontales y valores eje Y dinámicos -->
+          <line x1="30" y1="20" x2="400" y2="20" stroke="#f3f4f6" stroke-width="1" />
+          <text x="22" y="24" class="y-eje-texto">{{ escalaEjeY().v4 }}</text>
+
+          <line x1="30" y1="57" x2="400" y2="57" stroke="#f3f4f6" stroke-width="1" />
+          <text x="22" y="61" class="y-eje-texto">{{ escalaEjeY().v3 }}</text>
+
+          <line x1="30" y1="95" x2="400" y2="95" stroke="#f3f4f6" stroke-width="1" />
+          <text x="22" y="99" class="y-eje-texto">{{ escalaEjeY().v2 }}</text>
+
+          <line x1="30" y1="132" x2="400" y2="132" stroke="#f3f4f6" stroke-width="1" />
+          <text x="22" y="136" class="y-eje-texto">{{ escalaEjeY().v1 }}</text>
+
+          <line x1="30" y1="170" x2="400" y2="170" stroke="#e5e7eb" stroke-width="1" />
+          <text x="22" y="174" class="y-eje-texto">0</text>
+
+          @if (reporteConsultado()) {
+            <!-- Línea Amarilla: Enviadas -->
+            <polyline fill="none" stroke="#f5be18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                      [attr.points]="puntosLineaEnviadas()" />
+
+            <!-- Línea Verde: Atendidas -->
+            <polyline fill="none" stroke="#00b074" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                      [attr.points]="puntosLineaAtendidas()" />
+
+            <!-- Línea Azul Punteada: Pendientes -->
+            <polyline fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      stroke-dasharray="3,3"
+                      [attr.points]="puntosLineaPendientes()" />
+
+            <!-- Puntos en la línea y nombres de meses en Eje X -->
+            @for (punto of puntosGraficoTendencia(); track punto.mes) {
+              @if (punto.enviadas > 0) {
+                <circle [attr.cx]="punto.x" [attr.cy]="punto.yEnviadas" r="3.5" fill="#f5be18" />
+              }
+              @if (punto.atendidas > 0) {
+                <circle [attr.cx]="punto.x" [attr.cy]="punto.yAtendidas" r="3.5" fill="#00b074" />
+              }
+              @if (punto.pendientes > 0) {
+                <circle [attr.cx]="punto.x" [attr.cy]="punto.yPendientes" r="3.5" fill="#38bdf8" />
+              }
+              <text [attr.x]="punto.x" y="190" class="x-mes-texto">{{ punto.mes }}</text>
+            }
+          } @else {
+            <text x="210" y="105" text-anchor="middle" fill="#9ca3af" font-size="12">Selecciona un año y pulsa Buscar para proyectar la tendencia</text>
+            <text x="50" y="190" class="x-mes-texto">Ene</text>
+            <text x="110" y="190" class="x-mes-texto">Mar</text>
+            <text x="170" y="190" class="x-mes-texto">May</text>
+            <text x="230" y="190" class="x-mes-texto">Jul</text>
+            <text x="290" y="190" class="x-mes-texto">Set</text>
+            <text x="350" y="190" class="x-mes-texto">Nov</text>
+          }
+        </svg>
+        <span class="subtexto-analisis">Meses de análisis</span>
+      </div>
+    </div>
+
+    <!-- PANEL 2: DISTRIBUCIÓN DE INCIDENCIAS POR CATEGORÍA -->
+    <div class="card-blanca panel-grafico">
+      <div class="panel-header-fila">
+        <h3 class="panel-titulo-verde">DISTRIBUCIÓN DE INCIDENCIAS POR CATEGORÍA</h3>
+        <span class="total-reg-tag">Total: {{ totalRegistrosCategorias() }} reg.</span>
+      </div>
+
+      <div class="categorias-lista">
+        @for (cat of distribucionCategorias(); track cat.categoria) {
+          <div class="categoria-fila">
+            <span class="cat-nombre">{{ cat.categoria }}</span>
+            <div class="cat-barra-carril">
+              <div class="cat-barra-color" [style.width.%]="calcularAnchoBarra(cat.porcentaje)"></div>
+            </div>
+            <span class="cat-porcentaje-valor">{{ cat.porcentaje || 0 }}%</span>
+          </div>
+        }
+
+        <!-- Escala 0% a 50% con línea base -->
+        <div class="escala-eje-seccion">
+          <div class="escala-linea-base"></div>
+          <div class="escala-numeros">
+            <span>0%</span>
+            <span>10%</span>
+            <span>20%</span>
+            <span>30%</span>
+            <span>40%</span>
+            <span>50%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: DESGLOSE DE INCIDENCIAS POR SEDES DEPORTIVAS (MUESTRA TODAS LAS SEDES DE BD) -->
+    <div class="card-blanca panel-grafico">
+      <div class="panel-header-fila">
+        <h3 class="panel-titulo-oscuro">DESGLOSE DE INCIDENCIAS POR SEDES DEPORTIVAS</h3>
+      </div>
+
+      <div class="sedes-lista">
+        @for (sede of desgloseSedes(); track sede.idSede) {
+          <div class="sede-fila-item">
+            <div class="sede-header-linea">
+              <div class="sede-identificador">
+                <span class="punto-sede-dot" [style.background-color]="sede.color"></span>
+                <span class="sede-nombre-bold">{{ sede.nombreSede }}</span>
+                <span class="sede-disciplinas-texto">({{ sede.descripcionSede }})</span>
+              </div>
+              <span class="sede-total-cifra">{{ sede.totalIncidencias }} incidencias ({{ sede.porcentajeTotal }}%)</span>
+            </div>
+
+            <!-- Barra combinada: Atendidas (oscura) vs Pendientes (amarilla) -->
+            <div class="barra-combinada-carril">
+              <div class="segmento-oscura" [style.width.%]="sede.totalIncidencias > 0 ? ((sede.resueltas / sede.totalIncidencias) * 100) : 0"></div>
+              <div class="segmento-amarilla" [style.width.%]="sede.totalIncidencias > 0 ? ((sede.pendientes / sede.totalIncidencias) * 100) : 0"></div>
+            </div>
+
+            <div class="sede-subdetalles">
+              <span>{{ sede.resueltas }} resueltas</span>
+              <span>{{ sede.pendientes }} pendientes</span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Pie del desglose mostrando la cantidad total de sedes activas -->
+      <div class="sedes-pie-fila">
+        <span class="complejos-activos-texto">{{ desgloseSedes().length }} complejos activos</span>
+        <div class="leyenda-sedes-inline">
+          <span class="leyenda-tag"><span class="caja-color oscura"></span> Atendidas</span>
+          <span class="leyenda-tag"><span class="caja-color amarilla"></span> Pendientes</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL VISTA A38: PERÍODO SIN DATOS -->
+  @if (sinDatosModal()) {
+    <div class="modal-backdrop-overlay" (click)="cerrarModalSinDatos()">
+      <div class="modal-card-blanca" (click)="$event.stopPropagation()">
+        <div class="modal-header-fila">
+          <h2 class="modal-titulo-gris">Informacion de busqueda de incidencias</h2>
+          <div class="modal-icono-alerta-rojo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+        </div>
+
+        <div class="modal-body-contenido">
+          <p class="modal-texto-rojo-bold">
+            ¡No se encontraron incidencias para el período seleccionado!
+          </p>
+        </div>
+
+        <div class="modal-botones-pie">
+          <button type="button" class="btn-modal-entendido-verde" (click)="cerrarModalSinDatos()">
+            Entendido
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

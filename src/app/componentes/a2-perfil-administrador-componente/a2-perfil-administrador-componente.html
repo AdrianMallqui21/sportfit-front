@@ -1,0 +1,139 @@
+<div class="perfil-administrador">
+  <header class="encabezado-perfil-administrador">
+    <h1>Perfil del administrador</h1>
+    <!-- Agregar el atributo src con la ruta real del logotipo. -->
+    <img alt="SportFit" class="logotipo" src="/loge-sportfit.png">
+  </header>
+
+  <main class="contenido-perfil-administrador">
+    <div class="columna-identidad">
+      <mat-card appearance="outlined" class="fotografia-admin">
+        <mat-card-content>
+          <img [src]="usuario.imgUsuario || ''" alt="Fotografía del administrador" class="imagen-administrador" (error)="usuario.imgUsuario = ''">
+          <h2 class="nombre-administrador">{{ usuario.nombre }}</h2>
+          <p class="rol">{{ rol }}</p>
+          @if (usuario.activo) {
+            <span class="estado-admin">Activo</span>
+          } @else {
+            <span class="estado-admin">Inactivo</span>
+          }
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button (click)="abrirDialogoCambiarFoto()" class="boton-cambiar-fotografia" mat-stroked-button type="button">
+            Cambiar fotografía
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <!-- Fecha y dispositivos activos -->
+      <mat-card appearance="outlined" class="banners-admin">
+        <mat-card-content>
+          <section aria-labelledby="titulo-miembro-desde" class="tiempo">
+            <h2 id="titulo-miembro-desde">Miembro desde</h2>
+            <p class="fecha-registro">{{ usuario.fCreacion | date:'yyyy' }}</p>
+          </section>
+
+          <section aria-labelledby="titulo-dispositivos" class="dispositivos">
+            <!-- Indicador fijo conservado de tu estructura inicial. -->
+            <h2 id="titulo-dispositivos">{{ sesioneActivas + " Dispositivo" }}</h2>
+            <p class="estado-dispositivo">Activo</p>
+          </section>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="columna-informacion">
+      <mat-card appearance="outlined" class="informacion-admin">
+        <mat-card-header>
+          <div class="encabezado-informacion">
+            <h2 id="titulo-informacion-personal">Información personal</h2>
+            <p>Administra tus datos personales y de contacto</p>
+          </div>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- Cada dd recibirá el dato correspondiente cuando se conecte el backend. -->
+          <dl aria-labelledby="titulo-informacion-personal" class="datos-personales">
+            <div class="dato-personal">
+              <dt>Nombres</dt>
+              <dd class="nombres-administrador">{{ usuario.nombre }}</dd>
+            </div>
+
+            <div class="dato-personal">
+              <dt>Apellidos</dt>
+              <dd class="apellidos-administrador">{{ usuario.apellido }}</dd>
+            </div>
+
+            <div class="dato-personal">
+              <dt>DNI</dt>
+              <dd class="dni-administrador">{{ usuario.dni }}</dd>
+            </div>
+
+            <div class="dato-personal">
+              <dt>Teléfono</dt>
+              <dd class="telefono-administrador">{{ usuario.telefono }}</dd>
+            </div>
+
+            <div class="dato-personal">
+              <dt>Correo</dt>
+              <dd class="correo-administrador">{{ usuario.correo }}</dd>
+            </div>
+
+            <div class="dato-personal">
+              <dt>Rol</dt>
+              <dd class="rol-administrador">{{ rol }}</dd>
+            </div>
+          </dl>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <!-- Pendiente: abrir el formulario de edición. -->
+          <button (click)="abrirDialogoEditar()" class="boton-editar-informacion" mat-stroked-button type="button">
+            Editar información
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+
+      <mat-card appearance="outlined" class="seguridad-admin">
+        <mat-card-header>
+          <h2 id="titulo-seguridad-cuenta">Seguridad de la cuenta</h2>
+        </mat-card-header>
+
+        <mat-card-content>
+          <dl aria-labelledby="titulo-seguridad-cuenta" class="datos-seguridad">
+            <div class="dato-seguridad">
+              <dt>Contraseña</dt>
+              <dd class="contrasena-protegida">
+                <span aria-label="Contraseña protegida">*************</span>
+              </dd>
+            </div>
+
+            <div class="dato-seguridad">
+              <dt>Último acceso</dt>
+              <dd class="ultimo-acceso">{{ ultimoAcceso | date:'dd/MM/yyyy HH:mm:ss' }}</dd>
+            </div>
+
+            <div class="dato-seguridad">
+              <dt>Sesiones activas</dt>
+              <dd class="sesiones-activas">{{ sesioneActivas + " Dispositivo" }}</dd>
+            </div>
+
+            <div class="dato-seguridad">
+              <dt>Correo verificado</dt>
+              <dd class="correo-verificado">{{ usuario.correo }}</dd>
+            </div>
+          </dl>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <!-- Pendiente: abrir el formulario de cambio de contraseña. -->
+          <button (click)="abrirDialogoContrasena()" class="boton-cambiar-contrasena" mat-stroked-button type="button">
+            Cambiar contraseña
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </main>
+</div>

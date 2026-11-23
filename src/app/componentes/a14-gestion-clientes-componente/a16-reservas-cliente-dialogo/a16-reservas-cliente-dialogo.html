@@ -1,0 +1,132 @@
+<div class="dialogo-contenedor">
+  <div class="cabecera-dialogo">
+    <div>
+      <div class="titulo-con-icono">
+        <mat-icon>calendar_today</mat-icon>
+        <h2>Reservas del cliente</h2>
+      </div>
+      <p class="subtitulo-dialogo">Consulta el historial de reservas del usuario seleccionado</p>
+    </div>
+    <button mat-icon-button type="button" mat-dialog-close aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="cuerpo-dialogo">
+    @if (data.cliente; as c) {
+      <div class="banner-cliente-dialogo">
+        <div class="avatar-dialogo-circulo">
+          @if (c.imgUsuario) {
+            <img
+              [src]="c.imgUsuario"
+              [alt]="c.nombre"
+              class="img-avatar-dialogo"
+              (error)="c.imgUsuario = ''"
+            />
+          } @else {
+            <mat-icon>account_circle</mat-icon>
+          }
+        </div>
+        <div class="datos-banner-dialogo">
+          <div class="nombre-badge-dialogo">
+            <strong>{{ c.nombre }} {{ c.apellido }}</strong>
+            <span class="badge-estado" [class.badge-activo]="c.activo" [class.badge-inactivo]="!c.activo">
+              {{ c.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </div>
+          <div class="grid-datos-dialogo">
+            <span><mat-icon class="icono-pequeno">badge</mat-icon> DNI: {{ c.dni }}</span>
+            <span><mat-icon class="icono-pequeno">mail_outline</mat-icon> Correo &nbsp;{{ c.correo }}</span>
+            <span><mat-icon class="icono-pequeno">phone</mat-icon> Teléfono &nbsp;{{ c.telefono }}</span>
+            <span><mat-icon class="icono-pequeno">calendar_today</mat-icon> Total de reservas &nbsp;{{ reservasHistorial().length }}</span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <h3 class="subtitulo-reservas">Historial de reservas</h3>
+
+    <div class="contenedor-tabla-reservas-borde">
+      <table mat-table [dataSource]="dataSource" matSort class="tabla-reservas-dialogo mat-elevation-z0">
+        <ng-container matColumnDef="sede">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sede</th>
+          <td mat-cell *matCellDef="let r">
+            <span class="celda-icono-texto">
+              <mat-icon class="icono-pequeno">location_on</mat-icon>
+              {{ obtenerSedeReserva(r) }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cancha">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cancha / Deporte</th>
+          <td mat-cell *matCellDef="let r">{{ obtenerCanchaDeporteReserva(r) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="fReserva">Fecha</th>
+          <td mat-cell *matCellDef="let r">
+            <span class="celda-icono-texto">
+              <mat-icon class="icono-pequeno">calendar_today</mat-icon>
+              {{ formatearFechaGuion(r.fReserva) }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="horario">
+          <th mat-header-cell *matHeaderCellDef>Horario</th>
+          <td mat-cell *matCellDef="let r">
+            <span class="celda-icono-texto">
+              <mat-icon class="icono-pequeno">schedule</mat-icon>
+              {{ formatearHora(r.hInicio) }} - {{ formatearHora(r.hFin) }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="estado">Estado</th>
+          <td mat-cell *matCellDef="let r">
+            <span class="badge-estado badge-reserva-{{ (r.estado || '').toLowerCase() }}">
+              {{ etiquetaEstadoReserva(r.estado) }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="monto">
+          <th mat-header-cell *matHeaderCellDef>Monto</th>
+          <td mat-cell *matCellDef="let r">s/{{ obtenerMontoReserva(r) | number:'1.2-2' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="accion">
+          <th mat-header-cell *matHeaderCellDef>Acción</th>
+          <td mat-cell *matCellDef="let r">
+            <button mat-icon-button type="button" matTooltip="Ver detalle de reserva" (click)="verDetalleReservaModal(r)">
+              <mat-icon class="icono-ojo-accion">{{ reservaDetalleModal()?.idReserva === r.idReserva ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasReservas; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasReservas"
+            [class.fila-seleccionada]="reservaDetalleModal()?.idReserva === row.idReserva"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell celda-sin-datos" [attr.colspan]="columnasReservas.length">
+            El cliente no tiene reservas registradas en el sistema.
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Seleccionar página de reservas"></mat-paginator>
+    </div>
+
+    @if (reservaDetalleModal(); as det) {
+      <mat-card class="card-detalle-inline" appearance="outlined">
+        <mat-card-content class="detalle-inline-contenido">
+          <div><strong>Reserva #{{ det.idReserva }}</strong> — {{ obtenerSedeReserva(det) }} ({{ obtenerCanchaDeporteReserva(det) }})</div>
+          <div>Fecha: {{ formatearFechaGuion(det.fReserva) }} | Horario: {{ formatearHora(det.hInicio) }} - {{ formatearHora(det.hFin) }} | Estado: <strong>{{ etiquetaEstadoReserva(det.estado) }}</strong> | Importe: <strong>s/{{ obtenerMontoReserva(det) | number:'1.2-2' }}</strong></div>
+        </mat-card-content>
+      </mat-card>
+    }
+  </mat-dialog-content>
+</div>

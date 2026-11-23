@@ -1,0 +1,154 @@
+<div class="dialogo-espacio-contenedor">
+  <div class="cabecera-dialogo">
+    <div class="titulo-con-icono">
+      <mat-icon fontSet="material-symbols-outlined">edit</mat-icon>
+      <h2>Editar información</h2>
+    </div>
+    <button mat-icon-button type="button" [mat-dialog-close]="null" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="cuerpo-dialogo">
+    <form [formGroup]="formEdicion" (ngSubmit)="guardarEdicion()" class="formulario-material-espacio">
+      <!-- Nombre de cancha -->
+      <div class="campo-grupo">
+        <label for="nombre-cancha">Nombre de cancha</label>
+        <mat-form-field subscriptSizing="dynamic">
+          <mat-icon matIconPrefix fontSet="material-symbols-outlined">stadium</mat-icon>
+          <input matInput id="nombre-cancha" formControlName="nombre" placeholder="Ej. Cancha Fútbol Surco A">
+          @if (formEdicion.get('nombre')?.hasError('required')) {
+            <mat-error>El nombre de la cancha es obligatorio.</mat-error>
+          } @else if (formEdicion.get('nombre')?.hasError('minlength')) {
+            <mat-error>Debe tener al menos 3 caracteres.</mat-error>
+          } @else if (formEdicion.get('nombre')?.hasError('maxlength')) {
+            <mat-error>Máximo 50 caracteres permitidos.</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <!-- Tipo de cancha y Aforo -->
+      <div class="fila-dos-columnas">
+        <div class="campo-grupo">
+          <label for="tipo-cancha">Tipo de cancha</label>
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-icon matIconPrefix fontSet="material-symbols-outlined">sports_soccer</mat-icon>
+            <mat-select id="tipo-cancha" formControlName="deporte">
+              @for (opc of opcionesDeporte; track opc.valor) {
+                <mat-option [value]="opc.valor">{{ opc.etiqueta }}</mat-option>
+              }
+            </mat-select>
+            @if (formEdicion.get('deporte')?.hasError('required')) {
+              <mat-error>Selecciona un deporte.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="campo-grupo">
+          <label for="aforo-cancha">Aforo</label>
+          <mat-form-field subscriptSizing="dynamic">
+            <mat-icon matIconPrefix fontSet="material-symbols-outlined">group</mat-icon>
+            <mat-select id="aforo-cancha" formControlName="aforo">
+              @for (aforo of opcionesAforo; track aforo) {
+                <mat-option [value]="aforo">{{ aforo }} personas</mat-option>
+              }
+            </mat-select>
+            @if (formEdicion.get('aforo')?.hasError('required')) {
+              <mat-error>Selecciona el aforo.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Precio -->
+      <div class="campo-grupo">
+        <label for="precio-cancha">Precio por hora</label>
+        <mat-form-field subscriptSizing="dynamic">
+          <span matTextPrefix class="prefijo-moneda">S/&nbsp;</span>
+          <input matInput id="precio-cancha" type="number" formControlName="precio" placeholder="60.00" step="0.5">
+          @if (formEdicion.get('precio')?.hasError('required')) {
+            <mat-error>El precio es obligatorio.</mat-error>
+          } @else if (formEdicion.get('precio')?.hasError('min')) {
+            <mat-error>El precio mínimo es S/ 10.00.</mat-error>
+          } @else if (formEdicion.get('precio')?.hasError('max')) {
+            <mat-error>El precio máximo permitido es S/ 2000.00.</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <!-- Imagen: Drag & Drop + Vista previa + URL -->
+      <div class="campo-grupo">
+        <label>Imagen del espacio</label>
+        <input #inputArchivo type="file" accept="image/*" hidden (change)="alSeleccionarArchivo($event)">
+
+        <div class="zona-drop-imagen"
+             [class.zona-drop-activa]="arrastrando()"
+             (dragover)="onDragOver($event)"
+             (dragleave)="onDragLeave($event)"
+             (drop)="onDrop($event)"
+             (click)="inputArchivo.click()">
+          <div class="preview-imagen-box">
+            @if (obtenerUrlPreview() && !imagenInvalida()) {
+              <img [src]="obtenerUrlPreview()" alt="Vista previa" (error)="imagenInvalida.set(true)">
+            } @else {
+              <mat-icon fontSet="material-symbols-outlined">cloud_upload</mat-icon>
+            }
+          </div>
+
+          <div class="texto-drop-imagen">
+            @if (subiendoImagen()) {
+              <strong>Subiendo imagen a Cloudinary...</strong>
+              <span>Espera un momento, por favor</span>
+            } @else if (archivoPendiente(); as arch) {
+              <strong>{{ arch.name }}</strong>
+              <span>Haz clic o arrastra otra imagen para cambiarla</span>
+            } @else {
+              <strong>Arrastra una imagen aquí o haz clic para elegir</strong>
+              <span>Formatos JPG, PNG o WEBP (máx. 5 MB)</span>
+            }
+          </div>
+
+          @if (archivoPendiente() && !subiendoImagen()) {
+            <button mat-stroked-button type="button" class="btn-cancelar-img" (click)="cancelarSeleccionImagen($event)">
+              Cancelar
+            </button>
+          }
+        </div>
+
+        <mat-form-field subscriptSizing="dynamic">
+          <mat-icon matIconPrefix fontSet="material-symbols-outlined">link</mat-icon>
+          <input matInput
+                 formControlName="imgCancha"
+                 placeholder="URL de la imagen (o sube una arriba)"
+                 (input)="alCambiarUrlImagen()">
+          @if (formEdicion.get('imgCancha')?.hasError('maxlength')) {
+            <mat-error>La URL no puede superar 300 caracteres.</mat-error>
+          }
+        </mat-form-field>
+
+        @if (estadoImagen(); as est) {
+          <p class="estado-subida-imagen"
+             [class.estado-ok]="est.tipo === 'ok'"
+             [class.estado-info]="est.tipo === 'info'"
+             [class.estado-error]="est.tipo === 'error'">
+            {{ est.texto }}
+          </p>
+        }
+      </div>
+
+      @if (errorServidor()) {
+        <div class="alerta-error-servidor">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorServidor() }}</span>
+        </div>
+      }
+
+      <button mat-flat-button
+              type="submit"
+              class="btn-actualizar-espacio"
+              [disabled]="formEdicion.invalid || guardando() || subiendoImagen()">
+        {{ guardando() ? 'ACTUALIZANDO...' : (subiendoImagen() ? 'SUBIENDO IMAGEN...' : 'ACTUALIZAR') }}
+      </button>
+    </form>
+  </mat-dialog-content>
+</div>

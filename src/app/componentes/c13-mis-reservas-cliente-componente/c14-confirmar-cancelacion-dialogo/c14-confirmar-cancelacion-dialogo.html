@@ -1,0 +1,21 @@
+<div>
+  <h2>Confirmación de cancelación de reserva</h2>
+  <p>
+    ¿Estás seguro de que deseas cancelar tu reserva? Ten en cuenta que al hacerlo perderás tu
+    reserva por completo y se iniciará el proceso de reembolso.
+  </p>
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="campo-motivo">
+    <mat-label>Motivo de cancelación</mat-label>
+    <mat-select [formControl]="motivo">
+      @for (opcion of motivos; track opcion) {
+        <mat-option [value]="opcion">{{ opcion }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <div class="acciones">
+    <button mat-dialog-close matButton="filled" type="button" class="btn-no">No</button>
+    <button matButton="filled" type="button" class="btn-si" [disabled]="motivo.invalid" (click)="confirmar()">Sí</button>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="dialogo-contenedor">
+  <div class="cabecera-dialogo">
+    <div class="titulo-con-icono">
+      <mat-icon>edit</mat-icon>
+      <h2>Editar información</h2>
+    </div>
+    <button mat-icon-button type="button" class="btn-cerrar-modal" [mat-dialog-close]="false" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="cuerpo-dialogo">
+    <form [formGroup]="formEdicion" (ngSubmit)="solicitarConfirmacion()" class="modal-cuerpo-edicion">
+      <!-- SECCIÓN IZQUIERDA: CALENDARIO DE DISPONIBILIDAD -->
+      <div class="seccion-calendario-wrapper">
+        <div class="titulo-y-semana">
+          <span class="subtitulo-modal">Fecha de reserva</span>
+          <div class="controles-semana">
+            <button type="button" class="btn-semana" (click)="cambiarSemana(-7)" matTooltip="Semana anterior">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <span class="etiqueta-semana">Semana</span>
+            <button type="button" class="btn-semana" (click)="cambiarSemana(7)" matTooltip="Semana siguiente">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="tarjeta-calendario">
+          <div class="calendario-top">
+            <div class="leyenda-calendario">
+              <span class="leyenda-item"><span class="dot dot-confirmada"></span> Confirmada</span>
+              <span class="leyenda-item"><span class="dot dot-pendiente"></span> Pendiente</span>
+              <span class="leyenda-item"><span class="dot dot-disponible"></span> Disponible</span>
+              <span class="leyenda-item"><span class="dot dot-seleccion"></span> Tu selección</span>
+            </div>
+          </div>
+
+          <div class="tabla-calendario-wrapper">
+            <table class="tabla-calendario">
+              <thead>
+                <tr>
+                  <th class="col-hora-header"></th>
+                  @for (dia of diasSemana(); track dia.fechaIso) {
+                    <th>{{ dia.etiqueta }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (hora of horasCalendario; track hora) {
+                  <tr>
+                    <td class="celda-hora-eje">{{ hora }}</td>
+                    @for (dia of diasSemana(); track dia.fechaIso) {
+                      @let celda = obtenerCeldaCalendario(dia.fechaIso, hora);
+                      <td class="celda-slot"
+                          [matTooltip]="celda.estado === 'disponible' ? 'Clic para elegir ' + dia.etiqueta + ' a las ' + hora : (celda.esActual ? 'Reserva actual' : 'Ocupado por ' + celda.cliente + ' (' + celda.rangoTexto + ')')"
+                          (click)="seleccionarSlotCalendario(celda)">
+                        @if (celda.estado !== 'disponible') {
+                          <div class="bloque-ocupado"
+                               [class.bloque-confirmada]="celda.estado === 'confirmada'"
+                               [class.bloque-pendiente]="celda.estado === 'pendiente'"
+                               [class.bloque-actual]="celda.esActual">
+                            <strong>{{ celda.esActual ? 'Actual' : (celda.estado === 'confirmada' ? 'Reserva' : 'Pendiente') }}</strong>
+                            <small>{{ celda.cliente }}</small>
+                          </div>
+                        } @else if (celda.esNuevaSeleccion) {
+                          <div class="bloque-seleccionado">
+                            <strong>Nuevo</strong>
+                            <small>{{ hora }}</small>
+                          </div>
+                        }
+                      </td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN DERECHA: CAMPOS GUIADOS Y VALIDACIÓN EN TIEMPO REAL -->
+      <div class="seccion-campos-edicion">
+        <div class="fila-doble">
+          <div class="campo-suave">
+            <label>Hora de inicio</label>
+            <div class="input-caja">
+              <mat-icon>schedule</mat-icon>
+              <input type="time" formControlName="hInicio">
+            </div>
+          </div>
+
+          <div class="campo-suave">
+            <label>Hora de fin</label>
+            <div class="input-caja">
+              <mat-icon>schedule</mat-icon>
+              <input type="time" formControlName="hFin">
+            </div>
+          </div>
+        </div>
+
+        <div class="fila-doble">
+          <div class="campo-suave">
+            <label>Estado</label>
+            <div class="input-caja">
+              <select formControlName="estado">
+                <option value="solicitada">Pendiente</option>
+                <option value="confirmada">Confirmada</option>
+                <option value="completada">Finalizado</option>
+                <option value="cancelada">Cancelada</option>
+                <option value="rechazada">Rechazada</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="campo-suave">
+            <label>Fecha</label>
+            <div class="input-caja">
+              <mat-icon>calendar_today</mat-icon>
+              <input type="date" formControlName="fReserva" (change)="alCambiarFecha()">
+            </div>
+          </div>
+        </div>
+
+        <div class="campo-suave">
+          <label>Cancha / Espacio</label>
+          <div class="input-caja">
+            <mat-icon>sports_soccer</mat-icon>
+            <select formControlName="idSedeCancha">
+              @for (c of data.canchas; track c.idSedeCancha) {
+                <option [ngValue]="c.idSedeCancha">
+                  {{ c.sede?.nombre || buscarNombreSede(c.idSedeSede) }} - {{ c.cancha?.deporte || buscarNombreDeporte(c.idTipoCancha) }} ({{ c.nombre }})
+                </option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="campo-suave">
+          <label>Reservado por</label>
+          <div class="input-caja input-readonly">
+            <mat-icon>person_outline</mat-icon>
+            <input type="text" formControlName="reservadoPor" readonly>
+          </div>
+        </div>
+
+        @if (mensajeValidacion(); as val) {
+          <div class="alerta-validacion"
+               [class.validacion-ok]="val.tipo === 'ok'"
+               [class.validacion-error]="val.tipo === 'error'">
+            <mat-icon>{{ val.tipo === 'ok' ? 'check_circle' : 'error_outline' }}</mat-icon>
+            <span>{{ val.texto }}</span>
+          </div>
+        }
+
+        <button mat-flat-button
+                type="submit"
+                class="boton-actualizar-modal"
+                [disabled]="mensajeValidacion()?.tipo === 'error' || formEdicion.invalid || guardando()">
+          {{ guardando() ? 'ACTUALIZANDO...' : 'ACTUALIZAR' }}
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

@@ -1,0 +1,83 @@
+:host {
+  display: block;
+}
+
+.dialogo-confirmacion {
+  padding: 24px 28px 20px;
+  background-color: #ffffff;
+  color: #262626;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Círculo verde claro del ícono */
+.icono-confirmacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background-color: #e0f5eb;
+}
+
+/* Ícono de confirmación */
+.icono-confirmacion mat-icon {
+  width: 24px;
+  height: 24px;
+  color: #3bbb8c;
+  font-size: 24px;
+}
+
+/* Título */
+h2[mat-dialog-title] {
+  margin: 0 0 16px;
+  padding: 0;
+  color: #252525;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+h2[mat-dialog-title]::before {
+  display: none;
+}
+
+/* Texto del mensaje */
+mat-dialog-content {
+  padding: 0;
+  color: #444444;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+mat-dialog-content p {
+  margin: 0;
+}
+
+/* Ubicación del botón */
+mat-dialog-actions {
+  min-height: auto;
+  padding: 20px 0 0;
+}
+
+/* Botón verde */
+.boton-entendido {
+  min-width: 120px;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 6px;
+  background-color: #3bbb8c !important;
+  color: #ffffff !important;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (max-width: 400px) {
+  .dialogo-confirmacion {
+    padding: 22px 18px 18px;
+  }
+}

@@ -1,0 +1,237 @@
+<header class="cabecera-sportfit">
+  <img alt="SportFit" src="loge-sportfit.png">
+</header>
+
+<mat-card appearance="outlined" class="encabezado-dashboard">
+  <mat-card-content>
+    <h1 class="encabezado-dashboard__titulo">
+      DashBoard <span>Gestión y respuestas de incidencias</span>
+    </h1>
+    <p class="encabezado-dashboard__descripcion">
+      Gestión, seguimiento y atención oportuna de incidencias reportadas por clientes
+    </p>
+  </mat-card-content>
+</mat-card>
+
+<section aria-label="Indicadores de incidencias" class="seccion-kpis">
+  <mat-card appearance="outlined" class="tarjeta-kpi">
+    <mat-card-content class="kpi-contenido">
+      <div class="circulo-icono kpi-azul">
+        <mat-icon aria-hidden="true">calendar_today</mat-icon>
+      </div>
+
+      <div class="kpi-datos">
+        <span class="kpi-etiqueta">Total de incidencias</span>
+        <span class="kpi-numero kpi-numero-total">{{ bannerIncidencia()?.totalHistorico ?? '—' }}</span>
+        <span class="kpi-etiqueta">{{ nombreMes }} {{ anio }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="tarjeta-kpi">
+    <mat-card-content class="kpi-contenido">
+      <div class="circulo-icono kpi-naranja">
+        <mat-icon aria-hidden="true">warning_amber</mat-icon>
+      </div>
+
+      <div class="kpi-datos">
+        <span class="kpi-etiqueta">Incidencias pendientes</span>
+        <span class="kpi-numero kpi-numero-naranja">{{ bannerIncidencia()?.pendientesMes ?? '—' }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card appearance="outlined" class="tarjeta-kpi">
+    <mat-card-content class="kpi-contenido">
+      <div class="circulo-icono kpi-verde">
+        <mat-icon aria-hidden="true">check_circle_outline</mat-icon>
+      </div>
+
+      <div class="kpi-datos">
+        <span class="kpi-etiqueta">Atendidas este mes</span>
+        <span class="kpi-numero kpi-numero-verde">{{ bannerIncidencia()?.atendidasMes ?? '—' }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+
+<section aria-labelledby="titulo-filtro-incidencias" class="seccion-filtros">
+  <mat-card appearance="outlined" class="filtro-incidencias">
+    <mat-card-content>
+      <h2 class="filtro-incidencias__titulo" id="titulo-filtro-incidencias">
+        <mat-icon aria-hidden="true">search</mat-icon>
+        Filtro de búsqueda de incidencias
+      </h2>
+
+      <form aria-labelledby="titulo-filtro-incidencias"
+            class="filtro-incidencias__formulario" (ngSubmit)="cargarIncidencias()">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Tipo</mat-label>
+          <mat-select name="tipo" [(ngModel)]="filtroTipo" placeholder="Seleccionar tipo">
+            <mat-option value="">Todos</mat-option>
+            <mat-option value="Tecnico">Técnico</mat-option>
+            <mat-option value="Preguntas">Preguntas</mat-option>
+            <mat-option value="Instalaciones">Instalaciones</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Fecha</mat-label>
+
+          <input [matDatepicker]="calendarioFecha" matInput name="fecha" [(ngModel)]="filtroFecha">
+
+          <mat-datepicker-toggle [for]="calendarioFecha" matIconSuffix>
+          </mat-datepicker-toggle>
+
+          <mat-datepicker #calendarioFecha></mat-datepicker>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Estado</mat-label>
+          <mat-select name="estado" [(ngModel)]="filtroEstado" placeholder="Seleccionar estado">
+            <mat-option value="">Todos</mat-option>
+            <mat-option value="Pendiente">Pendiente</mat-option>
+            <mat-option value="Atendido">Atendido</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="filtro-incidencias__acciones">
+          <button class="boton-limpiar" mat-flat-button type="button" (click)="limpiarFiltros()">
+            Limpiar
+          </button>
+          <button class="boton-buscar" mat-flat-button type="submit">
+            Buscar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+
+<div class="paneles-incidencias">
+  <section aria-labelledby="titulo-listado-incidencias" class="seccion-listado">
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <h2 id="titulo-listado-incidencias">Listado de incidencias</h2>
+
+        <table [dataSource]="dataSource" aria-labelledby="titulo-listado-incidencias" mat-table
+               matSort>
+
+          <ng-container matColumnDef="idIncidencia">
+            <th *matHeaderCellDef mat-header-cell mat-sort-header>Código</th>
+            <td *matCellDef="let incidencia" mat-cell>
+              <button mat-button type="button"
+                      [attr.aria-label]="'Ver incidencia ' + incidencia.idIncidencia"
+                      [attr.aria-pressed]="idIncidenciaSeleccionada() === incidencia.idIncidencia"
+                      (click)="$event.stopPropagation(); seleccionarIncidencia(incidencia.idIncidencia)">
+                {{ incidencia.idIncidencia }}
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="idUsuario">
+            <th *matHeaderCellDef mat-header-cell mat-sort-header>ID del cliente</th>
+            <td *matCellDef="let incidencia" mat-cell>{{ incidencia.idUsuario }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="tipo">
+            <th *matHeaderCellDef mat-header-cell mat-sort-header>Tipo</th>
+            <td *matCellDef="let incidencia" mat-cell>{{ incidencia.tipo }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="asunto">
+            <th *matHeaderCellDef mat-header-cell mat-sort-header>Asunto</th>
+            <td *matCellDef="let incidencia" mat-cell>{{ incidencia.asunto }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="fCreacion">
+            <th *matHeaderCellDef mat-header-cell mat-sort-header>Fecha de creación</th>
+            <td *matCellDef="let incidencia" mat-cell>
+              {{ incidencia.fCreacion | date:'dd/MM/yyyy' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="estado">
+            <th *matHeaderCellDef mat-header-cell mat-sort-header>Estado</th>
+            <td *matCellDef="let incidencia" mat-cell>{{ incidencia.estado }}</td>
+          </ng-container>
+
+          <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: displayedColumns" mat-row
+              (click)="seleccionarIncidencia(row.idIncidencia)"></tr>
+
+          
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]"
+                       [pageSize]="10"
+                       aria-label="Paginación de incidencias"
+                       showFirstLastButtons>
+        </mat-paginator>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <section class="seccion-atencion-incidencia" aria-labelledby="titulo-atencion-incidencia">
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <header class="atencion-incidencia__encabezado">
+          <h2 id="titulo-atencion-incidencia">Atender incidencia</h2>
+          @if (incidenciaSeleccionada(); as incidencia) {
+            <span>{{ incidencia.estado }}</span>
+          }
+        </header>
+
+        @if (cargandoDetalle()) {
+          <p role="status">Cargando detalle de la incidencia…</p>
+        } @else if (errorDetalle()) {
+          <p role="alert">{{ errorDetalle() }}</p>
+        } @else if (incidenciaSeleccionada(); as incidencia) {
+          <dl class="atencion-incidencia__datos">
+            <dt>Código</dt>
+            <dd>{{ incidencia.idIncidencia }}</dd>
+
+            <dt>ID del cliente</dt>
+            <dd>{{ incidencia.idUsuario ?? '—' }}</dd>
+
+            <dt>Tipo</dt>
+            <dd>{{ incidencia.tipo }}</dd>
+
+            <dt>Asunto</dt>
+            <dd>{{ incidencia.asunto }}</dd>
+
+            <dt>Fecha de creación</dt>
+            <dd>{{ (incidencia.fCreacion | date:'dd/MM/yyyy') ?? '—' }}</dd>
+
+            <dt>Descripción del problema</dt>
+            <dd>{{ incidencia.descripcion }}</dd>
+          </dl>
+
+          <mat-form-field appearance="outline" class="atencion-incidencia__respuesta">
+            <mat-label>Respuesta oficial al cliente</mat-label>
+            <textarea matInput name="respuestaAdmin" [(ngModel)]="respuestaAdmin" rows="5" maxlength="300"
+                      placeholder="Escribe la respuesta" [readonly]="enviandoRespuesta() || incidencia.estado !== 'Pendiente'" required></textarea>
+          </mat-form-field>
+
+          <small>Máximo 300 caracteres</small>
+
+          <div class="atencion-incidencia__acciones">
+            <button mat-flat-button type="button" (click)="enviarRespuesta()"
+                    [disabled]="enviandoRespuesta() || incidencia.estado !== 'Pendiente' || !respuestaAdmin.trim()">
+              {{ enviandoRespuesta() ? 'Enviando…' : 'Enviar respuesta y cerrar' }}
+            </button>
+            <button mat-stroked-button type="button">Cancelar</button>
+          </div>
+          @if (errorRespuesta()) {
+            <p role="alert">{{ errorRespuesta() }}</p>
+          }
+        } @else {
+          <p>Selecciona una incidencia de la tabla para ver su detalle.</p>
+        }
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>

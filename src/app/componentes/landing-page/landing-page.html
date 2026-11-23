@@ -1,0 +1,451 @@
+
+<div class="landing" id="inicio">
+
+  <!-- ENCABEZADO -->
+  <header class="encabezado">
+    <div class="contenedor barra-navegacion">
+
+      <a href="#inicio" class="logo" (click)="menuAbierto = false">
+        <img src="/loge-sportfit.png" alt="SportFit">
+      </a>
+
+
+      <nav class="menu" [class.menu-abierto]="menuAbierto">
+
+        <a href="#inicio"
+           class="enlace-inicio"
+           (click)="irASeccion($event, 'inicio')">
+          Inicio
+        </a>
+
+        <a href="#como-funciona"
+           (click)="irASeccion($event, 'como-funciona')">
+          ¿Cómo funciona?
+        </a>
+
+        <a href="#espacios"
+           (click)="irASeccion($event, 'espacios')">
+          Espacios
+        </a>
+
+        <a href="#beneficios"
+           (click)="irASeccion($event, 'beneficios')">
+          Beneficios
+        </a>
+
+        <a href="#testimonios"
+           (click)="irASeccion($event, 'testimonios')">
+          Testimonios
+        </a>
+
+        <a href="#preguntas"
+           (click)="irASeccion($event, 'preguntas')">
+          Preguntas
+        </a>
+
+      </nav>
+
+
+      <div class="acciones-cuenta">
+        <a mat-stroked-button routerLink="/login" class="btn-ingresar">
+          <mat-icon>person_outline</mat-icon>
+          Iniciar sesión
+        </a>
+
+        <a mat-flat-button routerLink="/registro" class="btn-registrar">
+          Registrarse
+        </a>
+      </div>
+
+      <button mat-icon-button class="btn-menu" type="button"
+              (click)="menuAbierto = !menuAbierto">
+        <mat-icon>{{ menuAbierto ? 'close' : 'menu' }}</mat-icon>
+      </button>
+
+    </div>
+  </header>
+
+  <!-- PORTADA -->
+  <section class="portada">
+    <div class="contenedor portada-contenido">
+
+      <span class="sobretitulo">TU PRÓXIMO PARTIDO EMPIEZA AQUÍ</span>
+
+      <h1>
+        Reserva canchas<br>
+        deportivas de forma<br>
+        <span>rápida y segura</span>
+      </h1>
+
+      <p>
+        Encuentra las mejores canchas en diferentes sedes,
+        compara precios y reserva en minutos.
+      </p>
+
+      <div class="portada-botones">
+        <a mat-flat-button href="#espacios" class="btn-verde">
+          Explora espacios
+          <mat-icon>arrow_forward</mat-icon>
+        </a>
+
+        <a mat-stroked-button href="#como-funciona" class="btn-claro">
+          ¿Cómo funciona?
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- VENTAJAS -->
+  <section class="ventajas-seccion">
+    <div class="contenedor ventajas-grid">
+
+      @for (ventaja of ventajas; track ventaja.titulo) {
+        <div class="ventaja">
+          <span class="ventaja-icono">
+            <mat-icon>{{ ventaja.icono }}</mat-icon>
+          </span>
+
+          <div>
+            <h3>{{ ventaja.titulo }}</h3>
+            <p>{{ ventaja.descripcion }}</p>
+          </div>
+        </div>
+      }
+
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section id="como-funciona" class="seccion pasos-seccion">
+    <div class="contenedor">
+
+      <div class="seccion-cabecera">
+        <h2>Reserva tu cancha en <span>simples pasos</span></h2>
+        <p>Encuentra, reserva y juega. Así de fácil.</p>
+      </div>
+
+      <div class="pasos-grid">
+
+        @for (paso of pasos; track paso.numero) {
+          <mat-card class="paso-card">
+
+            <span class="numero-paso"
+                  [class.numero-naranja]="paso.color === 'naranja'"
+                  [class.numero-oscuro]="paso.color === 'oscuro'">
+              {{ paso.numero }}
+            </span>
+
+            <h3>{{ paso.titulo }}</h3>
+            <p>{{ paso.descripcion }}</p>
+
+            <span class="detalle-paso"
+                  [class.detalle-naranja]="paso.color === 'naranja'">
+              <mat-icon>check</mat-icon>
+              {{ paso.detalle }}
+            </span>
+
+          </mat-card>
+        }
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ESPACIOS -->
+  <section id="espacios" class="seccion espacios-seccion">
+    <div class="contenedor">
+
+      <div class="seccion-cabecera">
+        <h2>Nuestros <span>espacios</span></h2>
+        <p>Descubre algunos de nuestros espacios deportivos.</p>
+      </div>
+
+      <div class="subcabecera-espacios">
+        ESPACIOS DESTACADOS
+      </div>
+
+      <div class="carrusel-contenedor">
+
+        <button mat-icon-button type="button"
+                class="flecha flecha-izquierda"
+                (click)="moverEspacios(-1)">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <div class="espacios-grid">
+
+          @for (espacio of espaciosVisibles; track espacio.nombre) {
+            <mat-card class="espacio-card">
+
+              <img class="espacio-imagen"
+                   [src]="espacio.imagen"
+                   [alt]="espacio.nombre"
+                   loading="lazy">
+
+              <div class="espacio-info">
+
+                <h3>{{ espacio.nombre }}</h3>
+
+                <p>
+                  <mat-icon>location_on</mat-icon>
+                  {{ espacio.direccion }}
+                </p>
+
+                <span class="espacio-precio">
+                  Desde <strong>S/ {{ espacio.precio }}</strong> por hora
+                </span>
+
+                <a routerLink="/login" class="espacio-enlace">
+                  Ver disponibilidad
+                  <mat-icon>arrow_forward</mat-icon>
+                </a>
+
+              </div>
+
+            </mat-card>
+          }
+
+        </div>
+
+        <button mat-icon-button type="button"
+                class="flecha flecha-derecha"
+                (click)="moverEspacios(1)">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+
+      </div>
+
+      <p class="aviso-espacios">
+        Sedes e importes ilustrativos. Consulta la disponibilidad real al iniciar sesión.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- BENEFICIOS -->
+  <section id="beneficios" class="seccion beneficios-seccion">
+    <div class="contenedor">
+
+      <div class="seccion-cabecera">
+        <h2>Beneficios</h2>
+        <p>Más que una reserva, una mejor experiencia deportiva.</p>
+      </div>
+
+      <div class="beneficios-grid">
+
+        @for (beneficio of beneficios; track beneficio.titulo) {
+          <mat-card class="beneficio-card">
+
+            <div class="beneficio-texto">
+
+              <span class="beneficio-icono">
+                <mat-icon>{{ beneficio.icono }}</mat-icon>
+              </span>
+
+              <h3>{{ beneficio.titulo }}</h3>
+              <p>{{ beneficio.descripcion }}</p>
+
+            </div>
+
+            <img [src]="beneficio.imagen"
+                 [alt]="beneficio.titulo"
+                 loading="lazy">
+
+          </mat-card>
+        }
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section id="testimonios" class="seccion testimonios-seccion">
+    <div class="contenedor">
+
+      <div class="seccion-cabecera">
+        <h2>Lo que dicen nuestros <span>usuarios</span></h2>
+        <p>Personas como tú, con ganas de vivir el deporte.</p>
+      </div>
+
+      <div class="carrusel-contenedor">
+
+        <button mat-icon-button type="button"
+                class="flecha flecha-izquierda"
+                (click)="moverTestimonios(-1)">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <div class="testimonios-grid">
+
+          @for (testimonio of testimoniosVisibles; track testimonio.nombre) {
+            <mat-card class="testimonio-card">
+
+              <div class="testimonio-persona">
+
+                <span class="testimonio-avatar"
+                      [class.avatar-azul]="testimonio.tono === 'azul'"
+                      [class.avatar-verde]="testimonio.tono === 'verde'">
+                  {{ testimonio.iniciales }}
+                </span>
+
+                <div>
+                  <h3>{{ testimonio.nombre }}</h3>
+                  <p>{{ testimonio.tipo }}</p>
+                  <div class="estrellas">★★★★★</div>
+                </div>
+
+              </div>
+
+              <mat-icon class="comillas">format_quote</mat-icon>
+
+              <p class="testimonio-texto">
+                {{ testimonio.texto }}
+              </p>
+
+              <span class="testimonio-etiqueta">
+                {{ testimonio.etiqueta }}
+              </span>
+
+            </mat-card>
+          }
+
+        </div>
+
+        <button mat-icon-button type="button"
+                class="flecha flecha-derecha"
+                (click)="moverTestimonios(1)">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+
+      </div>
+
+      <div class="banda-cta">
+
+        <div class="banda-iconos">
+          <mat-icon>sports_soccer</mat-icon>
+          <mat-icon>groups</mat-icon>
+        </div>
+
+        <strong>
+          Encuentra tu próxima cancha con <span>SportFit</span>
+        </strong>
+
+        <a mat-flat-button routerLink="/registro">
+          Únete ahora
+          <mat-icon>arrow_forward</mat-icon>
+        </a>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PREGUNTAS FRECUENTES -->
+  <section id="preguntas" class="seccion preguntas-seccion">
+    <div class="contenedor preguntas-grid">
+
+      <div class="preguntas-imagen">
+        <img src="/dudas-personapensante.png"
+             alt="Persona pensando"
+             loading="lazy">
+      </div>
+
+      <div>
+
+        <div class="seccion-cabecera preguntas-titulo">
+          <h2>¿Tienes <span>dudas?</span></h2>
+        </div>
+
+        <div class="preguntas-lista">
+
+          @for (pregunta of preguntas; track pregunta.pregunta; let i = $index) {
+            <div class="pregunta-card">
+
+              <span class="pregunta-numero">
+                {{ ('0' + (i + 1)).slice(-2) }}
+              </span>
+
+              <div>
+                <h3>{{ pregunta.pregunta }}</h3>
+                <p>{{ pregunta.respuesta }}</p>
+              </div>
+
+            </div>
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="contenedor footer-grid">
+
+      <div class="footer-marca">
+
+        <div class="footer-identidad">
+          <mat-icon>sports_soccer</mat-icon>
+          <strong>SportFit</strong>
+        </div>
+
+        <p>Conecta, reserva y juega.</p>
+
+        <p>
+          Una forma sencilla de descubrir espacios deportivos,
+          organizar tus partidos y disfrutar del deporte.
+        </p>
+
+      </div>
+
+      <div>
+        <h3>Navegación</h3>
+        <a href="#inicio">Inicio</a>
+        <a href="#como-funciona">¿Cómo funciona?</a>
+        <a href="#espacios">Espacios</a>
+        <a href="#beneficios">Beneficios</a>
+        <a href="#testimonios">Testimonios</a>
+        <a href="#preguntas">Preguntas frecuentes</a>
+      </div>
+
+      <div>
+        <h3>Tu cuenta</h3>
+        <a routerLink="/login">Iniciar sesión</a>
+        <a routerLink="/registro">Registrarse</a>
+        <a href="#preguntas">Centro de ayuda</a>
+      </div>
+
+      <div class="footer-contacto">
+
+        <h3>Contáctanos</h3>
+
+        <p>
+          <mat-icon>mail_outline</mat-icon>
+          soporte&#64;sportfit.com
+        </p>
+
+        <p>
+          <mat-icon>location_on</mat-icon>
+          Lima, Perú
+        </p>
+
+        <p>
+          <mat-icon>schedule</mat-icon>
+          Atención en línea
+        </p>
+
+      </div>
+
+    </div>
+
+    <div class="footer-final">
+      © 2026 SportFit. Proyecto académico.
+    </div>
+
+  </footer>
+
+</div>

@@ -1,0 +1,79 @@
+<header class="a5-encabezado">
+  <h2 mat-dialog-title class="a5-titulo">
+    <mat-icon aria-hidden="true">key</mat-icon>
+    Cambiar contraseña
+  </h2>
+
+  <button
+    type="button"
+    class="a5-cerrar"
+    mat-dialog-close
+    aria-label="Cerrar"
+  >
+    <mat-icon aria-hidden="true">close</mat-icon>
+  </button>
+</header>
+
+<form
+  class="a5-formulario"
+  [formGroup]="contrasenaForm"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="a5-campo">
+    <label for="a5-contrasena">Contraseña</label>
+
+    <div class="a5-entrada">
+      <mat-icon aria-hidden="true">lock_outline</mat-icon>
+
+      <input
+        id="a5-contrasena"
+        [type]="hide() ? 'password' : 'text'"
+        formControlName="contrasena"
+        placeholder="Ingresa tu contraseña"
+        autocomplete="new-password"
+      />
+
+      <button
+        type="button"
+        class="a5-cerrar"
+        (click)="clickEvent($event)"
+        [attr.aria-label]="hide() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+      >
+        <mat-icon aria-hidden="true">
+          {{ hide() ? 'visibility' : 'visibility_off' }}
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="a5-campo">
+    <label for="a5-confirmar">Repetir contraseña</label>
+
+    <div class="a5-entrada">
+      <mat-icon aria-hidden="true">lock_outline</mat-icon>
+
+      <input
+        id="a5-confirmar"
+        [type]="hideConfirmacion() ? 'password' : 'text'"
+        formControlName="contrasenaConfirmar"
+        placeholder="Repite tu contraseña"
+        autocomplete="new-password"
+      />
+
+      <button
+        type="button"
+        class="a5-cerrar"
+        (click)="hideConfirmacion.set(!hideConfirmacion())"
+        [attr.aria-label]="
+          hideConfirmacion() ? 'Mostrar confirmación' : 'Ocultar confirmación'
+        "
+      >
+        <mat-icon aria-hidden="true">
+          {{ hideConfirmacion() ? 'visibility' : 'visibility_off' }}
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <button type="submit" class="a5-cambiar">CAMBIAR</button>
+</form>

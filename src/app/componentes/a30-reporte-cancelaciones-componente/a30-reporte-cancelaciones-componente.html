@@ -1,0 +1,162 @@
+<div class="pagina-reporte-cancelaciones">
+
+  <!-- ENCABEZADO SUPERIOR (logo) -->
+  <header class="encabezado-superior">
+    <div class="espaciador"></div>
+    <img src="/loge-sportfit.png" alt="SportFit" class="logotipo-sportfit">
+  </header>
+
+  <!-- BANNER: -->
+  <section class="seccion-presentacion">
+    <div class="icono-presentacion">
+      <mat-icon>query_stats</mat-icon>
+    </div>
+    <div class="textos-presentacion">
+      <h1 class="titulo-dashboard">
+        DashBoard <span class="texto-verde">Motivos de cancelación de reserva</span>
+      </h1>
+      <p class="subtitulo-dashboard">Análisis general de cancelaciones de reservas, con motivos y seguimiento mensual</p>
+    </div>
+  </section>
+
+  <!-- FILA SUPERIOR: filtro + dos tarjetas -->
+  <div class="fila-superior">
+
+    <!-- FILTRO DE BÚSQUEDA -->
+    <mat-card class="tarjeta-filtro" appearance="outlined">
+      <h2 class="titulo-filtro"><mat-icon>search</mat-icon> Filtro de búsqueda</h2>
+
+      <div class="controles-filtro">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Mes</mat-label>
+          <mat-select [(value)]="mesSeleccionado">
+            <mat-option [value]="0">Seleccionar mes</mat-option>
+            @for (mes of mesesDisponibles; track mes.valor) {
+              <mat-option [value]="mes.valor">{{ mes.nombre }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Año</mat-label>
+          <mat-select [(value)]="anioSeleccionado">
+            <mat-option [value]="0">Seleccionar año</mat-option>
+            @for (anio of aniosDisponibles; track anio) {
+              <mat-option [value]="anio">{{ anio }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="botones-filtro">
+        <button matButton="filled" type="button" class="btn-verde"
+                [disabled]="!mesSeleccionado || !anioSeleccionado" (click)="buscar()">
+          Buscar
+        </button>
+        <button matButton="filled" type="button" class="btn-verde"
+                [disabled]="!mesSeleccionado || !anioSeleccionado" (click)="verMonto()">
+          Ver monto
+        </button>
+        <button matButton="filled" type="button" class="btn-amarillo" (click)="limpiar()">
+          Limpiar
+        </button>
+        @if (mensajeError) {
+          <span class="mensaje-error">{{ mensajeError }}</span>
+        }
+      </div>
+    </mat-card>
+
+    <!-- TARJETA: TOTAL DE CANCELACIONES -->
+    <mat-card class="tarjeta-dato" appearance="outlined">
+      <p class="dato-titulo">Total de cancelaciones</p>
+      <div class="dato-cuerpo">
+        <mat-icon>person_outline</mat-icon>
+        <span class="dato-numero">{{ mesBuscado ? totalCancelaciones : '—' }}</span>
+      </div>
+      <p class="dato-pie">{{ nombreMes(mesBuscado) }}</p>
+    </mat-card>
+
+    <!-- TARJETA: PRINCIPAL MOTIVO DE CANCELACIÓN -->
+    <mat-card class="tarjeta-dato" appearance="outlined">
+      <p class="dato-titulo">Principal motivo de cancelación</p>
+      <div class="dato-cuerpo">
+        <mat-icon>sports_soccer</mat-icon>
+        <span class="dato-numero">{{ principalMotivo ? principalMotivo.cantidad : '—' }}</span>
+      </div>
+      <p class="dato-pie">{{ principalMotivo ? principalMotivo.tipoCancelacion : '' }}</p>
+    </mat-card>
+  </div>
+
+  <!-- FILA DE GRÁFICOS -->
+  <div class="fila-graficos">
+
+    <!-- GRÁFICO DE BARRAS: DISTRIBUCIÓN POR MOTIVO -->
+    <mat-card class="tarjeta-grafico" appearance="outlined">
+      <h2 class="titulo-panel">DISTRIBUCIÓN DE CANCELACIONES POR MOTIVO</h2>
+
+      @if (motivos.length === 0) {
+        <p class="sin-datos">Elige un mes y un año, y pulsa Buscar.</p>
+      } @else {
+        <div class="barras">
+          @for (motivo of motivos; track motivo.tipoCancelacion) {
+            <div class="barra-fila">
+              <span class="barra-etiqueta">{{ motivo.tipoCancelacion }}</span>
+              <div class="barra-pista">
+                <div class="barra-relleno"
+                     [style.width.%]="porcentaje(motivo)"
+                     [style.background]="colorMotivo(motivo.tipoCancelacion)"></div>
+              </div>
+              <span class="barra-valor">{{ porcentaje(motivo) }}% ({{ motivo.cantidad }})</span>
+            </div>
+          }
+        </div>
+      }
+    </mat-card>
+
+    <!-- GRÁFICO DE LÍNEAS: TENDENCIA MENSUAL -->
+    <mat-card class="tarjeta-grafico" appearance="outlined">
+      <h2 class="titulo-panel">TENDENCIA MENSUAL DE CANCELACIONES</h2>
+
+      @if (lineas.length === 0) {
+        <p class="sin-datos">Elige un mes y un año, y pulsa Buscar.</p>
+      } @else {
+        <svg class="grafico-lineas" [attr.viewBox]="'0 0 ' + anchoSvg + ' ' + altoSvg"
+             role="img" aria-label="Tendencia mensual de cancelaciones por motivo">
+
+          <!-- Líneas guía y números del eje vertical -->
+          @for (marca of marcasEjeY; track marca.valor) {
+            <line [attr.x1]="margenIzq" [attr.x2]="anchoSvg - margenDer"
+                  [attr.y1]="marca.y" [attr.y2]="marca.y" stroke="#e2e8f0" />
+            <text [attr.x]="margenIzq - 8" [attr.y]="marca.y + 4" text-anchor="end" class="texto-eje">{{ marca.valor }}</text>
+          }
+
+          <!-- Nombres de los meses -->
+          @for (marca of marcasEjeX; track marca.texto) {
+            <text [attr.x]="marca.x" [attr.y]="altoSvg - 14" text-anchor="middle" class="texto-eje">{{ marca.texto }}</text>
+          }
+
+          <!-- Una línea por motivo, con un punto por mes -->
+          @for (linea of lineas; track linea.motivo) {
+            <polyline [attr.points]="linea.polilinea" fill="none" [attr.stroke]="linea.color"
+                      stroke-width="2.5" stroke-linejoin="round" />
+            @for (punto of linea.puntos; track punto.mes) {
+              <circle [attr.cx]="punto.x" [attr.cy]="punto.y" r="3.5" [attr.fill]="linea.color">
+                <title>{{ linea.motivo }} - {{ mesesCortos[punto.mes - 1] }}: {{ punto.valor }}</title>
+              </circle>
+            }
+          }
+        </svg>
+
+        <!-- Leyenda de colores -->
+        <div class="leyenda">
+          @for (linea of lineas; track linea.motivo) {
+            <span class="leyenda-item">
+              <span class="leyenda-color" [style.background]="linea.color"></span>{{ linea.motivo }}
+            </span>
+          }
+        </div>
+        <p class="eje-titulo">Número de cancelaciones por mes</p>
+      }
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+:host { display: block; background: #e8f2e4; color: #18251e; min-height: 100vh; }
+.reporte { max-width: 1440px; margin: auto; padding: clamp(16px, 3vw, 36px); }
+h1 { font-size: clamp(1.35rem, 3.2vw, 2.3rem); margin: 0; line-height: 1.2; }
+h1 span { color: #32ac7c; }
+h2 { font-size: 1.09rem; margin: 0; }
+.paneles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.resumen, .panel { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.resumen { grid-template-rows: auto 1fr; }
+.indicadores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+mat-card { background: white; border: 1px solid #d4e0d5; border-radius: 12px; box-shadow: none; }
+.panel { padding: 16px; }
+.titulo, .filtros { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.titulo { justify-content: space-between; }
+mat-form-field { width: 126px; }
+.filtros mat-form-field { flex: 1 1 110px; }
+svg { display: block; width: 100%; }
+svg text { font-size: 10px; fill: #4b5a50; }
+.participacion { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-evenly; gap: 16px; padding: 8px 0; }
+.dona { display: grid; place-items: center; border-radius: 50%; width: 134px; aspect-ratio: 1; }
+.dona div { display: grid; place-content: center; text-align: center; border-radius: 50%; width: 83px; aspect-ratio: 1; background: white; }
+.leyenda { display: grid; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: .83rem; }
+.leyenda li { display: flex; align-items: center; gap: 7px; }
+.leyenda i { width: 11px; height: 11px; border-radius: 3px; }
+.horizontal { display: flex; justify-content: center; flex-wrap: wrap; column-gap: 14px; }
+.tabla { overflow-x: auto; }
+table { width: 100%; min-width: 360px; background: white; }
+p { margin: 0; color: #47574c; }
+@media (max-width: 850px) { .paneles { grid-template-columns: minmax(0, 1fr); } }
+
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2.4vw, 26px);
+  padding: 12px clamp(14px, 2.3vw, 27px);
+  margin-bottom: 9px;
+  border: 1px solid #d4e0d5;
+  border-radius: 12px;
+  background: #fff;
+  color: #121713;
+}
+
+.encabezado-emblema {
+  display: grid;
+  place-items: center;
+  flex: none;
+  padding: 7px clamp(12px, 2vw, 22px) 7px 0;
+  border-right: 2px solid #e0e4e1;
+}
+
+.encabezado-emblema span {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 3px solid #0ba5a9;
+  border-radius: 50%;
+  color: #008f96;
+  background: #edfafa;
+  font-size: 30px;
+}
+
+.encabezado-texto p {
+  margin-top: 5px;
+  color: #5f6b64;
+  font-size: .8rem;
+}
+
+.indicadores .indicador {
+  gap: 4px;
+  padding: 8px;
+  border-radius: 10px;
+  container-type: inline-size;
+}
+
+.indicador mat-card-subtitle {
+  color: #5f6b64;
+  font-size: .8rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.indicador-contenido {
+  display: grid;
+  grid-template-columns: clamp(32px, 32cqi, 56px) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(5px, 6cqi, 12px);
+}
+
+.indicador-icono {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  font-size: clamp(22px, 24cqi, 36px);
+}
+
+.indicador-reservas .indicador-icono { background: #a1e8ee; color: #007e8a; }
+.indicador-deporte .indicador-icono { background: #f5edce; color: #8d6a07; }
+.indicador-sede .indicador-icono { background: #eac2ff; color: #63308b; }
+
+.indicador strong {
+  color: #008696;
+  font-size: clamp(.9rem, 16cqi, 1.6rem);
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+}
+
+.indicador-reservas strong { font-size: clamp(1.25rem, 22cqi, 2rem); }
+
+.titulo-barras .mes-barras {
+  width: 100px;
+  --mat-form-field-container-height: 32px;
+  --mat-form-field-container-vertical-padding: 5px;
+  --mat-form-field-container-text-size: .8rem;
+  --mat-select-trigger-text-size: .8rem;
+}
+
+@media (max-width: 480px) {
+  .indicadores { grid-template-columns: 1fr; }
+  .indicadores .indicador { display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+  .indicador mat-card-subtitle { text-align: left; }
+}
+
+.reporte-marca {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.reporte-marca img {
+  display: block;
+  width: clamp(96px, 12vw, 122px);
+  height: auto;
+}

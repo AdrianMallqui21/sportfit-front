@@ -1,0 +1,129 @@
+<!-- Contenedor del diálogo -->
+<div class="dialogo-perfil">
+
+  <!-- Cabecera del diálogo -->
+  <div class="dialogo-cabecera">
+    <h2 mat-dialog-title>
+      <mat-icon>edit</mat-icon>
+      Editar información
+    </h2>
+
+    <!-- Cierra sin enviar los cambios -->
+    <button
+      aria-label="Cerrar"
+      mat-dialog-close
+      mat-icon-button
+      type="button"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content>
+    <!-- Formulario de actualización -->
+    <form
+      (ngSubmit)="onSubmit()"
+      [formGroup]="usuarioForm"
+      class="formulario-perfil"
+      id="formularioPerfil"
+    >
+
+      <!-- Etiqueta y campo de nombre -->
+      <div class="grupo-campo">
+        <label for="nombres">Nombres</label>
+
+        <div class="campo-entrada">
+          <mat-icon>person_outline</mat-icon>
+          <input
+            autocomplete="given-name"
+            formControlName="nombre"
+            id="nombres"
+            matInput
+          />
+        </div>
+      </div>
+
+      <!-- Etiqueta y campo de apellido -->
+      <div class="grupo-campo">
+        <label for="apellidos">Apellidos</label>
+
+        <div class="campo-entrada">
+          <mat-icon>person_outline</mat-icon>
+          <input
+            autocomplete="family-name"
+            formControlName="apellido"
+            id="apellidos"
+            matInput
+          />
+        </div>
+      </div>
+
+      <!-- Fila de DNI y teléfono -->
+      <div class="fila">
+
+        <!-- Etiqueta y campo de DNI -->
+        <div class="grupo-campo">
+          <label for="dni">DNI</label>
+
+          <div class="campo-entrada">
+            <mat-icon>badge</mat-icon>
+            <input
+              formControlName="dni"
+              id="dni"
+              inputmode="numeric"
+              matInput
+              maxlength="8"
+            />
+          </div>
+        </div>
+
+        <!-- Etiqueta y campo de teléfono -->
+        <div class="grupo-campo">
+          <label for="telefono">Teléfono</label>
+
+          <div class="campo-entrada">
+            <mat-icon>phone</mat-icon>
+            <input
+              autocomplete="tel"
+              formControlName="telefono"
+              id="telefono"
+              matInput
+              type="tel"
+            />
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Etiqueta y campo de correo -->
+      <div class="grupo-campo">
+        <label for="correo">Correo electrónico</label>
+
+        <div class="campo-entrada">
+          <mat-icon>mail_outline</mat-icon>
+          <input
+            autocomplete="email"
+            formControlName="correo"
+            id="correo"
+            matInput
+            type="email"
+          />
+        </div>
+      </div>
+
+    </form>
+  </mat-dialog-content>
+
+  <!-- Botón que ejecuta onSubmit del formulario -->
+  <mat-dialog-actions align="center">
+    <button
+      class="boton-actualizar"
+      form="formularioPerfil"
+      mat-flat-button
+      type="submit"
+    >
+      ACTUALIZAR
+    </button>
+  </mat-dialog-actions>
+
+</div>
