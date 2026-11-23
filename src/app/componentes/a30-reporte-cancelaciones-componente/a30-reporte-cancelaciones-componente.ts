@@ -117,7 +117,6 @@ export class A30ReporteCancelacionesComponente {
 
   // ----- Buscar -----
 
-  // Se ejecuta con "Buscar": trae el total, los motivos y la tendencia del año al mismo tiempo.
   buscar(): void {
     // Paso 1: mes y año son obligatorios
     if (!this.mesSeleccionado || !this.anioSeleccionado) return;
@@ -153,7 +152,7 @@ export class A30ReporteCancelacionesComponente {
     });
   }
 
-  // Se ejecuta con "Ver monto": abre el diálogo con el dinero perdido por las cancelaciones del mes.
+  // Se ejecuta con "Ver monto":
   verMonto(): void {
     if (!this.mesSeleccionado || !this.anioSeleccionado) return;
     const mes = this.mesSeleccionado;
