@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   //mi ip de mi back
-  apiUrl: 'http://184.196.189.45:6868/api',
+  apiUrl: '/api',
   cloudinaryCloudName: 'c8j8nszm',
   cloudinaryUploadPreset: 'sportfit_unsigned'
 };
