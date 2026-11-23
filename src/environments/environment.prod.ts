@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:8080/api',
+  apiUrl: 'http://184.196.189.45:6868/api',
   cloudinaryCloudName: 'c8j8nszm',
   cloudinaryUploadPreset: 'sportfit_unsigned'
 };

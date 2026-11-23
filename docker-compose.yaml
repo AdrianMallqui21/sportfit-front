@@ -7,11 +7,4 @@ services:
     container_name: sportfit-front
     restart: always
     ports:
-      - "4200:80"
-    networks:
-      - springcloud
-
-networks:
-  springcloud:
-    name: springcloud
-    external: true
+      - "80:80"
