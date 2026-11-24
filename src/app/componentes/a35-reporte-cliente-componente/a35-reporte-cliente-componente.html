@@ -1,0 +1,340 @@
+<main class="pagina-reporte">
+
+  <div class="marca-superior">
+    <img src="/loge-sportfit.png" alt="SportFit">
+  </div>
+
+  <header class="encabezado-reporte">
+    <h1>
+      DashBoard
+      <span>Cantidad de Reservas por Cliente</span>
+    </h1>
+    <p>
+      Gestión, seguimiento y análisis de las reservas registradas por clientes
+    </p>
+  </header>
+
+  <section class="panel-filtros">
+
+    <div class="titulo-filtros">
+      <mat-icon>search</mat-icon>
+      <h2>Filtro de búsqueda de Reservas por clientes</h2>
+    </div>
+
+    <div class="campos-filtros">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha desde</mat-label>
+        <input
+          matInput
+          type="date"
+          name="fechaDesde"
+          [(ngModel)]="fechaDesde">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha hasta</mat-label>
+        <input
+          matInput
+          type="date"
+          name="fechaHasta"
+          [(ngModel)]="fechaHasta">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cantidad mínima de reservas</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          name="minReservas"
+          [(ngModel)]="minReservas"
+          placeholder="0">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cantidad máxima de reservas</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          name="maxReservas"
+          [(ngModel)]="maxReservas"
+          placeholder="0">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cantidad top clientes</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          name="top"
+          [(ngModel)]="top"
+          placeholder="Sin límite">
+      </mat-form-field>
+
+      <div class="acciones-filtros">
+        <button
+          mat-flat-button
+          class="boton-limpiar"
+          type="button"
+          [disabled]="cargando"
+          (click)="limpiar()">
+          Limpiar
+        </button>
+
+        <button
+          mat-flat-button
+          class="boton-buscar"
+          type="button"
+          [disabled]="cargando"
+          (click)="buscar()">
+          <mat-icon>search</mat-icon>
+          Buscar
+        </button>
+      </div>
+
+    </div>
+
+    @if (mensajeError) {
+      <p class="mensaje-error">
+        <mat-icon>error_outline</mat-icon>
+        {{ mensajeError }}
+      </p>
+    }
+
+  </section>
+
+  <section class="contenido-reporte">
+
+    <article class="panel-grafico">
+
+      <div class="cabecera-grafico">
+
+        <h2>
+          Gráfico de barras de
+          reservas por cliente
+        </h2>
+
+        <mat-form-field appearance="outline" class="selector-grafico">
+          <mat-label>Tipo de gráfica</mat-label>
+          <mat-select
+            name="tipoGrafico"
+            [(ngModel)]="tipoGrafico">
+
+            <mat-option value="horizontal">
+              Barras horizontales
+            </mat-option>
+
+            <mat-option value="vertical">
+              Barras verticales
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+
+      @if (cargando) {
+        <div class="estado-grafico">
+          Cargando reporte...
+        </div>
+      } @else if (datosGrafico.length === 0) {
+        <div class="estado-grafico">
+          No hay reservas para mostrar.
+        </div>
+      } @else {
+
+        @if (tipoGrafico === 'horizontal') {
+
+          <div class="grafico-horizontal">
+
+            <div class="filas-grafico">
+
+              @for (cliente of datosGrafico; track cliente.clienteId; let i = $index) {
+
+                <div class="fila-grafico">
+
+                  <span class="codigo-cliente">
+                    {{ codigoCliente(cliente.clienteId) }}
+                  </span>
+
+                  <div class="pista-grafico">
+
+                    <div
+                      class="barra-horizontal"
+                      [style.width.%]="anchoBarra(cliente.totalReservas)"
+                      [style.background-color]="colorBarra(i)">
+                    </div>
+
+                    <strong class="valor-barra">
+                      {{ cliente.totalReservas }}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+              }
+
+            </div>
+
+            <div class="eje-horizontal">
+
+              <span class="espacio-eje"></span>
+
+              <div class="marcas-eje">
+                @for (marca of marcasEscala; track $index) {
+                  <span>{{ marca }}</span>
+                }
+              </div>
+
+            </div>
+
+          </div>
+
+        } @else {
+
+          <div class="grafico-vertical">
+
+            @for (cliente of datosGrafico; track cliente.clienteId; let i = $index) {
+
+              <div class="columna-vertical">
+
+                <div class="pista-vertical">
+
+                  <div
+                    class="barra-vertical"
+                    [style.height.%]="anchoBarra(cliente.totalReservas)"
+                    [style.background-color]="colorBarra(i)">
+
+                    <strong class="valor-vertical">
+                      {{ cliente.totalReservas }}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+                <span class="codigo-vertical">
+                  {{ codigoCliente(cliente.clienteId) }}
+                </span>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+      }
+
+    </article>
+
+    <article class="panel-tabla">
+
+      <div class="contenedor-tabla">
+
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          matSort
+          matSortActive="totalReservas"
+          matSortDirection="desc"
+          class="tabla-clientes">
+
+          <ng-container matColumnDef="clienteId">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header>
+              Cliente ID
+            </th>
+
+            <td mat-cell *matCellDef="let cliente">
+              {{ codigoCliente(cliente.clienteId) }}
+            </td>
+
+          </ng-container>
+
+          <ng-container matColumnDef="nombreCliente">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header>
+              Nombre de Cliente
+            </th>
+
+            <td mat-cell *matCellDef="let cliente">
+              {{ cliente.nombreCliente }}
+            </td>
+
+          </ng-container>
+
+          <ng-container matColumnDef="ultimaReserva">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header>
+              Última Reserva
+            </th>
+
+            <td mat-cell *matCellDef="let cliente">
+              {{ cliente.ultimaReserva || '—' }}
+            </td>
+
+          </ng-container>
+
+          <ng-container matColumnDef="totalReservas">
+
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header>
+              Total de Reservas
+            </th>
+
+            <td mat-cell *matCellDef="let cliente">
+              {{ cliente.totalReservas }}
+            </td>
+
+          </ng-container>
+
+          <tr
+            mat-header-row
+            *matHeaderRowDef="columnas">
+          </tr>
+
+          <tr
+            mat-row
+            *matRowDef="let fila; columns: columnas;">
+          </tr>
+
+        </table>
+
+        @if (!cargando && dataSource.data.length === 0) {
+          <p class="tabla-sin-resultados">
+            No hay clientes para mostrar.
+          </p>
+        }
+
+      </div>
+
+      <mat-paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20]"
+        [showFirstLastButtons]="true"
+        aria-label="Paginación de clientes">
+      </mat-paginator>
+
+    </article>
+
+  </section>
+
+</main>
+
