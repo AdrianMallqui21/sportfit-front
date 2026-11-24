@@ -7,6 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { BarraLateral } from '../barra-lateral-cliente/barra-lateral';
 import { ClienteServicio } from '../../servicios/cliente.servicio';
 import { ReservaHome, SedeCanchaHome, SedeHome, TipoCanchaHome, } from '../../modelos/home-cliente-modelo';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-c4-home-cliente-componente',
@@ -17,9 +18,10 @@ import { ReservaHome, SedeCanchaHome, SedeHome, TipoCanchaHome, } from '../../mo
     MatButtonModule,
     MatTableModule,
     BarraLateral,
+    RouterLink,
   ],
   templateUrl: './c4-home-cliente-componente.html',
-  styleUrl: './c4-home-cliente-componente.css'
+  styleUrl: './c4-home-cliente-componente.css',
 })
 export class C4HomeClienteComponente {
   //injectamos al servicio que contiene la llamada a las apis
@@ -51,7 +53,6 @@ export class C4HomeClienteComponente {
     this.obtenerTiposCancha();
   }
 
-
   obtenerUsuario() {
     const correo = localStorage.getItem('correo') || '';
     const idRol = Number(localStorage.getItem('idRol'));
@@ -78,10 +79,9 @@ export class C4HomeClienteComponente {
         console.log('ERROR AL OBTENER USUARIO:', error);
         this.error = 'No se pudo obtener el usuario.';
         this.detector.markForCheck();
-      }
+      },
     });
   }
-
 
   obtenerReservas(idUsuario: number) {
     this.homeServicio.obtenerReservas(idUsuario).subscribe({

@@ -41,8 +41,8 @@ export interface ReservaSolicitud {
 }
 
 export interface PagoSolicitud {
-  montoTotal: number; // lo calcula el front: precio por hora x horas
-  metodo: string; // por ahora 'Yape'
+  montoTotal: number;
+  metodo: string;
   urlComprobante: string;
 }
 
@@ -63,7 +63,7 @@ export interface DetalleCanchaDatos {
 }
 
 export interface ResumenPagoDatos {
-  fecha: string; // dd/mm/yyyy
+  fecha: string;
   deporte: string;
   sedeNombre: string;
   sedeDireccion: string;
@@ -94,7 +94,7 @@ export interface MiReserva {
   hFin: string;
   montoTotal: number | null;
   metodo: string | null;
-  estado: string;            // solicitada, confirmada, rechazada, cancelada o completada
+  estado: string;
 }
 
 export interface FiltroMisReservas {
@@ -108,7 +108,7 @@ export interface FiltroMisReservas {
 
 export interface CancelacionSolicitud {
   idReserva: number;
-  tipoCancelacion: string;   // motivo (máximo 25 caracteres)
+  tipoCancelacion: string;
 }
 
 export class ReservaModelo {}

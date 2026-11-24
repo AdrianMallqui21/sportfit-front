@@ -5,8 +5,6 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 
-// Pide confirmar la cancelación y elegir el motivo.
-// Devuelve el motivo si el usuario pulsa "Sí"; si pulsa "No", se cierra sin devolver nada.
 @Component({
   imports: [
     ReactiveFormsModule,
@@ -24,7 +22,6 @@ import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 export class C14ConfirmarCancelacionDialogo {
   private dialogRef: MatDialogRef<C14ConfirmarCancelacionDialogo, string> = inject(MatDialogRef);
 
-  // Motivos (máximo 25 caracteres cada uno: es el límite de la columna en la BD)
   readonly motivos = [
     'No podré asistir',
     'Problemas de salud',

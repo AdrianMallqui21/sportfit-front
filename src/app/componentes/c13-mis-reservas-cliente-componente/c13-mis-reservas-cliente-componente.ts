@@ -1,5 +1,11 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnInit,
+  ViewChild
+} from '@angular/core';import { DecimalPipe } from '@angular/common';
 import { BarraLateral } from '../barra-lateral-cliente/barra-lateral';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
@@ -24,6 +30,7 @@ import {
   MatRow,
   MatRowDef,
   MatTable,
+  MatTableDataSource
 } from '@angular/material/table';
 import { ClienteServicio } from '../../servicios/cliente.servicio';
 import { ReservaServicio } from '../../servicios/reserva-servicio';
@@ -36,6 +43,9 @@ import {
 import { C14ConfirmarCancelacionDialogo } from './c14-confirmar-cancelacion-dialogo/c14-confirmar-cancelacion-dialogo';
 import { C15ReservaCanceladaDialogo } from './c15-reserva-cancelada-dialogo/c15-reserva-cancelada-dialogo';
 import { C16ImposibleCancelarDialogo } from './c16-imposible-cancelar-dialogo/c16-imposible-cancelar-dialogo';
+
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 @Component({
   imports: [
@@ -63,12 +73,14 @@ import { C16ImposibleCancelarDialogo } from './c16-imposible-cancelar-dialogo/c1
     MatRow,
     MatRowDef,
     DecimalPipe,
+    MatSortModule,
+    MatPaginatorModule,
   ],
   selector: 'app-c13-mis-reservas-cliente-componente',
   styleUrl: './c13-mis-reservas-cliente-componente.css',
   templateUrl: './c13-mis-reservas-cliente-componente.html',
 })
-export class C13MisReservasClienteComponente implements OnInit {
+export class C13MisReservasClienteComponente implements OnInit, AfterViewInit {
   private reservaServicio = inject(ReservaServicio);
   private clienteServicio = inject(ClienteServicio);
   private dialogo = inject(MatDialog);
@@ -80,8 +92,12 @@ export class C13MisReservasClienteComponente implements OnInit {
   // ----- Datos que vienen del back -----
   sedes: SedeReserva[] = [];
   tiposCancha: TipoCanchaReserva[] = [];
-  reservas: MiReserva[] = []; // filas de la tabla
-  reservaSeleccionada: MiReserva | null = null; // fila resaltada (la que se puede cancelar)
+  reservas: MiReserva[] = [];
+  dataSource: MatTableDataSource<MiReserva> = new MatTableDataSource<MiReserva>();
+
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  reservaSeleccionada: MiReserva | null = null;
   mensajeError = '';
 
   // ----- Filtros (0, '' o null significan "sin elegir"; ninguno es obligatorio) -----
@@ -93,8 +109,8 @@ export class C13MisReservasClienteComponente implements OnInit {
   horaFinSeleccionada = '';
 
   readonly estados = ['solicitada', 'confirmada', 'rechazada', 'cancelada', 'completada'];
-  readonly horasInicio = this.generarHoras(8, 22); // 08:00 a 22:00
-  readonly horasFin = this.generarHoras(9, 23); // 09:00 a 23:00
+  readonly horasInicio = this.generarHoras(8, 22);
+  readonly horasFin = this.generarHoras(9, 23);
 
   readonly displayedColumns = [
     'deporte',
@@ -108,7 +124,28 @@ export class C13MisReservasClienteComponente implements OnInit {
     'estado',
   ];
 
-  // Se ejecuta al abrir la pantalla: carga los combos, obtiene el usuario y lista sus reservas.
+  //Ordena y pagina la tabla
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+
+    this.dataSource.sortingDataAccessor = (reserva, columna) => {
+      switch (columna) {
+        case 'fecha': {
+          const [anio, mes, dia] = reserva.fReserva.split('-').map(Number);
+          return anio * 10000 + mes * 100 + dia;
+        }
+        case 'precio':
+          return reserva.montoTotal ?? Number.NEGATIVE_INFINITY;
+        case 'sede':
+          return reserva.sedeNombre?.toLocaleLowerCase() ?? '';
+        default:
+          return (reserva as unknown as Record<string, string | number>)[columna] ?? '';
+      }
+    };
+  }
+
+  // Se ejecuta al abrir la pantalla
   ngOnInit(): void {
     console.log('[Mis reservas] Paso 1: cargando sedes y deportes para los filtros');
     this.reservaServicio.listarSedes().subscribe({
@@ -141,11 +178,11 @@ export class C13MisReservasClienteComponente implements OnInit {
 
   // ----- Buscar y limpiar -----
 
-  // Se ejecuta con el botón "Buscar": envía al back solo los filtros que tengan valor.
+  // Se ejecuta con el botón "Buscar":
   buscar(): void {
     if (!this.idUsuario) return;
 
-    // Si se eligen las dos horas, la de fin debe ser posterior a la de inicio ('HH:mm' se compara como texto)
+    // Si se eligen las dos horas, la de fin debe ser posterior a la de inicio
     if (
       this.horaInicioSeleccionada &&
       this.horaFinSeleccionada &&
@@ -169,7 +206,10 @@ export class C13MisReservasClienteComponente implements OnInit {
     this.reservaServicio.listarMisReservas(this.idUsuario, filtros).subscribe({
       next: (reservas) => {
         this.reservas = reservas;
-        this.reservaSeleccionada = null; // al cambiar la tabla se quita la fila resaltada
+        this.dataSource.data = reservas;
+        this.paginator?.firstPage();
+
+        this.reservaSeleccionada = null;
         console.log('[Mis reservas] Reservas encontradas:', reservas.length);
         this.detector.markForCheck();
       },
@@ -177,7 +217,7 @@ export class C13MisReservasClienteComponente implements OnInit {
     });
   }
 
-  // Se ejecuta con el botón "Limpiar": borra todos los filtros y vuelve a mostrar todas las reservas.
+  // Se ejecuta con el botón "Limpiar":
   limpiar(): void {
     this.sedeSeleccionada = 0;
     this.tipoCanchaSeleccionada = 0;
@@ -190,14 +230,11 @@ export class C13MisReservasClienteComponente implements OnInit {
 
   // ----- Selección de fila y cancelación -----
 
-  // Se ejecuta al hacer clic en una fila: la resalta; si ya estaba resaltada, la quita.
   seleccionarFila(reserva: MiReserva): void {
     this.reservaSeleccionada =
       this.reservaSeleccionada?.idReserva === reserva.idReserva ? null : reserva;
   }
 
-  // Se ejecuta con el botón "Cancelar". Sin fila seleccionada no hace nada.
-  // Solo se pueden cancelar reservas confirmadas; para otro estado se muestra el diálogo c16.
   cancelarReserva(): void {
     const reserva = this.reservaSeleccionada;
     if (!reserva) return;
@@ -212,7 +249,7 @@ export class C13MisReservasClienteComponente implements OnInit {
       return;
     }
 
-    // El diálogo c14 pide confirmar y elegir el motivo; devuelve el motivo, o nada si pulsó "No".
+    // El diálogo de elegir motivo de cancelacion
     this.dialogo
       .open(C14ConfirmarCancelacionDialogo, { width: '480px', maxWidth: '92vw' })
       .afterClosed()
@@ -264,7 +301,7 @@ export class C13MisReservasClienteComponente implements OnInit {
     return colores[deporte.toUpperCase()] ?? '#eeeeee';
   }
 
-  // Convierte una fecha en 'yyyy-MM-dd' (formato que entiende el back).
+  // Convierte una fecha en 'yyyy-MM-dd'.
   private formatearFechaIso(fecha: Date): string {
     const dia = String(fecha.getDate()).padStart(2, '0');
     const mes = String(fecha.getMonth() + 1).padStart(2, '0');

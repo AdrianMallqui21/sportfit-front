@@ -49,6 +49,7 @@
             matButton="outlined"
             type="button"
             class="details-button"
+            [disabled]="canchaSeleccionada === null"
             (click)="verDetallesCancha()">
             Ver detalles de cancha
           </button>

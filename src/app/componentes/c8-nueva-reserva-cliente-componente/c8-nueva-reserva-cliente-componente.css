@@ -120,6 +120,13 @@
   border-color: var(--verde) !important;
 }
 
+.details-button:disabled {
+  color: #9aa3a0 !important;
+  border-color: #c9cfcc !important;
+  background: #f1f1f1;
+  cursor: not-allowed;
+}
+
 .search-button {
   background: var(--verde) !important;
   color: #fff !important;

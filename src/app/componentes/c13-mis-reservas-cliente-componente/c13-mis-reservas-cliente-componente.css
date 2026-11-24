@@ -117,13 +117,16 @@
 }
 
 .tabla-card {
+  display: flex;
+  flex-direction: column;
   min-height: 0;
   padding: 0;
   overflow: hidden;
 }
 
 .table-scroll {
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: auto;
 }
 
@@ -160,4 +163,12 @@
   padding: 24px;
   text-align: center;
   color: #888;
+}
+
+th.mat-sort-header {
+  text-align: center;
+}
+
+th.mat-sort-header .mat-sort-header-container {
+  justify-content: center;
 }

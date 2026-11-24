@@ -17,7 +17,6 @@ import {
 } from './a31-costo-estimado-dialogo/a31-costo-estimado-dialogo';
 import { A32SinCancelacionesDialogo } from './a32-sin-cancelaciones-dialogo/a32-sin-cancelaciones-dialogo';
 
-// Un punto de una línea del gráfico: su posición en el SVG y el valor que representa.
 interface PuntoLinea {
   mes: number;
   valor: number;
@@ -25,15 +24,13 @@ interface PuntoLinea {
   y: number;
 }
 
-// Una línea del gráfico de tendencia: un motivo con sus 12 puntos (uno por mes).
 interface LineaTendencia {
   motivo: string;
   color: string;
   puntos: PuntoLinea[];
-  polilinea: string; // los puntos como texto "x,y x,y ..." para dibujar la línea
+  polilinea: string;
 }
 
-// Una marca del eje vertical (ej.: la línea guía del valor 4).
 interface MarcaEjeY {
   valor: number;
   y: number;
@@ -70,13 +67,13 @@ export class A30ReporteCancelacionesComponente {
   anioSeleccionado = 0;
 
   // ----- Datos del reporte (se llenan al pulsar "Buscar") -----
-  mesBuscado = 0; // mes mostrado en la tarjeta de total
+  mesBuscado = 0;
   anioBuscado = 0;
   totalCancelaciones = 0;
-  motivos: MotivoCancelacionModelo[] = []; // para las barras
-  lineas: LineaTendencia[] = []; // para el gráfico de líneas
+  motivos: MotivoCancelacionModelo[] = [];
+  lineas: LineaTendencia[] = [];
   marcasEjeY: MarcaEjeY[] = [];
-  nombresMotivos: string[] = []; // motivos del año, para asignar colores fijos
+  nombresMotivos: string[] = [];
   mensajeError = '';
 
   // ----- Medidas del gráfico SVG -----
@@ -103,7 +100,7 @@ export class A30ReporteCancelacionesComponente {
   // Posición horizontal de cada mes (no cambia, se calcula una sola vez)
   marcasEjeX = this.mesesCortos.map((texto, indice) => ({ texto, x: this.posicionX(indice + 1) }));
 
-  // Colores para los motivos (se reparten en orden alfabético para que no cambien)
+  // Colores para los motivos
   private paleta = [
     '#6a9aa3',
     '#39b985',
@@ -118,21 +115,20 @@ export class A30ReporteCancelacionesComponente {
   // ----- Buscar -----
 
   buscar(): void {
-    // Paso 1: mes y año son obligatorios
+    // mes y año son obligatorios
     if (!this.mesSeleccionado || !this.anioSeleccionado) return;
     const mes = this.mesSeleccionado;
     const anio = this.anioSeleccionado;
     this.mensajeError = '';
     console.log('Buscando cancelaciones de', mes, anio);
 
-    // Paso 2: las tres consultas se hacen a la vez
     forkJoin({
       total: this.reporteServicio.obtenerTotal(mes, anio),
       motivos: this.reporteServicio.obtenerMotivos(mes, anio),
       tendencia: this.reporteServicio.obtenerTendenciaAnual(anio),
     }).subscribe({
       next: ({ total, motivos, tendencia }) => {
-        // Paso 3: si no hubo cancelaciones, se limpia todo y se muestra el diálogo a32
+        // si no hubo cancelaciones, se limpia todo y se muestra el diálogo a32
         if (total.totalCanceladas === 0) {
           console.log('Sin cancelaciones en el período');
           this.limpiarDatos();
@@ -140,7 +136,7 @@ export class A30ReporteCancelacionesComponente {
           this.detector.markForCheck();
           return;
         }
-        // Paso 4: se guardan los datos y se arman los gráficos
+        // se guardan los datos y se arman los gráficos
         this.mesBuscado = mes;
         this.anioBuscado = anio;
         this.totalCancelaciones = total.totalCanceladas;
@@ -187,27 +183,22 @@ export class A30ReporteCancelacionesComponente {
 
   // ----- Datos para la pantalla -----
 
-  // Motivo con más cancelaciones: el back ya los manda ordenados de mayor a menor.
   get principalMotivo(): MotivoCancelacionModelo | null {
     return this.motivos.length > 0 ? this.motivos[0] : null;
   }
 
-  // Suma de cancelaciones de todos los motivos (base para calcular los porcentajes).
   get totalMotivos(): number {
     return this.motivos.reduce((suma, m) => suma + Number(m.cantidad), 0);
   }
 
-  // Porcentaje que representa un motivo del total (para el ancho de la barra).
   porcentaje(motivo: MotivoCancelacionModelo): number {
     return this.totalMotivos ? Math.round((Number(motivo.cantidad) * 100) / this.totalMotivos) : 0;
   }
 
-  // Nombre del mes a partir de su número: 9 -> 'Septiembre'.
   nombreMes(valor: number): string {
     return this.mesesDisponibles.find((m) => m.valor === valor)?.nombre ?? '';
   }
 
-  // Color de un motivo: el mismo en las barras y en las líneas.
   colorMotivo(nombre: string): string {
     const posicion = this.nombresMotivos.indexOf(nombre);
     return this.paleta[(posicion < 0 ? 0 : posicion) % this.paleta.length];
@@ -244,13 +235,11 @@ export class A30ReporteCancelacionesComponente {
     });
   }
 
-  // Posición horizontal de un mes (1 a 12) dentro del SVG.
   private posicionX(mes: number): number {
     const ancho = this.anchoSvg - this.margenIzq - this.margenDer;
     return this.margenIzq + (mes - 1) * (ancho / 11);
   }
 
-  // Posición vertical de un valor dentro del SVG (los valores altos van arriba).
   private posicionY(valor: number, maxY: number): number {
     const alto = this.altoSvg - this.margenSup - this.margenInf;
     return this.altoSvg - this.margenInf - (valor / maxY) * alto;
@@ -258,7 +247,6 @@ export class A30ReporteCancelacionesComponente {
 
   // ----- Utilidades -----
 
-  // Deja las tarjetas y los gráficos como al abrir la pantalla.
   private limpiarDatos(): void {
     this.mesBuscado = 0;
     this.anioBuscado = 0;

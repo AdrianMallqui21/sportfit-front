@@ -39,7 +39,8 @@ interface FilaCancha {
   nombre: string;
   precioHora: number;
   aforo: number;
-  horasOcupadas: number[]; // posiciones ocupadas: 0 = 08:00, 1 = 09:00, 2 = 10:00 ...
+  horasOcupadas: number[];
+  imagen: string | null;
 }
 
 @Component({
@@ -89,8 +90,8 @@ export class C8NuevaReservaClienteComponente implements OnInit {
   // ----- Datos que vienen del back -----
   sedes: SedeReserva[] = [];
   tiposCancha: TipoCanchaReserva[] = [];
-  dataSource: FilaCancha[] = []; // filas del cuadro (se llena al buscar)
-  busquedaHecha = false; // true cuando ya se buscó disponibilidad
+  dataSource: FilaCancha[] = [];
+  busquedaHecha = false;
   mensajeError = '';
 
   // ----- Filtros -----
@@ -103,7 +104,7 @@ export class C8NuevaReservaClienteComponente implements OnInit {
   canchaSeleccionada: number | null = null;
   horasSeleccionadas: number[] = [];
 
-  // Columnas de horas del cuadro: 08:00 a 22:00 (posiciones 0 a 14)
+  // Columnas de horas del cuadro
   readonly horarios = Array.from({ length: 15 }, (_, indice) => {
     const hora = indice + 8;
     const etiqueta = `${String(hora).padStart(2, '0')}:00`;
@@ -114,7 +115,7 @@ export class C8NuevaReservaClienteComponente implements OnInit {
 
   // Se ejecuta al abrir la pantalla: carga los combos de Sede y Deporte.
   ngOnInit(): void {
-    // Paso 0: obtener el usuario logueado (hace falta su id para crear la reserva)
+    // obtener el usuario logueado
     this.correo = localStorage.getItem('correo') || '';
     const idRol = Number(localStorage.getItem('idRol'));
     this.clienteServicio.obtenerUsuario(this.correo, idRol).subscribe({
@@ -198,7 +199,7 @@ export class C8NuevaReservaClienteComponente implements OnInit {
     this.irAFecha(new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()));
   }
 
-  // Se ejecuta al pulsar la fecha anterior o siguiente del encabezado del cuadro.
+  // Se ejecuta al pulsar la fecha del encabezado del cuadro.
   seleccionarFechaRapida(dias: number): void {
     this.irAFecha(this.moverFecha(this.fechaSeleccionada, dias));
   }
@@ -208,8 +209,7 @@ export class C8NuevaReservaClienteComponente implements OnInit {
     this.seleccionarFechaRapida(dias);
   }
 
-  // Cambia la fecha. El filtro y "Datos de Reserva" leen la misma variable, así se actualizan juntos.
-  // Si ya se había buscado, vuelve a consultar el cuadro para la nueva fecha.
+  // Cambia la fecha. El filtro y "Datos de Reserva" leen la misma variable
   private irAFecha(nueva: Date): void {
     if (nueva < this.fechaMinima) {
       console.log('[Nueva reserva] La fecha mínima de reserva es mañana');
@@ -225,7 +225,7 @@ export class C8NuevaReservaClienteComponente implements OnInit {
 
   // Trae las canchas (filas) y los horarios ocupados (celdas rojas) y arma el cuadro.
   buscarDisponibilidad(): void {
-    // Paso 1: validar que estén elegidos deporte y sede
+    // validar que estén elegidos deporte y sede
     if (!this.tipoCanchaSeleccionada || !this.sedeSeleccionada) {
       this.mensajeError = 'Selecciona el deporte y la sede para buscar disponibilidad';
       return;
@@ -238,7 +238,6 @@ export class C8NuevaReservaClienteComponente implements OnInit {
       deporte: this.tipoCanchaSeleccionada,
     });
 
-    // Paso 2: se hacen las dos consultas a la vez
     forkJoin({
       canchas: this.reservaServicio.listarCanchas(
         this.sedeSeleccionada,
@@ -251,7 +250,7 @@ export class C8NuevaReservaClienteComponente implements OnInit {
       ),
     }).subscribe({
       next: ({ canchas, ocupados }) => {
-        // Paso 3: armar las filas del cuadro
+        // armar las filas del cuadro
         this.dataSource = this.armarFilas(canchas, ocupados);
         this.busquedaHecha = true;
         this.limpiarHorario();
@@ -269,9 +268,7 @@ export class C8NuevaReservaClienteComponente implements OnInit {
   // Convierte las canchas y los horarios ocupados en las filas que dibuja la tabla.
   private armarFilas(canchas: CanchaReserva[], ocupados: HorarioOcupado[]): FilaCancha[] {
     const aforo = this.tipoCanchaActual?.aforo ?? 0;
-    // El back también devuelve canchas inactivas: aquí se descartan
     return canchas
-      .filter((c) => c.estado)
       .map((cancha) => {
         const horasOcupadas: number[] = [];
         ocupados
@@ -288,6 +285,7 @@ export class C8NuevaReservaClienteComponente implements OnInit {
           precioHora: cancha.precio,
           aforo,
           horasOcupadas,
+          imagen: cancha.imgCancha,
         };
       });
   }
@@ -369,17 +367,6 @@ export class C8NuevaReservaClienteComponente implements OnInit {
     return `${fecha.getFullYear()}-${mes}-${dia}`;
   }
 
-  // Deja los filtros y el cuadro como al abrir la pantalla.
-  limpiarFiltros(): void {
-    this.tipoCanchaSeleccionada = 0;
-    this.sedeSeleccionada = 0;
-    this.fechaSeleccionada = this.fechaMinima;
-    this.dataSource = [];
-    this.busquedaHecha = false;
-    this.mensajeError = '';
-    this.limpiarHorario();
-  }
-
   // Quita la selección verde.
   private limpiarHorario(): void {
     this.canchaSeleccionada = null;
@@ -406,45 +393,24 @@ export class C8NuevaReservaClienteComponente implements OnInit {
     this.detector.markForCheck();
   }
 
-  // Abre el diálogo con los datos de UNA cancha de la sede y el deporte elegidos
-  // (todas las canchas del mismo tipo en una sede comparten los mismos datos).
+  // Abre el diálogo con los datos de una cancha del campo seleccionado
   verDetallesCancha(): void {
-    if (!this.tipoCanchaSeleccionada || !this.sedeSeleccionada) {
-      this.mensajeError = 'Selecciona el deporte y la sede para ver los detalles de la cancha';
-      return;
-    }
-    this.mensajeError = '';
-    this.reservaServicio
-      .listarCanchas(this.sedeSeleccionada, this.tipoCanchaSeleccionada)
-      .subscribe({
-        next: (canchas) => {
-          const cancha = canchas.find((c) => c.estado); // la primera cancha activa
-          const tipo = this.tipoCanchaActual;
-          if (!cancha || !tipo) {
-            this.mensajeError = 'No hay canchas disponibles para esa sede y deporte';
-            this.detector.markForCheck();
-            return;
-          }
-          const datos: DetalleCanchaDatos = {
-            nombre: cancha.nombre,
-            descripcion: tipo.descripcion,
-            deporte: tipo.deporte,
-            aforo: tipo.aforo,
-            precio: cancha.precio,
-            imagen: cancha.imgCancha,
-          };
-          this.dialogo.open(C9DetallesCanchaDialogo, {
-            data: datos,
-            width: '720px',
-            maxWidth: '92vw',
-          });
-        },
-        error: (err) => this.mostrarError('No se pudieron obtener los detalles de la cancha', err),
-      });
+    const fila = this.filaSeleccionada;
+    const tipo = this.tipoCanchaActual;
+    if (!fila || !tipo) return; // sin cancha seleccionada no hace nada
+
+    const datos: DetalleCanchaDatos = {
+      nombre: fila.nombre,
+      descripcion: tipo.descripcion,
+      deporte: tipo.deporte,
+      aforo: tipo.aforo,
+      precio: fila.precioHora,
+      imagen: fila.imagen,
+    };
+    this.dialogo.open(C9DetallesCanchaDialogo, { data: datos, width: '720px', maxWidth: '92vw' });
   }
 
-  // Se ejecuta con el botón amarillo "Solicitar reserva": abre el diálogo de pago con el resumen.
-  // Todavía no se guarda nada: solo se guarda cuando el usuario pulsa "Enviar solicitud de reserva".
+  // Se ejecuta con el botón amarillo "Solicitar reserva":
   solicitarReserva(): void {
     const fila = this.filaSeleccionada;
     const sede = this.sedes.find((s) => s.idSede === this.sedeSeleccionada);

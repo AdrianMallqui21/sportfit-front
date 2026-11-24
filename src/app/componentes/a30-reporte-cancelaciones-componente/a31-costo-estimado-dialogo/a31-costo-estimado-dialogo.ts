@@ -11,7 +11,6 @@ export class DatosCostoEstimado {
   anio: number;
 }
 
-// Los datos los envía el componente del reporte al abrirlo.
 @Component({
   imports: [DecimalPipe, MatIconButton, MatIcon, MatDialogClose],
   selector: 'app-a31-costo-estimado-dialogo',
