@@ -1,0 +1,68 @@
+
+:host {
+  display: block;
+  background: #ffffff;
+  font-family: Roboto, Arial, sans-serif;
+}
+
+.alerta-contenedor {
+  position: relative;
+  padding: 25px 28px 34px;
+  min-height: 155px;
+  box-sizing: border-box;
+}
+
+.boton-cerrar {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #333333;
+}
+
+.alerta-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding-right: 18px;
+}
+
+.alerta-encabezado h2 {
+  margin: 0;
+  color: #979797;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.icono-advertencia {
+  color: #e52b2b;
+  width: 58px;
+  height: 58px;
+  font-size: 58px;
+  flex-shrink: 0;
+}
+
+.mensaje-alerta {
+  max-width: 380px;
+  margin: 28px auto 0;
+  text-align: center;
+  color: #e52b2b;
+  font-size: 24px;
+  font-weight: 750;
+  line-height: 1.12;
+}
+
+@media (max-width: 480px) {
+  .alerta-contenedor {
+    padding: 25px 18px;
+  }
+
+  .alerta-encabezado h2 {
+    font-size: 14px;
+  }
+
+  .mensaje-alerta {
+    font-size: 21px;
+  }
+}

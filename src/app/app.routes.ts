@@ -51,6 +51,8 @@ import {
 import { A28ReporteReservaDeporteSedeComponente } from './componentes/a28-reporte-reserva-deporte-sede-componente/a28-reporte-reserva-deporte-sede-componente';
 import { A30ReporteCancelacionesComponente } from './componentes/a30-reporte-cancelaciones-componente/a30-reporte-cancelaciones-componente';
 
+import { A35ReporteClienteComponente } from './componentes/a35-reporte-cliente-componente/a35-reporte-cliente-componente';
+
 
 export const routes: Routes = [
   { path: '', component: LandingPage },
@@ -177,6 +179,13 @@ export const routes: Routes = [
   {
     path: 'notificaciones',
     component: A11NotificacionesAdministradorComponente,
+    canActivate: [AuthGuard],
+    data: { roles: ['ROLE_ADMINISTRADOR'] },
+  },
+
+  {
+    path: 'reporte-cantidad-reservas',
+    component: A35ReporteClienteComponente,
     canActivate: [AuthGuard],
     data: { roles: ['ROLE_ADMINISTRADOR'] },
   },

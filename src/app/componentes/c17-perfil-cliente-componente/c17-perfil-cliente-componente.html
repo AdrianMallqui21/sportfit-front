@@ -3,18 +3,14 @@
 
   <div class="perfil-pagina">
 
-
     <!-- LOGO SPORTFIT -->
     <header class="encabezado">
       <img src="/loge-sportfit.png" alt="SportFit" class="brand-logo">
     </header>
 
-
     <div class="perfil-contenido">
 
-      <!-- ================================= -->
       <!-- FORMULARIO: DATOS DEL CLIENTE -->
-      <!-- ================================= -->
 
       <mat-card class="perfil-card">
 
@@ -23,9 +19,11 @@
         <p class="subtitulo">Administra tus datos personales</p>
 
         <mat-card-content>
+
           <form [formGroup]="perfilForm"
                 class="form-container"
                 (ngSubmit)="onSubmit()">
+
             <!-- NOMBRES -->
             <mat-form-field appearance="fill">
               <mat-label>Nombres</mat-label>
@@ -101,15 +99,20 @@
 
             <!-- CORREO -->
             <mat-form-field appearance="fill">
+
               <mat-label>Correo electrónico</mat-label>
+
               <mat-icon matPrefix>email</mat-icon>
+
               <input matInput
                      type="email"
                      formControlName="correo"
                      placeholder="Ingrese su correo">
+
               @if (perfilForm.get('correo')?.invalid) {
                 <mat-error>Ingrese un correo válido</mat-error>
               }
+
             </mat-form-field>
 
             <!-- CARGANDO -->
@@ -128,7 +131,9 @@
 
             <!-- CONTRASEÑA -->
             <mat-form-field appearance="fill">
+
               <mat-label>Nueva contraseña (opcional)</mat-label>
+
               <mat-icon matPrefix>lock</mat-icon>
 
               <input matInput
@@ -137,45 +142,49 @@
                      placeholder="••••••••"
                      autocomplete="new-password">
 
-              <button mat-icon-button matSuffix
+              <button mat-icon-button
+                      matSuffix
                       type="button"
                       (click)="mostrarContrasena = !mostrarContrasena"
                       [attr.aria-label]="mostrarContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+
                 <mat-icon>
                   {{ mostrarContrasena ? 'visibility_off' : 'visibility' }}
                 </mat-icon>
+
               </button>
 
               @if (perfilForm.get('contrasenaHash')?.hasError('minlength')) {
-                <mat-error>La contraseña debe tener mínimo 8 caracteres</mat-error>
+                <mat-error>
+                  La contraseña debe tener mínimo 8 caracteres
+                </mat-error>
               }
-            </mat-form-field>
 
+            </mat-form-field>
 
             <!-- BOTON ACTUALIZAR -->
             <div class="acciones">
+
               <button mat-raised-button
                       type="submit"
                       class="boton-actualizar"
                       [disabled]="perfilForm.invalid || cargando">
                 ACTUALIZAR
               </button>
+
             </div>
+
           </form>
+
         </mat-card-content>
 
       </mat-card>
 
-
-      <!-- ================================= -->
       <!-- COLUMNA DERECHA -->
-      <!-- ================================= -->
 
       <div class="perfil-derecha">
 
-        <!-- ================================= -->
         <!-- RESUMEN DEL CLIENTE -->
-        <!-- ================================= -->
 
         <mat-card class="resumen-card">
 
@@ -282,15 +291,17 @@
                         type="button"
                         class="boton-foto"
                         (click)="abrirDialogoCambiarFoto()">
-                  CAMBIAR FOTO DE PERFIL
-                </button>
 
+                  CAMBIAR FOTO DE PERFIL
+
+                </button>
 
               </div>
 
             </div>
 
           } @else if (cargando) {
+
             <p class="mensaje-cargando">
               Cargando información del cliente...
             </p>
@@ -304,27 +315,110 @@
           }
 
         </mat-card>
+
+        <!-- ACTIVIDAD RECIENTE -->
+
+
+
         <!-- ACTIVIDAD RECIENTE -->
 
         <mat-card class="actividad-card">
 
           <div class="actividad-encabezado">
-
             <mat-icon>schedule</mat-icon>
-
             <h3>Actividad reciente</h3>
-
           </div>
 
-          <!-- CARGANDO RESERVAS a-->
+          <p class="subtitulo-actividad">
+            Últimas reservas registradas
+          </p>
+
           @if (cargandoReservas) {
 
             <p class="mensaje-cargando">
               Cargando actividad reciente...
             </p>
 
+          } @else if (errorReservas) {
+
+            <p class="mensaje-error">
+              {{ errorReservas }}
+            </p>
+
+          } @else if (reservasRecientes.length === 0) {
+
+            <div class="estado-actividad">
+              <mat-icon>event_busy</mat-icon>
+              <p>Aún no tienes reservas registradas.</p>
+            </div>
+
+          } @else {
+
+            <div class="lista-actividad">
+
+              @for (reserva of reservasRecientes; track reserva.idReserva) {
+
+                <div
+                  class="actividad-item"
+                  [class.actividad-confirmada]="tituloActividad(reserva.estado).toLowerCase().includes('confirm')"
+                  [class.actividad-rechazada]="tituloActividad(reserva.estado).toLowerCase().includes('rechaz')"
+                  [class.actividad-cancelada]="tituloActividad(reserva.estado).toLowerCase().includes('cancel')">
+
+                  <div class="icono-actividad">
+
+                    @if (tituloActividad(reserva.estado).toLowerCase().includes('confirm')) {
+                      <mat-icon>event_available</mat-icon>
+                    } @else if (tituloActividad(reserva.estado).toLowerCase().includes('rechaz')) {
+                      <mat-icon>event_busy</mat-icon>
+                    } @else if (tituloActividad(reserva.estado).toLowerCase().includes('cancel')) {
+                      <mat-icon>event_busy</mat-icon>
+                    } @else {
+                      <mat-icon>event</mat-icon>
+                    }
+
+                  </div>
+
+                  <div class="actividad-info">
+
+                    <strong class="actividad-titulo">
+                      {{ tituloActividad(reserva.estado) }}
+                    </strong>
+
+                    <span class="actividad-numero">
+              Reserva N.º {{ reserva.idReserva }}
+            </span>
+
+                    <div class="actividad-detalles">
+
+              <span class="actividad-fecha">
+                <mat-icon>calendar_today</mat-icon>
+                {{ reserva.fReserva | date:'dd/MM/yyyy' }}
+              </span>
+
+                      @if (reserva.hInicio) {
+
+                        <span class="actividad-hora">
+                  <mat-icon>schedule</mat-icon>
+                          {{ reserva.hInicio.slice(0, 5) }}
+                </span>
+
+                      }
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              }
+
+            </div>
+
           }
+
         </mat-card>
+
+
 
       </div>
 
