@@ -312,129 +312,211 @@
    ACTIVIDAD RECIENTE
 ========================================= */
 
+
+/* ACTIVIDAD RECIENTE */
+
 .actividad-card {
   width: 100%;
-  min-height: 170px;
-  background-color: white;
+  padding: 20px 24px;
   border-radius: 12px;
-  padding: 20px 22px;
+  background-color: #ffffff;
   box-sizing: border-box;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
 }
 
-
-/* Encabezado */
-
-.actividad-encabezado {
+.actividad-card .actividad-encabezado {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 6px;
 }
 
-.actividad-encabezado mat-icon {
-  color: #555;
-  font-size: 19px;
-  width: 19px;
-  height: 19px;
+.actividad-card .actividad-encabezado mat-icon {
+  color: #333333;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
 }
 
-.actividad-encabezado h3 {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
+.actividad-card .actividad-encabezado h3 {
   margin: 0;
+  color: #222222;
+  font-size: 16px;
+  font-weight: 700;
 }
 
+.actividad-card .subtitulo-actividad {
+  margin: 8px 0 18px;
+  color: #777777;
+  font-size: 13px;
+}
 
-/* =========================================
-   ELEMENTOS DE ACTIVIDAD
-========================================= */
+/* LISTA DE RESERVAS */
 
-.actividad-item {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
+.actividad-card .lista-actividad {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.actividad-card .actividad-item {
+  display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 5px 0;
+  gap: 14px;
+  width: 100%;
+  padding: 14px;
+  background-color: #f7faf8;
+  border: 1px solid #e1ebe5;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
+/* ICONO DE LA RESERVA */
 
-/* Icono circular */
-
-.actividad-icono {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+.actividad-card .icono-actividad {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 9px;
+  background-color: #e5e7eb;
+  color: #64748b;
 }
 
-.actividad-icono mat-icon {
-  font-size: 16px;
-  width: 16px;
-  height: 16px;
-  color: #555;
+.actividad-card .icono-actividad mat-icon {
+  font-size: 23px;
+  width: 23px;
+  height: 23px;
 }
 
+/* INFORMACION DE LA RESERVA */
 
-/* Colores por estado */
-
-.actividad-verde {
-  background-color: #a8e9ae;
-}
-
-.actividad-roja {
-  background-color: #f4aaaa;
-}
-
-.actividad-amarilla {
-  background-color: #ffe49a;
-}
-
-
-/* Información de actividad */
-
-.actividad-detalle {
+.actividad-card .actividad-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
   min-width: 0;
 }
 
-.actividad-titulo {
-  color: #333;
+.actividad-card .actividad-titulo {
+  color: #242424;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.actividad-card .actividad-numero {
+  color: #727272;
   font-size: 12px;
-  font-weight: 500;
-  margin: 0 0 4px;
 }
 
-.actividad-descripcion {
-  color: #999;
-  font-size: 10px;
-  margin: 0;
-  overflow-wrap: anywhere;
+.actividad-card .actividad-detalles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+  margin-top: 4px;
 }
 
+.actividad-card .actividad-fecha,
+.actividad-card .actividad-hora {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #555555;
+  font-size: 12px;
+}
 
-/* Sin actividad */
+.actividad-card .actividad-fecha mat-icon,
+.actividad-card .actividad-hora mat-icon {
+  color: #555555;
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
 
-.actividad-vacia {
+/* RESERVA CONFIRMADA */
+
+.actividad-card .actividad-item.actividad-confirmada {
+  background-color: #f2fbf5;
+  border-color: #d4eddd;
+}
+
+.actividad-card .actividad-confirmada .icono-actividad {
+  background-color: #d2f5df;
+  color: #16a34a;
+}
+
+/* RESERVA RECHAZADA */
+
+.actividad-card .actividad-item.actividad-rechazada {
+  background-color: #fff5f5;
+  border-color: #f5d6d6;
+}
+
+.actividad-card .actividad-rechazada .icono-actividad {
+  background-color: #ffd9dc;
+  color: #dc2626;
+}
+
+/* RESERVA CANCELADA */
+
+.actividad-card .actividad-item.actividad-cancelada {
+  background-color: #fff9ed;
+  border-color: #f5e4c3;
+}
+
+.actividad-card .actividad-cancelada .icono-actividad {
+  background-color: #ffebc7;
+  color: #d97706;
+}
+
+/* SIN ACTIVIDAD */
+
+.actividad-card .estado-actividad {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 15px;
-  color: #999;
+  gap: 8px;
+  min-height: 100px;
+  color: #888888;
+  text-align: center;
 }
 
-.actividad-vacia mat-icon {
+.actividad-card .estado-actividad mat-icon {
   font-size: 32px;
   width: 32px;
   height: 32px;
 }
 
-.actividad-vacia p {
-  font-size: 12px;
+.actividad-card .estado-actividad p {
+  margin: 0;
+  font-size: 13px;
 }
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+
+  .actividad-card {
+    padding: 16px;
+  }
+
+  .actividad-card .actividad-item {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .actividad-card .actividad-detalles {
+    gap: 10px;
+  }
+
+}
+
+
 
 
 /* =========================================
