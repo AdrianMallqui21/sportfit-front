@@ -107,10 +107,7 @@ export const routes: Routes = [
   // Rutas protegidas para Administrador
   {
     path: 'reporte-reservas',
-    loadComponent: () =>
-      import('./componentes/a28-reporte-reserva-deporte-sede-componente/a28-reporte-reserva-deporte-sede-componente').then(
-        (m) => m.A28ReporteReservaDeporteSedeComponente,
-      ),
+    component: A28ReporteReservaDeporteSedeComponente,
     canActivate: [AuthGuard],
     data: { roles: ['ROLE_ADMINISTRADOR'] },
   },
