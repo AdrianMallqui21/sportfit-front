@@ -10,9 +10,6 @@ import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material
 import { PagoDialogoResultado, ResumenPagoDatos } from '../../../modelos/reserva-modelo';
 import { ImagenServicio } from '../../../servicios/imagen-servicio';
 
-// Diálogo de pago: muestra el resumen, el QR y permite subir el comprobante a Cloudinary
-// (o ingresar su URL). Al pulsar "Enviar solicitud de reserva", sube la imagen si hay una
-// pendiente y devuelve { metodo, urlComprobante } al componente c8.
 @Component({
   imports: [
     DecimalPipe,
@@ -37,7 +34,20 @@ export class C11ProcesoPagoDialogo {
   private dialogRef: MatDialogRef<C11ProcesoPagoDialogo, PagoDialogoResultado> =
     inject(MatDialogRef);
 
-  metodo = new FormControl('Yape', Validators.required);
+  metodo = new FormControl('', Validators.required);
+
+  readonly metodos = ['Yape', 'Plin', 'Tarjeta'];
+
+  private readonly imagenesPago: Record<string, string> = {
+    Yape: '/qr-pago.jpeg',
+    Plin: '/qr-pago.jpeg',
+    Tarjeta: '/qr-pago.jpeg',
+  };
+
+  get imagenMetodo(): string | null {
+    const elegido = this.metodo.value;
+    return elegido ? (this.imagenesPago[elegido] ?? null) : null;
+  }
 
   urlComprobante = new FormControl('', [
     Validators.required,
@@ -91,7 +101,10 @@ export class C11ProcesoPagoDialogo {
 
   private prepararArchivo(archivo: File): void {
     if (!archivo.type.startsWith('image/')) {
-      this.estadoImagen.set({ tipo: 'error', texto: 'Solo se permiten imágenes (JPG, PNG, WEBP).' });
+      this.estadoImagen.set({
+        tipo: 'error',
+        texto: 'Solo se permiten imágenes (JPG, PNG, WEBP).',
+      });
       return;
     }
 
@@ -107,7 +120,7 @@ export class C11ProcesoPagoDialogo {
 
     this.estadoImagen.set({
       tipo: 'info',
-      texto: `Comprobante "${archivo.name}" listo. Se subirá al enviar la solicitud.`
+      texto: `Comprobante "${archivo.name}" listo. Se subirá al enviar la solicitud.`,
     });
   }
 
@@ -134,9 +147,9 @@ export class C11ProcesoPagoDialogo {
           this.subiendo.set(false);
           this.estadoImagen.set({
             tipo: 'error',
-            texto: 'No se pudo subir el comprobante a Cloudinary. Intenta de nuevo o pega una URL.'
+            texto: 'No se pudo subir el comprobante a Cloudinary. Intenta de nuevo o pega una URL.',
           });
-        }
+        },
       });
       return;
     }

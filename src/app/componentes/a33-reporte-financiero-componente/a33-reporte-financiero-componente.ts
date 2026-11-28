@@ -95,9 +95,7 @@ export class A33ReporteFinancieroComponente implements OnInit {
   private readonly coloresMetodos: Record<string, string> = {
     plin: '#8b5cf6', // morado
     yape: '#06b6d4', // cyan / turquesa
-    transferencia: '#f87171', // coral / salmon
     tarjeta: '#3b82f6', // azul
-    efectivo: '#10b981' // verde esmeralda
   };
 
   ngOnInit(): void {
