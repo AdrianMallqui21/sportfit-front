@@ -32,7 +32,7 @@ import {
   MatTable,
   MatTableDataSource
 } from '@angular/material/table';
-import { ClienteServicio } from '../../servicios/cliente.servicio';
+import { ClienteServicio } from '../../servicios/cliente-servicio';
 import { ReservaServicio } from '../../servicios/reserva-servicio';
 import {
   FiltroMisReservas,

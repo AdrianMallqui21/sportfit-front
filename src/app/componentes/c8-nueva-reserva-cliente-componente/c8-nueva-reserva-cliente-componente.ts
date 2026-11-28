@@ -13,7 +13,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInput } from '@angular/material/input';
 import { ReservaServicio } from '../../servicios/reserva-servicio';
 import { MatDialog } from '@angular/material/dialog';
-import { ClienteServicio } from '../../servicios/cliente.servicio';
+import { ClienteServicio } from '../../servicios/cliente-servicio';
 import {
   DetalleCanchaDatos,
   PagoDialogoResultado,

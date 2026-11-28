@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BarraLateral } from '../barra-lateral-cliente/barra-lateral';
-import { ClienteServicio } from '../../servicios/cliente.servicio';
+import { ClienteServicio } from '../../servicios/cliente-servicio';
 import { NotificacionServicio } from '../../servicios/notificacion-servicio';
 import { NotificacionModelo } from '../../modelos/notificacion-modelo';
 import { C6EliminarNotificacionDialogo } from './c6-eliminar-notificacion-dialogo/c6-eliminar-notificacion-dialogo';

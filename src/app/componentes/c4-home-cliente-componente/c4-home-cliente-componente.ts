@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { BarraLateral } from '../barra-lateral-cliente/barra-lateral';
-import { ClienteServicio } from '../../servicios/cliente.servicio';
+import { ClienteServicio } from '../../servicios/cliente-servicio';
 import { ReservaHome, SedeCanchaHome, SedeHome, TipoCanchaHome, } from '../../modelos/home-cliente-modelo';
 import { RouterLink } from '@angular/router';
 

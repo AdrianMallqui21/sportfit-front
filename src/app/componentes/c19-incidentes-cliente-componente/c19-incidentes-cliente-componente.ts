@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule, formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BarraLateral } from '../barra-lateral-cliente/barra-lateral';
-import { ClienteServicio } from '../../servicios/cliente.servicio';
+import { ClienteServicio } from '../../servicios/cliente-servicio';
 import { IncidenciaServicio } from '../../servicios/incidencia-servicio';
 import { IncidenciaModelo, IncidenciaRegistroModelo } from '../../modelos/incidencia-modelo';
 import { MatCardModule } from '@angular/material/card';
