@@ -277,52 +277,6 @@ export class C17PerfilClienteComponente implements OnInit {
     return 'Nueva reserva solicitada';
   }
 
-  // =====================================
-  // ASIGNAR COLOR SEGÚN ESTADO
-  // =====================================
 
-  claseActividad(estado: string): string {
-    const valor = (estado || '').toLowerCase();
 
-    if (valor.includes('cancel') || valor.includes('rechaz')) {
-      return 'actividad-roja';
-    }
-
-    if (valor.includes('confirm') || valor.includes('complet')) {
-      return 'actividad-verde';
-    }
-
-    return 'actividad-amarilla';
-  }
-
-  seleccionarFoto(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const archivo = input.files?.[0];
-
-    if (!archivo) return;
-
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(archivo.type)) {
-      alert('Seleccione una imagen JPG, PNG o WEBP');
-      return;
-    }
-
-    if (archivo.size > 2 * 1024 * 1024) {
-      alert('La imagen no debe superar los 2 MB');
-      return;
-    }
-
-    this.clienteServicio.subirFoto(archivo).subscribe({
-      next: (data) => {
-        this.usuarioActual = data;
-        this.usuario = data;
-        alert('Foto actualizada correctamente');
-        this.detector.markForCheck();
-      },
-      error: () => {
-        alert('No se pudo actualizar la fotografía');
-      },
-    });
-
-    input.value = '';
-  }
 }
