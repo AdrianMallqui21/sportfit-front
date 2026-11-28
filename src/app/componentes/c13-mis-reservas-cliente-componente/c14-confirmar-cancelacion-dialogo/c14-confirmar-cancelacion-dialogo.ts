@@ -5,6 +5,14 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 
+export const MOTIVOS_CANCELACION = [
+  'No podré asistir',
+  'Problemas de salud',
+  'Problemas de transporte',
+  'Reservé por error',
+  'Otro',
+];
+
 @Component({
   imports: [
     ReactiveFormsModule,
@@ -22,14 +30,7 @@ import { MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 export class C14ConfirmarCancelacionDialogo {
   private dialogRef: MatDialogRef<C14ConfirmarCancelacionDialogo, string> = inject(MatDialogRef);
 
-  readonly motivos = [
-    'No podré asistir',
-    'Problemas de salud',
-    'Problemas de transporte',
-    'Reservé por error',
-    'Otro',
-  ];
-
+  readonly motivos = MOTIVOS_CANCELACION;
   motivo = new FormControl('', Validators.required);
 
   // Se ejecuta al pulsar "Sí": cierra el diálogo devolviendo el motivo elegido.

@@ -97,19 +97,37 @@
       @if (motivos.length === 0) {
         <p class="sin-datos">Elige un mes y un año, y pulsa Buscar.</p>
       } @else {
-        <div class="barras">
-          @for (motivo of motivos; track motivo.tipoCancelacion) {
-            <div class="barra-fila">
-              <span class="barra-etiqueta">{{ motivo.tipoCancelacion }}</span>
-              <div class="barra-pista">
-                <div class="barra-relleno"
-                     [style.width.%]="porcentaje(motivo)"
-                     [style.background]="colorMotivo(motivo.tipoCancelacion)"></div>
-              </div>
-              <span class="barra-valor">{{ porcentaje(motivo) }}% ({{ motivo.cantidad }})</span>
-            </div>
+        <svg class="grafico-barras" [attr.viewBox]="'0 0 ' + anchoBarras + ' ' + altoSvgBarras"
+             role="img" aria-label="Distribución de cancelaciones por motivo">
+
+          @for (marca of marcasEjeBarras; track marca.valor) {
+            <line [attr.x1]="marca.x" [attr.x2]="marca.x" [attr.y1]="margenSupBarras - 4"
+                  [attr.y2]="altoSvgBarras - 30" stroke="#9ca3af" stroke-width="1" />
+            <text [attr.x]="marca.x" [attr.y]="altoSvgBarras - 10" text-anchor="middle"
+                  class="texto-eje-barras">{{ marca.valor }}</text>
           }
-        </div>
+
+          @for (barra of barras; track barra.motivo) {
+            <text [attr.x]="margenIzqBarras - 12"
+                  [attr.y]="barra.y + altoBarra / 2 - (barra.lineas.length - 1) * 8 + 4"
+                  text-anchor="end" class="texto-motivo">
+              @for (linea of barra.lineas; track $index) {
+                <tspan [attr.x]="margenIzqBarras - 12" [attr.dy]="$index === 0 ? 0 : 16">{{ linea }}</tspan>
+              }
+            </text>
+
+            <rect [attr.x]="margenIzqBarras" [attr.y]="barra.y" [attr.width]="barra.ancho"
+                  [attr.height]="altoBarra" [attr.fill]="barra.color" stroke="#000" stroke-width="2">
+              <title>{{ barra.motivo }}: {{ barra.cantidad }} cancelación(es), {{ barra.porcentaje }}%</title>
+            </rect>
+
+            <text [attr.x]="margenIzqBarras + barra.ancho + 10" [attr.y]="barra.y + altoBarra / 2 + 5"
+                  class="texto-valor">{{ barra.porcentaje }}%</text>
+          }
+
+          <line [attr.x1]="margenIzqBarras" [attr.x2]="margenIzqBarras" [attr.y1]="margenSupBarras - 4"
+                [attr.y2]="altoSvgBarras - 30" stroke="#000" stroke-width="1.5" />
+        </svg>
       }
     </mat-card>
 

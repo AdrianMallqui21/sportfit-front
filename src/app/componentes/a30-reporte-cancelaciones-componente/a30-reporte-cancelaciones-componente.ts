@@ -16,6 +16,7 @@ import {
   DatosCostoEstimado,
 } from './a31-costo-estimado-dialogo/a31-costo-estimado-dialogo';
 import { A32SinCancelacionesDialogo } from './a32-sin-cancelaciones-dialogo/a32-sin-cancelaciones-dialogo';
+import { MOTIVOS_CANCELACION } from '../c13-mis-reservas-cliente-componente/c14-confirmar-cancelacion-dialogo/c14-confirmar-cancelacion-dialogo';
 
 interface PuntoLinea {
   mes: number;
@@ -34,6 +35,21 @@ interface LineaTendencia {
 interface MarcaEjeY {
   valor: number;
   y: number;
+}
+
+interface BarraMotivo {
+  motivo: string;
+  lineas: string[];
+  cantidad: number;
+  porcentaje: number;
+  color: string;
+  y: number;
+  ancho: number;
+}
+
+interface MarcaEjeBarras {
+  valor: number;
+  x: number;
 }
 
 @Component({
@@ -74,6 +90,8 @@ export class A30ReporteCancelacionesComponente {
   lineas: LineaTendencia[] = [];
   marcasEjeY: MarcaEjeY[] = [];
   nombresMotivos: string[] = [];
+  barras: BarraMotivo[] = [];
+  marcasEjeBarras: MarcaEjeBarras[] = [];
   mensajeError = '';
 
   // ----- Medidas del gráfico SVG -----
@@ -112,6 +130,18 @@ export class A30ReporteCancelacionesComponente {
     '#14b8a6',
   ];
 
+  // Colores de las barras
+  private paletaBarras = ['#6a9aa3', '#7fb0b8', '#96e0ec', '#9ff3ff', '#b9f7ff', '#d2fbff'];
+
+  // ----- Medidas del gráfico de barras (SVG) -----
+  anchoBarras = 600;
+  margenIzqBarras = 150;
+  margenDerBarras = 55;
+  margenSupBarras = 12;
+  altoFilaBarras = 62;
+  altoBarra = 34;
+  altoSvgBarras = 0;
+
   // ----- Buscar -----
 
   buscar(): void {
@@ -142,6 +172,7 @@ export class A30ReporteCancelacionesComponente {
         this.totalCancelaciones = total.totalCanceladas;
         this.motivos = motivos;
         this.armarTendencia(tendencia);
+        this.armarBarras();
         this.detector.markForCheck();
       },
       error: (err) => this.mostrarError('No se pudo obtener el reporte', err),
@@ -204,14 +235,65 @@ export class A30ReporteCancelacionesComponente {
     return this.paleta[(posicion < 0 ? 0 : posicion) % this.paleta.length];
   }
 
+  // ----- Gráfico de barras -----
+  private armarBarras(): void {
+    const margenInf = 36;
+    const anchoUtil = this.anchoBarras - this.margenIzqBarras - this.margenDerBarras;
+
+    // la cantidad más grande entre todos los motivos
+    const mayor = Math.max(0, ...this.motivos.map((m) => Number(m.cantidad)));
+
+    const salto = mayor < 5 ? 1 : mayor < 10 ? 2 : mayor <= 50 ? 5 : 10;
+    const maxX = (Math.floor(mayor / salto) + 1) * salto;
+
+    this.marcasEjeBarras = [];
+    for (let valor = 0; valor <= maxX; valor += salto) {
+      this.marcasEjeBarras.push({ valor, x: this.margenIzqBarras + (valor / maxX) * anchoUtil });
+    }
+
+    this.barras = this.motivos.map((m, indice) => ({
+      motivo: m.tipoCancelacion,
+      lineas: this.partirTexto(m.tipoCancelacion),
+      cantidad: Number(m.cantidad),
+      porcentaje: this.porcentaje(m),
+      color: this.paletaBarras[indice % this.paletaBarras.length],
+      y:
+        this.margenSupBarras +
+        indice * this.altoFilaBarras +
+        (this.altoFilaBarras - this.altoBarra) / 2,
+      ancho: Math.max(3, (Number(m.cantidad) / maxX) * anchoUtil),
+    }));
+
+    this.altoSvgBarras =
+      this.margenSupBarras + this.motivos.length * this.altoFilaBarras + margenInf;
+  }
+
+  private partirTexto(texto: string, max = 18): string[] {
+    const lineas: string[] = [];
+    let actual = '';
+    for (const palabra of texto.split(' ')) {
+      if (actual && (actual + ' ' + palabra).length > max) {
+        lineas.push(actual);
+        actual = palabra;
+      } else {
+        actual = (actual + ' ' + palabra).trim();
+      }
+    }
+    if (actual) lineas.push(actual);
+    return lineas;
+  }
+
   // ----- Gráfico de líneas -----
 
   // Arma una línea por motivo con 12 puntos (si un mes no tiene datos vale 0).
   private armarTendencia(datos: TendenciaCancelacionModelo[]): void {
-    // Motivos distintos del año, ordenados para que los colores no cambien entre búsquedas
-    this.nombresMotivos = [...new Set(datos.map((d) => d.tipoCancelacion))].sort();
 
-    // Valor máximo del eje vertical: múltiplo de 4 (mínimo 4) para que las marcas sean enteras
+    const conDatos = [...new Set(datos.map((d) => d.tipoCancelacion))];
+
+    // Orden fijo para los colores
+    const extras = conDatos.filter((m) => !MOTIVOS_CANCELACION.includes(m)).sort();
+    this.nombresMotivos = [...MOTIVOS_CANCELACION, ...extras];
+
     const mayor = Math.max(0, ...datos.map((d) => Number(d.cantidad)));
     const maxY = Math.max(4, Math.ceil(mayor / 4) * 4);
     this.marcasEjeY = [0, 1, 2, 3, 4].map((i) => {
@@ -219,20 +301,22 @@ export class A30ReporteCancelacionesComponente {
       return { valor, y: this.posicionY(valor, maxY) };
     });
 
-    this.lineas = this.nombresMotivos.map((nombre) => {
-      const puntos: PuntoLinea[] = this.mesesCortos.map((_, indice) => {
-        const mes = indice + 1;
-        const dato = datos.find((d) => d.mes === mes && d.tipoCancelacion === nombre);
-        const valor = dato ? Number(dato.cantidad) : 0;
-        return { mes, valor, x: this.posicionX(mes), y: this.posicionY(valor, maxY) };
+    this.lineas = this.nombresMotivos
+      .filter((m) => conDatos.includes(m))
+      .map((nombre) => {
+        const puntos: PuntoLinea[] = this.mesesCortos.map((_, indice) => {
+          const mes = indice + 1;
+          const dato = datos.find((d) => d.mes === mes && d.tipoCancelacion === nombre);
+          const valor = dato ? Number(dato.cantidad) : 0;
+          return { mes, valor, x: this.posicionX(mes), y: this.posicionY(valor, maxY) };
+        });
+        return {
+          motivo: nombre,
+          color: this.colorMotivo(nombre),
+          puntos,
+          polilinea: puntos.map((p) => `${p.x},${p.y}`).join(' '),
+        };
       });
-      return {
-        motivo: nombre,
-        color: this.colorMotivo(nombre),
-        puntos,
-        polilinea: puntos.map((p) => `${p.x},${p.y}`).join(' '),
-      };
-    });
   }
 
   private posicionX(mes: number): number {
@@ -252,6 +336,8 @@ export class A30ReporteCancelacionesComponente {
     this.anioBuscado = 0;
     this.totalCancelaciones = 0;
     this.motivos = [];
+    this.barras = [];
+    this.marcasEjeBarras = [];
     this.lineas = [];
     this.marcasEjeY = [];
     this.nombresMotivos = [];
