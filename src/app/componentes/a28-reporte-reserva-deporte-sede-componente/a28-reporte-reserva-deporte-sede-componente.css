@@ -1,7 +1,7 @@
 :host { display: block; background: #e8f2e4; color: #18251e; min-height: 100vh; }
-.reporte { max-width: 1440px; margin: auto; padding: clamp(16px, 3vw, 36px); }
-h1 { font-size: clamp(1.35rem, 3.2vw, 2.3rem); margin: 0; line-height: 1.2; }
-h1 span { color: #32ac7c; }
+.reporte { max-width: 1560px; margin: 0 auto; padding: 24px 32px 48px; }
+h1 { font-size: 26px; font-weight: 800; color: #111827; margin: 0; }
+h1 span { color: #39b985; }
 h2 { font-size: 1.09rem; margin: 0; }
 .paneles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .resumen, .panel { display: grid; gap: 12px; align-content: start; min-width: 0; }
@@ -31,11 +31,11 @@ p { margin: 0; color: #47574c; }
 .encabezado {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 2.4vw, 26px);
-  padding: 12px clamp(14px, 2.3vw, 27px);
-  margin-bottom: 9px;
-  border: 1px solid #d4e0d5;
-  border-radius: 12px;
+  gap: 18px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
   background: #fff;
   color: #121713;
 }
@@ -44,26 +44,22 @@ p { margin: 0; color: #47574c; }
   display: grid;
   place-items: center;
   flex: none;
-  padding: 7px clamp(12px, 2vw, 22px) 7px 0;
-  border-right: 2px solid #e0e4e1;
 }
-
 .encabezado-emblema span {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
-  border: 3px solid #0ba5a9;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  color: #008f96;
-  background: #edfafa;
+  color: #16a34a;
+  background: #dcfce7;
   font-size: 30px;
 }
 
 .encabezado-texto p {
-  margin-top: 5px;
-  color: #5f6b64;
-  font-size: .8rem;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 13px;
 }
 
 .indicadores .indicador {
@@ -126,11 +122,11 @@ p { margin: 0; color: #47574c; }
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
-
 .reporte-marca img {
   display: block;
-  width: clamp(96px, 12vw, 122px);
-  height: auto;
+  width: auto;
+  height: 38px;
+  object-fit: contain;
 }
