@@ -10,8 +10,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { SedeCanchaModelo, SedeModelo, TipoCanchaModelo } from '../../modelos/espacio-deportivo-modelo';
 import { EspacioDeportivoServicio } from '../../servicios/espacio-deportivo-servicio';
-import { AutorizacionServicio } from '../../servicios/autorizacion-servicio';
-import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
 import { A23EditarEspacioDialogo } from './a23-editar-espacio-dialogo/a23-editar-espacio-dialogo';
 import { A24DesactivarEspacioDialogo } from './a24-desactivar-espacio-dialogo/a24-desactivar-espacio-dialogo';
 import { A25ReservasEspacioDialogo } from './a25-reservas-espacio-dialogo/a25-reservas-espacio-dialogo';
@@ -33,7 +31,6 @@ import { A25ReservasEspacioDialogo } from './a25-reservas-espacio-dialogo/a25-re
 })
 export class A22GestionEspaciosComponente implements OnInit {
   private readonly espacioServicio = inject(EspacioDeportivoServicio);
-  private readonly authServicio = inject(AutorizacionServicio);
   private readonly dialog = inject(MatDialog);
 
   // Estados de datos
@@ -293,21 +290,4 @@ export class A22GestionEspaciosComponente implements OnInit {
     if (img) img.style.display = 'none';
   }
 
-  iniciarSesionAdmin(): void {
-    this.iniciandoSesionRapida.set(true);
-    const cred = new CredencialesDTOModelo();
-    cred.correo = 'admin@sportfit.com';
-    cred.password = 'admin123';
-    this.authServicio.accederCliente(cred).subscribe({
-      next: () => {
-        localStorage.setItem('rol', 'ROLE_ADMINISTRADOR');
-        this.iniciandoSesionRapida.set(false);
-        this.alertaAutenticacion.set(false);
-        this.cargarCanchas();
-      },
-      error: () => {
-        this.iniciandoSesionRapida.set(false);
-      }
-    });
-  }
 }

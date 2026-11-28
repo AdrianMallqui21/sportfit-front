@@ -99,6 +99,22 @@ mat-card-actions {
   color: #8ca391;
 }
 
+.avatar-admin-defecto {
+  display: grid;
+  place-items: center;
+  width: clamp(140px, 15vw, 220px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #edf4ed;
+  color: #8ca391;
+}
+
+.avatar-admin-defecto mat-icon {
+  font-size: clamp(96px, 10vw, 150px);
+  width: clamp(96px, 10vw, 150px);
+  height: clamp(96px, 10vw, 150px);
+}
+
 /* Marcador neutro hasta asignar la fotografía real en el HTML. */
 .imagen-administrador:not([src]), .imagen-administrador[src=""] {
   font-size: 0;

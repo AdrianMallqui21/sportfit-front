@@ -1,6 +1,7 @@
 import {ChangeDetectorRef, Component, OnInit, inject} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 import {ActivatedRoute} from '@angular/router';
 import {UsuarioModelo} from '../../modelos/usuario-modelo';
 import {DatePipe} from '@angular/common';
@@ -11,7 +12,7 @@ import {A5EditarContrasenaDialogo} from './a5-editar-contrasena-dialogo/a5-edita
 import {A7CambiarFotoDialogo} from './a7-cambiar-foto-dialogo/a7-cambiar-foto-dialogo';
 
 @Component({
-  imports: [MatCardModule, MatButtonModule, DatePipe],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, DatePipe],
   selector: 'app-a2-perfil-administrador-componente',
   styleUrl: './a2-perfil-administrador-componente.css',
   templateUrl: './a2-perfil-administrador-componente.html',

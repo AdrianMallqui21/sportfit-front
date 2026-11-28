@@ -2,27 +2,8 @@
   <!-- ENCABEZADO CON LOGOTIPO -->
   <header class="encabezado-superior">
     <div class="espaciador"></div>
-    <img src="/loge-sportfit.png" alt="SportFit" class="logotipo-sportfit" onerror="this.style.display='none'">
+    <img src="/loge-sportfit.png" alt="SportFit" class="logotipo-sportfit" (error)="$any($event.target).style.display = 'none'">
   </header>
-
-  <!-- BANNER DE AUTENTICACIÓN SI FALTA SESIÓN -->
-  @if (alertaAutenticacion()) {
-    <div class="alerta-autenticacion-banner">
-      <div class="icono-banner">
-        <mat-icon>lock</mat-icon>
-      </div>
-      <div class="textos-banner">
-        <strong>Se requiere sesión de Administrador</strong>
-        <span>Para consultar, editar y cancelar reservas necesitas haber iniciado sesión como administrador.</span>
-      </div>
-      <div class="acciones-banner">
-        <button mat-flat-button class="boton-login-rapido" (click)="iniciarSesionAdmin()" [disabled]="iniciandoSesionRapida()">
-          <mat-icon>login</mat-icon>
-          {{ iniciandoSesionRapida() ? 'Autenticando...' : 'Autenticar como Admin' }}
-        </button>
-      </div>
-    </div>
-  }
 
   <!-- MENSAJE TOAST -->
   @if (mensajeFeedback()) {
@@ -93,10 +74,10 @@
                 <div class="input-suave-caja">
                   <select [(ngModel)]="filtroEstado" name="filtroEstado">
                     <option value="">Todos</option>
-                    <option value="confirmada">Confirmado</option>
-                    <option value="solicitada">Pendiente</option>
+                    <option value="confirmada">Confirmada</option>
+                    <option value="solicitada">Solicitada</option>
                     <option value="cancelada">Cancelada</option>
-                    <option value="completada">Finalizado</option>
+                    <option value="completada">Completada</option>
                     <option value="rechazada">Rechazada</option>
                   </select>
                 </div>
@@ -248,7 +229,7 @@
                 </td>
               </tr>
             </table>
-            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Seleccionar página"></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" aria-label="Seleccionar página"></mat-paginator>
           </div>
         </mat-card-content>
       </mat-card>
@@ -266,7 +247,7 @@
             <div class="bloque-cancha-resumen">
               <div class="imagen-cancha-wrapper">
                 @if (obtenerImagenCancha(res)) {
-                  <img [src]="obtenerImagenCancha(res)" [alt]="obtenerNombreCanchaDeporte(res)" class="imagen-cancha" onerror="this.style.display='none'">
+                  <img [src]="obtenerImagenCancha(res)" [alt]="obtenerNombreCanchaDeporte(res)" class="imagen-cancha" (error)="$any($event.target).style.display = 'none'">
                 } @else {
                   <mat-icon class="icono-cancha-grande">stadium</mat-icon>
                 }

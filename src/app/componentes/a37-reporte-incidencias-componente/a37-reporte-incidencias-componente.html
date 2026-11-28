@@ -1,22 +1,5 @@
 <div class="reporte-pagina">
 
-  <!-- ALERTA DE AUTENTICACIÓN (SI LA SESIÓN CADUCÓ) -->
-  @if (alertaAutenticacion()) {
-    <div class="alerta-autenticacion-banner">
-      <div class="alerta-icono">
-        <mat-icon>lock</mat-icon>
-      </div>
-      <div class="alerta-contenido">
-        <strong>Acceso de Administrador requerido</strong>
-        <p>Los reportes de incidencias requieren permisos de Administrador para consultar la base de datos.</p>
-      </div>
-      <button mat-flat-button class="btn-login-rapido" (click)="iniciarSesionAdminPrueba()" [disabled]="iniciandoSesionRapida()">
-        <mat-icon>key</mat-icon>
-        {{ iniciandoSesionRapida() ? 'Iniciando...' : 'Iniciar como Administrador de prueba' }}
-      </button>
-    </div>
-  }
-
   <!-- ENCABEZADO SUPERIOR -->
   <header class="header-banner">
     <div class="header-texto">

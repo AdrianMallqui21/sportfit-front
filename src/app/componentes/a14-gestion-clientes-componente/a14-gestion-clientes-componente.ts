@@ -19,8 +19,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ClienteModelo } from '../../modelos/cliente-modelo';
 import { ReservaModelo } from '../../modelos/solicitud-reserva-modelo';
 import { ClienteServicio } from '../../servicios/cliente-servicio';
-import { AutorizacionServicio } from '../../servicios/autorizacion-servicio';
-import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
 import { A15EditarClienteDialogo } from './a15-editar-cliente-dialogo/a15-editar-cliente-dialogo';
 import { A16ReservasClienteDialogo } from './a16-reservas-cliente-dialogo/a16-reservas-cliente-dialogo';
 import { A17DesactivarClienteDialogo } from './a17-desactivar-cliente-dialogo/a17-desactivar-cliente-dialogo';
@@ -51,7 +49,6 @@ import { A17DesactivarClienteDialogo } from './a17-desactivar-cliente-dialogo/a1
 })
 export class A14GestionClientesComponente implements OnInit, AfterViewInit {
   private readonly clienteService = inject(ClienteServicio);
-  private readonly authServicio = inject(AutorizacionServicio);
   private readonly fb = inject(FormBuilder);
   private readonly dialogo = inject(MatDialog);
 
@@ -360,23 +357,4 @@ export class A14GestionClientesComponente implements OnInit, AfterViewInit {
     }, 4000);
   }
 
-  // Autenticación rápida de prueba para administradores
-  iniciarSesionAdmin(): void {
-    this.iniciandoSesionRapida.set(true);
-    const cred = new CredencialesDTOModelo();
-    cred.correo = 'admin@sportfit.com';
-    cred.password = 'admin123';
-    this.authServicio.accederCliente(cred).subscribe({
-      next: () => {
-        localStorage.setItem('rol', 'ROLE_ADMINISTRADOR');
-        this.iniciandoSesionRapida.set(false);
-        this.alertaAutenticacion.set(false);
-        this.errorCarga.set(null);
-        this.cargarClientes();
-      },
-      error: () => {
-        this.iniciandoSesionRapida.set(false);
-      }
-    });
-  }
 }

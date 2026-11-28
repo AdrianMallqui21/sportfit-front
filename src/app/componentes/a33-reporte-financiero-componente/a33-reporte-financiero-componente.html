@@ -2,30 +2,8 @@
   <!-- ENCABEZADO SUPERIOR -->
   <header class="encabezado-superior">
     <div class="espaciador"></div>
-    <img src="/imagenes/sportfit-logo.png" alt="SportFit" class="logotipo-sportfit">
+    <img src="/loge-sportfit.png" alt="SportFit" class="logotipo-sportfit">
   </header>
-
-  <!-- BANNER DE ALERTA DE AUTENTICACIÓN (SI EL USUARIO NO HA INICIADO SESIÓN) -->
-  @if (alertaAutenticacion()) {
-    <div class="alerta-autenticacion-banner">
-      <div class="icono-banner">
-        <mat-icon>lock</mat-icon>
-      </div>
-      <div class="textos-banner">
-        <strong>Se requiere sesión de Administrador</strong>
-        <span>Para consultar los datos en vivo del backend necesitas haber iniciado sesión en el sistema.</span>
-      </div>
-      <div class="acciones-banner">
-        <button mat-flat-button class="boton-login-rapido" (click)="iniciarSesionAdminPrueba()" [disabled]="iniciandoSesionRapida()">
-          <mat-icon>login</mat-icon>
-          {{ iniciandoSesionRapida() ? 'Autenticando...' : 'Autenticar como Admin' }}
-        </button>
-        <a mat-stroked-button routerLink="/administrador" class="enlace-ir-login">
-          Ir a Login
-        </a>
-      </div>
-    </div>
-  }
 
   <!-- PRESENTACIÓN / TÍTULO DEL DASHBOARD -->
   <section class="seccion-presentacion">

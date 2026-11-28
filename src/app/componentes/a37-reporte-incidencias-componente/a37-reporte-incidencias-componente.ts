@@ -17,8 +17,6 @@ import {
 } from '../../modelos/incidencia-modelo';
 import { SedeModelo } from '../../modelos/espacio-deportivo-modelo';
 import { IncidenciaServicio } from '../../servicios/incidencia-servicio';
-import { AutorizacionServicio } from '../../servicios/autorizacion-servicio';
-import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
 
 interface PuntoTendencia {
   mes: string;
@@ -49,7 +47,6 @@ interface PuntoTendencia {
 })
 export class A37ReporteIncidenciasComponente implements OnInit {
   private readonly reporteServicio = inject(IncidenciaServicio);
-  private readonly authServicio = inject(AutorizacionServicio);
 
   // Filtros interactivos
   aniosDisponibles: number[] = [2026, 2025, 2024];
@@ -505,24 +502,4 @@ export class A37ReporteIncidenciasComponente implements OnInit {
     });
   });
 
-  // Inicio de sesión rápido para pruebas
-  iniciarSesionAdminPrueba(): void {
-    this.iniciandoSesionRapida.set(true);
-    const cred = new CredencialesDTOModelo();
-    cred.correo = 'admin@sportfit.com';
-    cred.password = 'admin123';
-    this.authServicio.accederCliente(cred).subscribe({
-      next: () => {
-        localStorage.setItem('rol', 'ROLE_ADMINISTRADOR');
-        this.iniciandoSesionRapida.set(false);
-        this.alertaAutenticacion.set(false);
-        if (this.filtroAnio > 0 && this.filtroMes > 0) {
-          this.buscar();
-        }
-      },
-      error: () => {
-        this.iniciandoSesionRapida.set(false);
-      }
-    });
-  }
 }

@@ -14,8 +14,6 @@ import {
   BannerPagoReporteModelo
 } from '../../modelos/reporte-financiero-modelo';
 import { ReporteFinancieroServicio } from '../../servicios/reporte-financiero-servicio';
-import { AutorizacionServicio } from '../../servicios/autorizacion-servicio';
-import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
 
 interface PuntoGrafico {
   x: number;
@@ -51,8 +49,6 @@ interface SegmentoCircular {
 })
 export class A33ReporteFinancieroComponente implements OnInit {
   private readonly reporteServicio = inject(ReporteFinancieroServicio);
-  private readonly authServicio = inject(AutorizacionServicio);
-  private readonly router = inject(Router);
 
   // Filtros (Escenarios 1 y 4)
   aniosDisponibles: number[] = [2026, 2025, 2024];
@@ -179,25 +175,6 @@ export class A33ReporteFinancieroComponente implements OnInit {
           diaPico: 0,
           pagosRealizados: 0
         });
-      }
-    });
-  }
-
-  // Inicio de sesión rápido como administrador para facilitar pruebas
-  iniciarSesionAdminPrueba(): void {
-    this.iniciandoSesionRapida.set(true);
-    const cred = new CredencialesDTOModelo();
-    cred.correo = 'admin@sportfit.com';
-    cred.password = 'admin123';
-    this.authServicio.accederCliente(cred).subscribe({
-      next: () => {
-        localStorage.setItem('rol', 'ROLE_ADMINISTRADOR');
-        this.iniciandoSesionRapida.set(false);
-        this.alertaAutenticacion.set(false);
-        this.cargarReporte();
-      },
-      error: () => {
-        this.iniciandoSesionRapida.set(false);
       }
     });
   }

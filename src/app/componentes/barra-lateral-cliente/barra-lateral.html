@@ -9,7 +9,7 @@
 
         <div class="avatar">
           @if (imgUsuario) {
-            <img [src]="imgUsuario" alt="Foto del cliente">
+            <img [src]="imgUsuario" alt="Foto del cliente" (error)="imgUsuario = ''">
           } @else {
             <mat-icon>account_circle</mat-icon>
           }

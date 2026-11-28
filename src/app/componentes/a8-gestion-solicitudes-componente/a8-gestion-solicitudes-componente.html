@@ -2,7 +2,7 @@
   <!-- ENCABEZADO SUPERIOR -->
   <header class="encabezado-superior">
     <div class="espaciador"></div>
-    <img src="/imagenes/sportfit-logo.png" alt="SportFit" class="logotipo-sportfit" (error)="onLogoError($event)">
+    <img src="/loge-sportfit.png" alt="SportFit" class="logotipo-sportfit" (error)="onLogoError($event)">
   </header>
 
   <!-- BANNER DE BIENVENIDA -->
@@ -18,25 +18,6 @@
       <p class="subtitulo-saludo">Aquí tienes un resumen de la actividad de tu centro deportivo</p>
     </div>
   </section>
-
-  <!-- BANNER DE AUTENTICACIÓN SI FALTA SESIÓN -->
-  @if (alertaAutenticacion()) {
-    <div class="alerta-autenticacion-banner">
-      <div class="icono-banner">
-        <mat-icon>lock</mat-icon>
-      </div>
-      <div class="textos-banner">
-        <strong>Se requiere sesión de Administrador</strong>
-        <span>Para consultar y gestionar las solicitudes de reserva necesitas haber iniciado sesión.</span>
-      </div>
-      <div class="acciones-banner">
-        <button mat-flat-button class="boton-login-rapido" (click)="iniciarSesionAdmin()" [disabled]="iniciandoSesionRapida()">
-          <mat-icon>login</mat-icon>
-          {{ iniciandoSesionRapida() ? 'Autenticando...' : 'Autenticar como Admin' }}
-        </button>
-      </div>
-    </div>
-  }
 
   <!-- CUADRÍCULA PRINCIPAL: FILTROS + TABLA (IZQ) & DETALLE (DER) -->
   <div class="grid-solicitudes-layout">
@@ -181,7 +162,7 @@
               <!-- Columna Estado -->
               <ng-container matColumnDef="estado">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-                <td mat-cell *matCellDef="let s">
+                <td mat-cell *matCellDef>
                   <span class="badge-solicitado">
                     Solicitado
                   </span>
@@ -210,7 +191,7 @@
 
           <mat-paginator
             [pageSizeOptions]="[5, 10, 20]"
-            showFirstLastButtons
+            [showFirstLastButtons]="true"
             aria-label="Paginación de solicitudes">
           </mat-paginator>
         </mat-card-content>

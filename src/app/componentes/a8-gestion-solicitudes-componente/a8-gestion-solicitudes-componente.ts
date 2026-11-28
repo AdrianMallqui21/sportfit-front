@@ -24,8 +24,6 @@ import { ClienteModelo } from '../../modelos/cliente-modelo';
 import { SolicitudReservaServicio } from '../../servicios/solicitud-reserva-servicio';
 import { EspacioDeportivoServicio } from '../../servicios/espacio-deportivo-servicio';
 import { ClienteServicio } from '../../servicios/cliente-servicio';
-import { AutorizacionServicio } from '../../servicios/autorizacion-servicio';
-import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
 import { A8ComprobantePagoDialogo } from './a8-comprobante-pago-dialogo/a8-comprobante-pago-dialogo';
 import { A9ResultadoSolicitudDialogo } from './a9-resultado-solicitud-dialogo/a9-resultado-solicitud-dialogo';
 
@@ -59,7 +57,6 @@ export class A8GestionSolicitudesComponente implements OnInit, AfterViewInit {
   private readonly solicitudServicio = inject(SolicitudReservaServicio);
   private readonly espacioServicio = inject(EspacioDeportivoServicio);
   private readonly clienteServicio = inject(ClienteServicio);
-  private readonly authServicio = inject(AutorizacionServicio);
   private readonly dialog = inject(MatDialog);
 
   // Columnas para MatTable (Vista a7)
@@ -525,22 +522,4 @@ export class A8GestionSolicitudesComponente implements OnInit, AfterViewInit {
     });
   }
 
-  // Autenticación rápida de prueba
-  iniciarSesionAdmin(): void {
-    this.iniciandoSesionRapida.set(true);
-    const cred = new CredencialesDTOModelo();
-    cred.correo = 'admin@sportfit.com';
-    cred.password = 'admin123';
-    this.authServicio.accederCliente(cred).subscribe({
-      next: () => {
-        localStorage.setItem('rol', 'ROLE_ADMINISTRADOR');
-        this.iniciandoSesionRapida.set(false);
-        this.alertaAutenticacion.set(false);
-        this.cargarSolicitudes();
-      },
-      error: () => {
-        this.iniciandoSesionRapida.set(false);
-      }
-    });
-  }
 }

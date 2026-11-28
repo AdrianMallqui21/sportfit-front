@@ -277,7 +277,8 @@
                 @if (usuarioActual.imgUsuario) {
 
                   <img [src]="usuarioActual.imgUsuario"
-                       alt="Foto de perfil del cliente">
+                       alt="Foto de perfil del cliente"
+                       (error)="usuarioActual.imgUsuario = ''">
 
                 } @else {
 

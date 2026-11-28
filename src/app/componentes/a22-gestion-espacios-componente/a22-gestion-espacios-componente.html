@@ -5,25 +5,6 @@
     <img src="/loge-sportfit.png" alt="SportFit" class="logotipo-sportfit" (error)="onLogoError($event)">
   </header>
 
-  <!-- BANNER DE AUTENTICACIÓN SI FALTA SESIÓN -->
-  @if (alertaAutenticacion()) {
-    <div class="alerta-autenticacion-banner">
-      <div class="icono-banner">
-        <mat-icon>lock</mat-icon>
-      </div>
-      <div class="textos-banner">
-        <strong>Se requiere sesión de Administrador</strong>
-        <span>Para gestionar los espacios deportivos necesitas haber iniciado sesión como administrador.</span>
-      </div>
-      <div class="acciones-banner">
-        <button mat-flat-button class="boton-login-rapido" (click)="iniciarSesionAdmin()" [disabled]="iniciandoSesionRapida()">
-          <mat-icon>login</mat-icon>
-          {{ iniciandoSesionRapida() ? 'Autenticar...' : 'Autenticar como Admin' }}
-        </button>
-      </div>
-    </div>
-  }
-
   <!-- CONTENEDOR PRINCIPAL (VISTA a22) -->
   <div class="contenedor-principal-espacios">
     <!-- TARJETA: FILTRO DE BÚSQUEDA (VISTA a22) -->

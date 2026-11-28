@@ -10,7 +10,13 @@
     <div class="columna-identidad">
       <mat-card appearance="outlined" class="fotografia-admin">
         <mat-card-content>
-          <img [src]="usuario.imgUsuario || ''" alt="Fotografía del administrador" class="imagen-administrador" (error)="usuario.imgUsuario = ''">
+          @if (usuario.imgUsuario) {
+            <img [src]="usuario.imgUsuario" alt="Fotografía del administrador" class="imagen-administrador" (error)="usuario.imgUsuario = ''">
+          } @else {
+            <div class="avatar-admin-defecto">
+              <mat-icon>account_circle</mat-icon>
+            </div>
+          }
           <h2 class="nombre-administrador">{{ usuario.nombre }}</h2>
           <p class="rol">{{ rol }}</p>
           @if (usuario.activo) {

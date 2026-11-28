@@ -27,8 +27,6 @@ import {
 import { ReservaServicio } from '../../servicios/reserva-servicio';
 import { ClienteServicio } from '../../servicios/cliente-servicio';
 import { ClienteModelo } from '../../modelos/cliente-modelo';
-import { AutorizacionServicio } from '../../servicios/autorizacion-servicio';
-import { CredencialesDTOModelo } from '../../modelos/credenciales-dto-modelo';
 import { A19EditarReservaDialogo } from './a19-editar-reserva-dialogo/a19-editar-reserva-dialogo';
 import { A21DesactivarReservaDialogo } from './a21-desactivar-reserva-dialogo/a21-desactivar-reserva-dialogo';
 
@@ -60,7 +58,6 @@ import { A21DesactivarReservaDialogo } from './a21-desactivar-reserva-dialogo/a2
 export class A18GestionReservasComponente implements OnInit, AfterViewInit {
   private readonly reservaServicio = inject(ReservaServicio);
   private readonly clienteServicio = inject(ClienteServicio);
-  private readonly authServicio = inject(AutorizacionServicio);
   private readonly dialog = inject(MatDialog);
 
   // Columnas de MatTable (Vista a18)
@@ -425,10 +422,10 @@ export class A18GestionReservasComponente implements OnInit, AfterViewInit {
 
   etiquetaEstado(estado?: string): string {
     const est = (estado || '').toLowerCase();
-    if (est === 'confirmada') return 'Confirmado';
-    if (est === 'solicitada') return 'Pendiente';
+    if (est === 'confirmada') return 'Confirmada';
+    if (est === 'solicitada') return 'Solicitada';
     if (est === 'cancelada') return 'Cancelada';
-    if (est === 'completada') return 'Finalizado';
+    if (est === 'completada') return 'Completada';
     if (est === 'rechazada') return 'Rechazada';
     return estado || '—';
   }
@@ -446,23 +443,4 @@ export class A18GestionReservasComponente implements OnInit, AfterViewInit {
     setTimeout(() => this.mensajeFeedback.set(null), 4000);
   }
 
-  iniciarSesionAdmin(): void {
-    this.iniciandoSesionRapida.set(true);
-    const cred = new CredencialesDTOModelo();
-    cred.correo = 'admin@sportfit.com';
-    cred.password = 'admin123';
-    this.authServicio.accederCliente(cred).subscribe({
-      next: () => {
-        localStorage.setItem('rol', 'ROLE_ADMINISTRADOR');
-        this.iniciandoSesionRapida.set(false);
-        this.alertaAutenticacion.set(false);
-        this.cargarCatalogos();
-        this.cargarReservas();
-        this.cargarBanner();
-      },
-      error: () => {
-        this.iniciandoSesionRapida.set(false);
-      }
-    });
-  }
 }
